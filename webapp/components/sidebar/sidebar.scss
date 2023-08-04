@@ -35,8 +35,8 @@
     width: 320px;
     border-right-width: 4px;
     border-right-style: solid;
-    border-color: #1A84B1;
-    background-color: #F6F6F5;
+    border-color: rgba(#535d7d, 0.3);
+    background-color: #0c1e35;
 
     &__logo {
         display: grid;
@@ -92,8 +92,8 @@
     width: 80px;
     border-right-width: 4px;
     border-right-style: solid;
-    border-color: #1A84B1;
-    background-color: #F6F6F5;
+    border-color: rgba(#535d7d, 0.3);
+    background-color: #0c1e35;
 
     &__logo {
         display: grid;
@@ -121,14 +121,13 @@
 
                 i {
                     font-size: 1.75rem;
-                    color: #1A84B1;
                 }
 
                 &.active {
-                    background-color: #1A84B1;
-                    border-radius: 79%;
-                    padding-top: 14px;
-                    padding-bottom: 14px;
+                    //background-color: #1A84B1;
+                    //border-radius: 79%;
+                    //padding-top: 14px;
+                    //padding-bottom: 14px;
                     color: #fff;
                     padding-right: 17px;
                     padding-left: 17px;

@@ -90,7 +90,7 @@ const Sidebar = () => {
             {getContent(active)}
             <div className='sidebar-bottom'>
                 <div className='profile-image'>
-                    <Image src="/next.svg" width={50} height={50} alt={''}/>
+                    <Image src="/profile-placeholder.jpg" width={50} height={50} alt={''}/>
                 </div>
             </div>
         </div>
