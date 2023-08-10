@@ -20,12 +20,18 @@
     overflow: hidden;
     width: 50px;
     height: 50px;
+
+    &:hover{
+        cursor: pointer;
+    }
 }
 
 .sidebar{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    transition: width 0.1s;
 }
 
 .sidebar-full {
@@ -57,7 +63,7 @@
             padding: 1rem 3rem;
             font-size: 1.25rem;
             font-weight: 500;
-            color: #fff;
+            color: #1A84B1;
             transition: color 0.3s ease-in-out;
 
             &.active {
@@ -69,6 +75,26 @@
 
                 i {
                     font-size: 1.75rem;
+                }
+
+                &.active {
+                    //background-color: #1A84B1;
+                    //border-radius: 79%;
+                    //padding-top: 14px;
+                    //padding-bottom: 14px;
+                    color: #fff;
+                }
+            }
+
+            &__text {
+                transition: display 5s;
+
+                &.active {
+                    //background-color: #1A84B1;
+                    //border-radius: 79%;
+                    //padding-top: 14px;
+                    //padding-bottom: 14px;
+                    color: #fff;
                 }
             }
         }
@@ -83,6 +109,50 @@
             z-index: -1;
             transform: translateX(-50%);
             transition: 0.3s ease-in-out;
+        }
+    }
+
+    .bottom-box{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+
+        >.sidebar-bottom{
+            justify-content: flex-start;
+            margin-left: 40px;
+
+            >.profile-information {
+                color: white;
+                margin-left: 20px;
+                display: flex;
+                flex-direction: column;
+
+                >.profile-email{
+                    color: #c5cae0;
+                    opacity: 30%;
+                }
+            }
+        }
+
+        >.nav-mode-switcher{
+            display: flex;
+            position: relative;
+            left: 310px;
+            bottom: 75px;
+            flex-direction: row;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            width: 20px;
+            background-color: #14335c;
+            font-weight: bold;
+            font-size: 10px;
+            color: white;
+            justify-content: center;
+            border-radius: 80%;
+        
+            &:hover{
+                cursor: pointer;
+            }
         }
     }
 }
@@ -145,6 +215,91 @@
             z-index: -1;
             transform: translateX(-50%);
             transition: 0.3s ease-in-out;
+        }
+    }
+
+    .bottom-box{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+
+        >.nav-mode-switcher{
+            display: flex;
+            position: relative;
+            left: 70px;
+            bottom: 75px;
+            flex-direction: row;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            width: 20px;
+            background-color: #14335c;
+            font-weight: bold;
+            font-size: 10px;
+            color: white;
+            justify-content: center;
+            border-radius: 80%;
+        
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.popover-hidden {
+    display: none;
+}
+
+.popover{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 150px;
+    left: 50px;
+    height: 250px;
+    width: 250px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    font-size: 18px;
+
+    &__title{
+        text-align: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px;
+        border-color: lightgrey;
+        border-bottom-style: solid;
+        font-weight: bold;
+    }
+
+    &__entry{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 5px;
+
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+
+        font-size: 14px;
+
+
+        &__icon{
+            margin-right: 20px;
+            opacity: 87%;
+
+            color: #308efe
+        }
+
+        &:hover{
+            background-color: lightgrey;
+            cursor: pointer;
         }
     }
 }

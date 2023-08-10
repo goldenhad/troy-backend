@@ -3,14 +3,24 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import './sidebar.scss';
-import { faHome, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUser, faAddressCard, faDoorOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { User } from '@prisma/client';
+
+type ComoponentProps = {
+    user: PrimitiveUser,
+}
+
+type PrimitiveUser = {
+    username: string,
+    email: string
+}
 
 const sidebarNavItems = [
     {
         display: 'Dashboard',
         icon: <FontAwesomeIcon icon={faHome} />,
-        to: '/dashboard',
+        to: '/',
     },
     {
         display: 'Benutzerverwaltung',
@@ -31,17 +41,17 @@ const getContent = (active: boolean) => {
         return(
             <div className='nav-items'>
                 <div className={`${sidebarName(active)}__logo`}>
-                    Wohnbau
+                    <Image src="/logo_klein.png" width={50} height={50} alt={''}/>
                 </div>
                 <div className={`${sidebarName(active)}__menu`}>
                     {
                         sidebarNavItems.map((item, index) => (
-                            <Link href={item.to} key={index}>
+                            <Link href={item.to} key={index} style={{ textDecoration: 'none' }}>
                                 <div className={`${sidebarName(active)}__menu__item`}>
                                     <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to)? "active": ""}`}>
                                         {item.icon}
                                     </div>
-                                    <div className={`${sidebarName(active)}__menu__item__text`}>
+                                    <div className={`${sidebarName(active)}__menu__item__text ${isElementActive(item.to)? "active": ""}`}>
                                         {item.display}
                                     </div>
                                 </div>
@@ -60,7 +70,7 @@ const getContent = (active: boolean) => {
                 <div className={`${sidebarName(active)}__menu`}>
                     {
                         sidebarNavItems.map((item, index) => (
-                            <Link href={item.to} key={index}>
+                            <Link href={item.to} key={index} style={{ textDecoration: 'none' }}>
                                 <div className={`${sidebarName(active)}__menu__item`}>
                                     <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to)? "active": ""}`}>
                                         {item.icon}
@@ -79,21 +89,64 @@ const sidebarName = (active: boolean) => {
     return active ? "sidebar-full": "sidebar-reduced"
 }
 
-const Sidebar = () => {
+const getPopOverState = (active: boolean) => {
+    return (active)? "popover": "popover-hidden"
+}
+
+const getProfileInformation = (active: boolean, username: string, email: string) => {
+    console.log(active)
+    if(active){
+        return(
+            <div className='profile-information'>
+                <div className='profile-username'>{username}</div>
+                <div className='profile-email'>{email}</div>
+            </div>
+        );
+    }else{
+        return <></>;
+    }
+}
+
+const Sidebar = (props: ComoponentProps) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [stepHeight, setStepHeight] = useState(0);
     const [active, setActive] = useState(false);
+    const [navModeText, setNavModeText] = useState(">");
+    const [popOverShow, setPopOverShow] = useState(false);
 
 
     return(
-        <div className={`sidebar ${sidebarName(active)}`}>
-            {getContent(active)}
-            <div className='sidebar-bottom'>
-                <div className='profile-image'>
-                    <Image src="/profile-placeholder.jpg" width={50} height={50} alt={''}/>
+        <>
+            <div className={`sidebar ${sidebarName(active)}`}>
+                {getContent(active)}
+
+                <div className='bottom-box'>
+                    <div className='sidebar-bottom'>
+                        <div className='profile-image' onClick={() => {setPopOverShow(!popOverShow)}}>
+                            <Image src="/profile-placeholder.jpg" width={50} height={50} alt={''}/>
+                        </div>
+                        {getProfileInformation(active, props.user.username, props.user.email)}
+                    </div>
+                    <div className='nav-mode-switcher' onClick={() => {setActive(!active); (active)? setNavModeText(">"):setNavModeText("<") }}>{navModeText}</div>
+                </div>
+
+                <div className={getPopOverState(popOverShow)}>
+                    <div className={`${getPopOverState(popOverShow)}__title`}>Optionen</div>
+                    <Link href={"/profile"} style={{ textDecoration: 'none', color: "black" }}>
+                        <div className={`${getPopOverState(popOverShow)}__entry`}>
+                            <FontAwesomeIcon className={`${getPopOverState(popOverShow)}__entry__icon`} icon={faAddressCard} />
+                            <div className={`${getPopOverState(popOverShow)}__entry__text`}>Profil</div>
+                        </div>
+                    </Link>
+                    <Link href={"/logout"} style={{ textDecoration: 'none', color: "black"  }}>
+                        <div className={`${getPopOverState(popOverShow)}__entry`}>
+                            <FontAwesomeIcon className={`${getPopOverState(popOverShow)}__entry__icon`} icon={faDoorOpen} />
+                            <div className={`${getPopOverState(popOverShow)}__entry__text`}>Ausloggen</div>
+                        </div>
+                    </Link>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

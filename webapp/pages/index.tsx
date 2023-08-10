@@ -4,8 +4,8 @@ import { GetServerSideProps } from "next";
 
 //Define a type for the cookie
 type User = {
-    username: String;
-    email: String;
+    username: string;
+    email: string;
     roleid: number;
   };
   
@@ -40,7 +40,7 @@ type User = {
 export default function Dashboard(props: InitialProps){
     return(
         <div>
-            <Layout>
+            <Layout user={props.InitialState}>
                 <h3>Hallo @{props.InitialState.username}</h3>
             </Layout>
         </div>
