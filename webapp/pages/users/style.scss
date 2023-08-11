@@ -1,0 +1,53 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    height: 90vh;
+}
+
+.addButtonRow{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.hideError{
+    display: none;
+}
+
+.elementicon{
+    height: 15px; 
+}
+
+.paginationFooter {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+}
+
+.searchBarBox{
+    width: 20%;
+}
+
+.searchButton {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.inputPrepend{
+    width: 30%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

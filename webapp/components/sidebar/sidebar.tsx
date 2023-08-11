@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import './sidebar.scss';
 import { faHome, faUser, faAddressCard, faDoorOpen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { User } from '@prisma/client';
 
 type ComoponentProps = {
     user: PrimitiveUser,
@@ -21,19 +20,24 @@ const sidebarNavItems = [
         display: 'Dashboard',
         icon: <FontAwesomeIcon icon={faHome} />,
         to: '/',
+        reg: /^\/$/gm,
     },
     {
         display: 'Benutzerverwaltung',
         icon: <FontAwesomeIcon icon={faUser} />,
-        to: '/users',
+        to: '/users/1',
+        reg: /\/users\/\[\[...page\]\]/gm,
     }
 ]
 
-const isElementActive = (route: string) => {
+const isElementActive = (route: string, reg: RegExp) => {
     const router = useRouter();
 
-    console.log(router.pathname);
-    return router.pathname == route;
+    console.log("Regex: ", reg);
+    console.log("Route: ", router.pathname)
+    console.log("Ergebnis: ", router.pathname.match(reg));
+
+    return router.pathname.match(reg);
 }
 
 const getContent = (active: boolean) => {
@@ -48,10 +52,10 @@ const getContent = (active: boolean) => {
                         sidebarNavItems.map((item, index) => (
                             <Link href={item.to} key={index} style={{ textDecoration: 'none' }}>
                                 <div className={`${sidebarName(active)}__menu__item`}>
-                                    <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to)? "active": ""}`}>
+                                    <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to, item.reg)? "active": ""}`}>
                                         {item.icon}
                                     </div>
-                                    <div className={`${sidebarName(active)}__menu__item__text ${isElementActive(item.to)? "active": ""}`}>
+                                    <div className={`${sidebarName(active)}__menu__item__text ${isElementActive(item.to, item.reg)? "active": ""}`}>
                                         {item.display}
                                     </div>
                                 </div>
@@ -72,7 +76,7 @@ const getContent = (active: boolean) => {
                         sidebarNavItems.map((item, index) => (
                             <Link href={item.to} key={index} style={{ textDecoration: 'none' }}>
                                 <div className={`${sidebarName(active)}__menu__item`}>
-                                    <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to)? "active": ""}`}>
+                                    <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to, item.reg)? "active": ""}`}>
                                         {item.icon}
                                     </div>
                                 </div>
@@ -94,7 +98,6 @@ const getPopOverState = (active: boolean) => {
 }
 
 const getProfileInformation = (active: boolean, username: string, email: string) => {
-    console.log(active)
     if(active){
         return(
             <div className='profile-information'>
