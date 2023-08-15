@@ -33,7 +33,7 @@ const saveFile = async (file: any, filename: string) => {
         fs.mkdirSync(`./public/data/${year}`);
     }
 
-    fs.writeFileSync(`./public/data/${year}/${filename}.xls`, data);
+    fs.writeFileSync(`./public/data/${year}/${filename}.xlsx`, data);
     await fs.unlinkSync(file.filepath);
     return;
 };
