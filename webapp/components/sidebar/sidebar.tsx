@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import './sidebar.scss';
-import { faHome, faUser, faAddressCard, faDoorOpen } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUser, faAddressCard, faDoorOpen, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 type ComoponentProps = {
@@ -27,15 +27,17 @@ const sidebarNavItems = [
         icon: <FontAwesomeIcon icon={faUser} />,
         to: '/users/1',
         reg: /\/users\/\[\[...page\]\]/gm,
+    },
+    {
+        display: 'Datenupload',
+        icon: <FontAwesomeIcon icon={faUpload} />,
+        to: '/upload',
+        reg: /^\/upload$/gm,
     }
 ]
 
 const isElementActive = (route: string, reg: RegExp) => {
     const router = useRouter();
-
-    console.log("Regex: ", reg);
-    console.log("Route: ", router.pathname)
-    console.log("Ergebnis: ", router.pathname.match(reg));
 
     return router.pathname.match(reg);
 }
@@ -94,7 +96,7 @@ const sidebarName = (active: boolean) => {
 }
 
 const getPopOverState = (active: boolean) => {
-    return (active)? "popover": "popover-hidden"
+    return (active)? "custom-popover": "custom-popover-hidden"
 }
 
 const getProfileInformation = (active: boolean, username: string, email: string) => {

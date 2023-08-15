@@ -246,11 +246,11 @@
     }
 }
 
-.popover-hidden {
+.custom-popover-hidden {
     display: none;
 }
 
-.popover{
+.custom-popover{
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -263,6 +263,12 @@
     padding-right: 10px;
     padding-top: 20px;
     padding-bottom: 20px;
+
+    background-color: white;
+    border-color: #A8A8A8;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
 
     font-size: 18px;
 
