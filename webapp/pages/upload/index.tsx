@@ -1,15 +1,19 @@
 import Layout from "@/components/layout/layout";
 import "./style.scss"
 import { GetServerSideProps } from "next";
-import { faFileUpload, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { faFileUpload, faCircleInfo, faFileExcel, faChartSimple } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert, Button, Modal } from "react-bootstrap";
+import { Alert, Button, Card, Modal } from "react-bootstrap";
 import { SyntheticEvent, useRef, useState } from "react";
 import Link from "next/link";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import axios, { AxiosError, AxiosResponse, isAxiosError } from "axios";
 import { rejects } from "assert";
+import { prisma } from '../../db';
+import { Files } from "@prisma/client";
+import { useRouter } from "next/router";
+import Router from "next/dist/server/router";
 
 //Define a type for the cookie
 type User = {
@@ -20,6 +24,7 @@ type User = {
   
 interface InitialProps {
     InitialState: User;
+    Files: Array<Files> | undefined;
 }
 
 type FileObjKey = "guv" | "konzernbilanz" | "einkommensspiegel" | "kapitalfluss" | "anlagengitter" | "rueckstellung" | "verbindlichkeiten"  | "lagebericht" | "anhang";
@@ -74,11 +79,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         return { props: { InitialState: {} } };
     } else {
+
+        let files = await prisma.files.findMany();
+
         return {
         props: {
             InitialState: JSON.parse(
             Buffer.from(cookies.login, "base64").toString("ascii")
             ),
+            Files: files,
         },
         };
     }
@@ -119,11 +128,70 @@ export default function Upload(props: InitialProps){
         "anhang": undefined,
         "generic": undefined,
     });
+    
+    const router = useRouter();
+    const year = new Date().getFullYear();
 
+
+    const getFileOptions = (fileobjs: Array<{text: string, link: string}>) => {
+        return fileobjs.map((fileobj, idx) => {
+                return(
+                    <Card className="file-card" key={idx}>
+                        <Card.Header className="file-header">{fileobj.text}</Card.Header>
+                        <Card.Body>
+                            <Card.Text>
+                                <div className="data-content">
+                                    <ul className="option-list">
+                                        <li>
+                                            <Link href={`/data/${year}/${fileobj.link}.xlsx`}>
+                                                <div className="file-options">
+                                                    <FontAwesomeIcon className="option-icon" icon={faFileExcel} />
+                                                    <div className="option-name">Datei</div>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link href={`#`}>
+                                                <div className="file-options">
+                                                    <FontAwesomeIcon className="option-icon" icon={faChartSimple} />
+                                                    <div className="option-name">Darstellung</div>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                );
+        })
+    }
 
     const getPresentation = () => {
-        if(dataPresent){
-            return(<></>);
+        const currentData = props.Files?.find((fileobj) => {
+            return fileobj.year == year;
+        })
+
+
+        const fileobjs = [
+            {text: "Guv", link: "guv"},
+            {text: "Konzernbilanz", link: "konzernbilanz"},
+            {text: "Einkommensspiegel", link: "einkommensspiegel"},
+            {text: "Kapitalfluss", link: "kapitalfluss"},
+            {text: "Anlagengitter", link: "anlagengitter"},
+            {text: "Rueckstellung", link: "rueckstellung"},
+            {text: "Verbindlichkeiten", link: "verbindlichkeiten"},
+            {text: "Lagebericht", link: "lagebericht"},
+            {text: "Anhang", link: "anhang"},
+        ]
+
+        if(currentData){
+
+            return(
+                <div className="data-list">
+                {getFileOptions(fileobjs)}
+                </div>
+            );
         }else{
             return (
                 <div className="no-data-notice">
@@ -223,6 +291,7 @@ export default function Upload(props: InitialProps){
     
                             try{
                                 const res = await axios.post(`/api/data/upload/${key}`, body);
+
                             }catch(error: any){
                                 let reason = "";
     
@@ -249,6 +318,9 @@ export default function Upload(props: InitialProps){
                     });
                 })
 
+                const year = new Date().getFullYear();
+                const fileres = await axios.post(`/api/files`, {year: year, status: true})
+
                 errorProm.then(() => {
                     if(errArr.length > 0){
                         errArr.forEach((obj: any) => {
@@ -270,6 +342,8 @@ export default function Upload(props: InitialProps){
                         });
                         setFiles(currobj);
                         handleClose();
+
+                        router.reload()
                     }
 
                     
@@ -330,6 +404,7 @@ export default function Upload(props: InitialProps){
                     </div>
 
                     <div className="data-presentation">
+                        <h2>Daten Geschäftsbericht {year}</h2>
                         {getPresentation()}
                     </div>
 

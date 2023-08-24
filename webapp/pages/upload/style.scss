@@ -133,3 +133,42 @@
 
     margin-bottom: 20px;
 }
+
+.data-list {
+    margin-top: 20px;
+}
+
+.data-content{
+    display: flex;
+    flex-direction: row;
+}
+
+.file-card{
+    margin-bottom: 20px;
+}
+
+.file-header{
+    font-weight: 600;
+}
+
+.option-list{
+    list-style: none;
+}
+
+.file-options{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 18px;
+
+    color: #308efe;
+
+    &:hover {
+        color: #1A84B1;
+        cursor: pointer;
+    }
+}
+
+.option-icon{
+    margin-right: 10px;
+}
