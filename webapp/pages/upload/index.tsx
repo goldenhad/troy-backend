@@ -20,11 +20,12 @@ type User = {
     username: string;
     email: string;
     roleid: number;
-  };
+};
   
 interface InitialProps {
     InitialState: User;
     Files: Array<Files> | undefined;
+    currentData: boolean;
 }
 
 type FileObjKey = "guv" | "konzernbilanz" | "einkommensspiegel" | "kapitalfluss" | "anlagengitter" | "rueckstellung" | "verbindlichkeiten"  | "lagebericht" | "anhang";
@@ -80,7 +81,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         return { props: { InitialState: {} } };
     } else {
 
+        const year = new Date().getFullYear();
         let files = await prisma.files.findMany();
+
+        const currentData = files.find((fileobj) => {
+            return fileobj.year == year;
+        })
 
         return {
         props: {
@@ -88,6 +94,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             Buffer.from(cookies.login, "base64").toString("ascii")
             ),
             Files: files,
+            currentData: currentData,
         },
         };
     }
@@ -139,28 +146,26 @@ export default function Upload(props: InitialProps){
                     <Card className="file-card" key={idx}>
                         <Card.Header className="file-header">{fileobj.text}</Card.Header>
                         <Card.Body>
-                            <Card.Text>
-                                <div className="data-content">
-                                    <ul className="option-list">
-                                        <li>
-                                            <Link href={`/data/${year}/${fileobj.link}.xlsx`}>
-                                                <div className="file-options">
-                                                    <FontAwesomeIcon className="option-icon" icon={faFileExcel} />
-                                                    <div className="option-name">Datei</div>
-                                                </div>
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href={`#`}>
-                                                <div className="file-options">
-                                                    <FontAwesomeIcon className="option-icon" icon={faChartSimple} />
-                                                    <div className="option-name">Darstellung</div>
-                                                </div>
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </Card.Text>
+                            <div className="data-content">
+                                <ul className="option-list">
+                                    <li>
+                                        <Link href={`/data/${year}/${fileobj.link}.xlsx`}>
+                                            <div className="file-options">
+                                                <FontAwesomeIcon className="option-icon" icon={faFileExcel} />
+                                                <div className="option-name">Datei</div>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href={`#`}>
+                                            <div className="file-options">
+                                                <FontAwesomeIcon className="option-icon" icon={faChartSimple} />
+                                                <div className="option-name">Darstellung</div>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
                         </Card.Body>
                     </Card>
                 );
@@ -168,9 +173,8 @@ export default function Upload(props: InitialProps){
     }
 
     const getPresentation = () => {
-        const currentData = props.Files?.find((fileobj) => {
-            return fileobj.year == year;
-        })
+
+        
 
 
         const fileobjs = [
@@ -185,11 +189,11 @@ export default function Upload(props: InitialProps){
             {text: "Anhang", link: "anhang"},
         ]
 
-        if(currentData){
+        if(props.currentData){
 
             return(
                 <div className="data-list">
-                {getFileOptions(fileobjs)}
+                    {getFileOptions(fileobjs)}
                 </div>
             );
         }else{
@@ -477,17 +481,6 @@ export default function Upload(props: InitialProps){
                                     </div>
                                 </div>
                             </div>
-
-                            {/* <div className="upload-area" onClick={() => {uploadButtonRef.current?.click()}}>
-                                <div className="upload-icon">
-                                    <FontAwesomeIcon icon={faFileUpload} />
-                                </div>
-                                <input ref={uploadButtonRef} className="filepick-button" type="file" name="fileUpload" onChange={uploadToClient} />
-                                <div className="upload-content">
-                                    <div className="upload-filename">{(file)? file.name: ""}</div>
-                                    <div className="upload-headline">Daten</div>
-                                </div>
-                            </div> */}
 
                             <div className="upload-section">
                                 <Button variant="primary" onClick={uploadFileToServer}>Upload</Button>

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import './sidebar.scss';
-import { faHome, faUser, faAddressCard, faDoorOpen, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUser, faAddressCard, faDoorOpen, faUpload, faArchive, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 type ComoponentProps = {
@@ -27,6 +27,12 @@ const sidebarNavItems = [
         icon: <FontAwesomeIcon icon={faUser} />,
         to: '/users/1',
         reg: /\/users\/\[\[...page\]\]/gm,
+    },
+    {
+        display: 'Archiv',
+        icon: <FontAwesomeIcon icon={faArchive} />,
+        to: '/archive/1',
+        reg: /(\/archive\/\[page\])|(\/archive\/details\/\[\[...page\]\])/gm,
     },
     {
         display: 'Datenupload',
@@ -116,7 +122,7 @@ const Sidebar = (props: ComoponentProps) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [stepHeight, setStepHeight] = useState(0);
     const [active, setActive] = useState(false);
-    const [navModeText, setNavModeText] = useState(">");
+    const [navModeText, setNavModeText] = useState(<FontAwesomeIcon icon={faArrowRight} />);
     const [popOverShow, setPopOverShow] = useState(false);
 
 
@@ -132,7 +138,7 @@ const Sidebar = (props: ComoponentProps) => {
                         </div>
                         {getProfileInformation(active, props.user.username, props.user.email)}
                     </div>
-                    <div className='nav-mode-switcher' onClick={() => {setActive(!active); (active)? setNavModeText(">"):setNavModeText("<") }}>{navModeText}</div>
+                    <div className='nav-mode-switcher' onClick={() => {setActive(!active); (active)? setNavModeText(<FontAwesomeIcon icon={faArrowRight} />):setNavModeText(<FontAwesomeIcon icon={faArrowLeft} />) }}>{navModeText}</div>
                 </div>
 
                 <div className={getPopOverState(popOverShow)}>

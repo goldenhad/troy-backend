@@ -140,8 +140,8 @@
             left: 310px;
             bottom: 75px;
             flex-direction: row;
-            padding-top: 3px;
-            padding-bottom: 3px;
+            padding-top: 5px;
+            padding-bottom: 5px;
             width: 20px;
             background-color: #14335c;
             font-weight: bold;
@@ -229,14 +229,15 @@
             left: 70px;
             bottom: 75px;
             flex-direction: row;
-            padding-top: 3px;
-            padding-bottom: 3px;
+            padding-top: 5px;
+            padding-bottom: 5px;
             width: 20px;
             background-color: #14335c;
             font-weight: bold;
             font-size: 10px;
             color: white;
             justify-content: center;
+            align-items: center;
             border-radius: 80%;
         
             &:hover{
