@@ -25,10 +25,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 const path = `./public/data/${year}/guv.xlsx`;
                 if(fs.existsSync(path)){
 
-                    const buffer = fs.readFileSync(path);
-                    const workbook = read(buffer);
+                    //const buffer = fs.readFileSync(path);
+                    //const workbook = read(buffer);
 
-                    console.log(workbook.Sheets['GuV']["E14"]);
+                    //console.log(workbook.Sheets['GuV']["E14"]);
 
                     return res.status(200).send({ errorcode: -1, message: "OK" });
 

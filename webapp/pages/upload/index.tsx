@@ -28,8 +28,8 @@ interface InitialProps {
     currentData: boolean;
 }
 
-type FileObjKey = "guv" | "konzernbilanz" | "einkommensspiegel" | "kapitalfluss" | "anlagengitter" | "rueckstellung" | "verbindlichkeiten"  | "lagebericht" | "anhang";
-enum FileTypes{ "guv", "konzernbilanz", "einkommensspiegel", "kapitalfluss", "anlagengitter", "rueckstellung", "verbindlichkeiten", "lagebericht", "anhang" }; 
+type FileObjKey = "guv" | "konzernbilanz" | "eigenkapitalspiegel" | "kapitalfluss" | "anlagengitter" | "rueckstellung" | "verbindlichkeiten"  | "lagebericht" | "anhang";
+enum FileTypes{ "guv", "konzernbilanz", "eigenkapitalspiegel", "kapitalfluss", "anlagengitter", "rueckstellung", "verbindlichkeiten", "lagebericht", "anhang" }; 
 
 
 type ErrorCode = "XMIMETYPE" | "XSIZE" | "XINVALID" | "OK" | "GENERIC";
@@ -44,7 +44,7 @@ type FileError = {
 type Fileobj = {
     "guv": undefined | File,
     "konzernbilanz": undefined | File,
-    "einkommensspiegel": undefined | File,
+    "eigenkapitalspiegel": undefined | File,
     "kapitalfluss": undefined | File,
     "anlagengitter": undefined | File,
     "rueckstellung": undefined | File,
@@ -56,7 +56,7 @@ type Fileobj = {
 type FileobjErr = {
     "guv": undefined | FileError,
     "konzernbilanz": undefined | FileError,
-    "einkommensspiegel": undefined | FileError,
+    "eigenkapitalspiegel": undefined | FileError,
     "kapitalfluss": undefined | FileError,
     "anlagengitter": undefined | FileError,
     "rueckstellung": undefined | FileError,
@@ -80,13 +80,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         return { props: { InitialState: {} } };
     } else {
-
+        let currentData = null
         const year = new Date().getFullYear();
-        let files = await prisma.files.findMany();
+        let files: Array<Files> | null = await prisma.files.findMany();
+        if(!files){
+            files = null;
+        }else{
+            currentData = files.find((fileobj) => {
+                return fileobj.year == year;
+            })
+        }
 
-        const currentData = files.find((fileobj) => {
-            return fileobj.year == year;
-        })
+        if(!currentData){
+            currentData = null;
+        }
 
         return {
         props: {
@@ -113,7 +120,7 @@ export default function Upload(props: InitialProps){
     const [files, setFiles] = useState<Fileobj>({
         "guv": undefined,
         "konzernbilanz": undefined,
-        "einkommensspiegel": undefined,
+        "eigenkapitalspiegel": undefined,
         "kapitalfluss": undefined,
         "anlagengitter": undefined,
         "rueckstellung": undefined,
@@ -126,7 +133,7 @@ export default function Upload(props: InitialProps){
     const [errorObj, setErrorObj] = useState<FileobjErr>({
         "guv": undefined,
         "konzernbilanz": undefined,
-        "einkommensspiegel": undefined,
+        "eigenkapitalspiegel": undefined,
         "kapitalfluss": undefined,
         "anlagengitter": undefined,
         "rueckstellung": undefined,
@@ -157,7 +164,7 @@ export default function Upload(props: InitialProps){
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={`#`}>
+                                        <Link href={`/presentation/${fileobj.link}`}>
                                             <div className="file-options">
                                                 <FontAwesomeIcon className="option-icon" icon={faChartSimple} />
                                                 <div className="option-name">Darstellung</div>
@@ -173,14 +180,11 @@ export default function Upload(props: InitialProps){
     }
 
     const getPresentation = () => {
-
         
-
-
         const fileobjs = [
             {text: "Guv", link: "guv"},
             {text: "Konzernbilanz", link: "konzernbilanz"},
-            {text: "Einkommensspiegel", link: "einkommensspiegel"},
+            {text: "Eigenkapitalspiegel", link: "eigenkapitalspiegel"},
             {text: "Kapitalfluss", link: "kapitalfluss"},
             {text: "Anlagengitter", link: "anlagengitter"},
             {text: "Rueckstellung", link: "rueckstellung"},
@@ -219,7 +223,7 @@ export default function Upload(props: InitialProps){
             setErrorObj({
                 "guv": undefined,
                 "konzernbilanz": undefined,
-                "einkommensspiegel": undefined,
+                "eigenkapitalspiegel": undefined,
                 "kapitalfluss": undefined,
                 "anlagengitter": undefined,
                 "rueckstellung": undefined,
@@ -238,8 +242,8 @@ export default function Upload(props: InitialProps){
                 return "Gewinn und Verlustrechnung";
             case "konzernbilanz":
                 return "Konzernbilanz";
-            case "einkommensspiegel":
-                return "Einkommensspiegel";
+            case "eigenkapitalspiegel":
+                return "Eigenkapitalspiegel";
             case "kapitalfluss":
                 return "Kapitelflussrechnung";
             case "anlagengitter":
@@ -269,7 +273,7 @@ export default function Upload(props: InitialProps){
             setErrorObj({
                 "guv": undefined,
                 "konzernbilanz": undefined,
-                "einkommensspiegel": undefined,
+                "eigenkapitalspiegel": undefined,
                 "kapitalfluss": undefined,
                 "anlagengitter": undefined,
                 "rueckstellung": undefined,
@@ -434,9 +438,9 @@ export default function Upload(props: InitialProps){
                                 </div>
 
                                 <div className="fileitem">
-                                    <div className="filename">Konzern Einkommensspiegel</div>
+                                    <div className="filename">Konzern Eigenkapitalspiegel</div>
                                     <div className="fileuploadbutton">
-                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "einkommensspiegel")}/>
+                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "eigenkapitalspiegel")}/>
                                     </div>
                                 </div>
 
