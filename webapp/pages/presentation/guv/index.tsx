@@ -104,7 +104,7 @@ export default function Guv(props: InitialProps){
             console.log(rowobj.styling);
 
             return (
-                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""}${(rowobj.styling == "bold")? "bold-row": ""}${(rowobj.styling == "color")? "colored-row": ""}`}>
+                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""}${(rowobj.styling == "bold")? "bold-row": ""}${(rowobj.styling == "color")? "colored-row": ""}`.replace(/\s+/g,' ').trim()}>
                     <td className="cell-enum">{row[0]}</td>
                     <td className="cell-content">{row[1]}</td>
                     <td className="cell-numbers">{getNumber(row[2])}</td>

@@ -147,7 +147,8 @@ export default function Upload(props: InitialProps){
     const year = new Date().getFullYear();
 
 
-    const getFileOptions = (fileobjs: Array<{text: string, link: string}>) => {
+    const getFileOptions = (fileobjs: Array<{text: string, links: { file: string, representations: Array<{ urlobj: string, name: string }> }}>) => {
+        
         return fileobjs.map((fileobj, idx) => {
                 return(
                     <Card className="file-card" key={idx}>
@@ -156,21 +157,27 @@ export default function Upload(props: InitialProps){
                             <div className="data-content">
                                 <ul className="option-list">
                                     <li>
-                                        <Link href={`/data/${year}/${fileobj.link}.xlsx`}>
+                                        <Link href={`/data/${year}/${fileobj.links.file}.xlsx`}>
                                             <div className="file-options">
                                                 <FontAwesomeIcon className="option-icon" icon={faFileExcel} />
                                                 <div className="option-name">Datei</div>
                                             </div>
                                         </Link>
                                     </li>
-                                    <li>
-                                        <Link href={`/presentation/${fileobj.link}`}>
-                                            <div className="file-options">
-                                                <FontAwesomeIcon className="option-icon" icon={faChartSimple} />
-                                                <div className="option-name">Darstellung</div>
-                                            </div>
-                                        </Link>
-                                    </li>
+                                    { 
+                                        fileobj.links.representations.map((repobj, idy) => {
+                                            return(
+                                                <li key={idy}>
+                                                    <Link href={`/presentation/${repobj.urlobj}`} target="_blank">
+                                                        <div className="file-options">
+                                                            <FontAwesomeIcon className="option-icon" icon={faChartSimple} />
+                                                            <div className="option-name">{repobj.name}</div>
+                                                        </div>
+                                                    </Link>
+                                                </li>
+                                            );
+                                        })
+                                    }
                                 </ul>
                             </div>
                         </Card.Body>
@@ -182,15 +189,15 @@ export default function Upload(props: InitialProps){
     const getPresentation = () => {
         
         const fileobjs = [
-            {text: "Guv", link: "guv"},
-            {text: "Konzernbilanz", link: "konzernbilanz"},
-            {text: "Eigenkapitalspiegel", link: "eigenkapitalspiegel"},
-            {text: "Kapitalfluss", link: "kapitalfluss"},
-            {text: "Anlagengitter", link: "anlagengitter"},
-            {text: "Rueckstellung", link: "rueckstellung"},
-            {text: "Verbindlichkeiten", link: "verbindlichkeiten"},
-            {text: "Lagebericht", link: "lagebericht"},
-            {text: "Anhang", link: "anhang"},
+            {text: "Guv", links: { file: "guv", representations: [{ urlobj: "guv", name: "GUV Tabelle"  }] }},
+            {text: "Konzernbilanz", links: { file: "konzernbilanz", representations: [{ urlobj: "konzernbilanz/aktiva", name: "Konzernbilanz Aktiva"  }, { urlobj: "konzernbilanz/passiva", name: "Konzernbilanz Passiva"  }] }},
+            {text: "Eigenkapitalspiegel", links: { file: "eigenkapitalspiegel", representations: [{ urlobj: "eigenkapitalspiegel", name: "Eigenkapitalspiegel Tabelle"  }] }},
+            {text: "Kapitalfluss", links: { file: "kapitalfluss", representations: [{ urlobj: "kapitalfluss", name: "Kapitalfluss Tabelle"  }] }},
+            {text: "Anlagengitter", links: { file: "anlagengitter", representations: [{ urlobj: "anlagengitter", name: "Anlagengitter Tabelle"  }] }},
+            {text: "Rueckstellung", links: { file: "rueckstellung", representations: [{ urlobj: "rueckstellung", name: "Rueckstellungs Tabelle"  }] }},
+            {text: "Verbindlichkeiten", links: { file: "verbindlichkeiten", representations: [{ urlobj: "verbindlichkeiten", name: "Verbindlichkeiten Tabelle"  }] }},
+            {text: "Lagebericht", links: { file: "lagebericht", representations: [{ urlobj: "lagebericht", name: "Lagebericht Tabelle"  }] }},
+            {text: "Anhang", links: { file: "anhang", representations: [{ urlobj: "anhang", name: "anhang"  }] }},
         ]
 
         if(props.currentData){

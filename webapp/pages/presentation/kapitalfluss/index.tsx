@@ -111,7 +111,7 @@ export default function Kapitalfluss(props: InitialProps){
             console.log(rowobj.styling);
 
             return (
-                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.colored)? "colored-row": ""}`}>
+                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.colored)? "colored-row": ""}`.replace(/\s+/g,' ').trim()}>
                     <td className="row-meaning">{row[0]}</td>
                     <td className="cell-spacer"><div className="spacer-content"></div></td>
                     <td className="cell-val">{getNumber(row[1])}</td>

@@ -97,7 +97,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 };
 
-export default function Eigenkapitelspiegel(props: InitialProps){
+export default function Anlagengitter(props: InitialProps){
     const currentYear = new Date().getFullYear();
 
     const getTableContent = () => {
@@ -110,7 +110,7 @@ export default function Eigenkapitelspiegel(props: InitialProps){
 
 
             return (
-                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.colored)? "colored-row": ""}`}>
+                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.colored)? "colored-row": ""}`.replace(/\s+/g,' ').trim()}>
                     <td className="row-meaning">{row[0]}</td>
                     <td className="cell-spacer"><div className="spacer-content"></div></td>
                     <td className="cell-val">{getNumber(row[1])}</td>
