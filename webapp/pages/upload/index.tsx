@@ -14,6 +14,7 @@ import { prisma } from '../../db';
 import { Files } from "@prisma/client";
 import { useRouter } from "next/router";
 import Router from "next/dist/server/router";
+import { fileobjs } from "@/helper/uploadRepresentation";
 
 //Define a type for the cookie
 type User = {
@@ -188,17 +189,6 @@ export default function Upload(props: InitialProps){
 
     const getPresentation = () => {
         
-        const fileobjs = [
-            {text: "Guv", links: { file: "guv", representations: [{ urlobj: "guv", name: "GUV Tabelle"  }] }},
-            {text: "Konzernbilanz", links: { file: "konzernbilanz", representations: [{ urlobj: "konzernbilanz/aktiva", name: "Konzernbilanz Aktiva"  }, { urlobj: "konzernbilanz/passiva", name: "Konzernbilanz Passiva"  }] }},
-            {text: "Eigenkapitalspiegel", links: { file: "eigenkapitalspiegel", representations: [{ urlobj: "eigenkapitalspiegel", name: "Eigenkapitalspiegel Tabelle"  }] }},
-            {text: "Kapitalfluss", links: { file: "kapitalfluss", representations: [{ urlobj: "kapitalfluss", name: "Kapitalfluss Tabelle"  }] }},
-            {text: "Anlagengitter", links: { file: "anlagengitter", representations: [{ urlobj: "anlagengitter", name: "Anlagengitter Tabelle"  }] }},
-            {text: "Rueckstellung", links: { file: "rueckstellung", representations: [{ urlobj: "rueckstellung", name: "Rueckstellungs Tabelle"  }] }},
-            {text: "Verbindlichkeiten", links: { file: "verbindlichkeiten", representations: [{ urlobj: "verbindlichkeiten", name: "Verbindlichkeiten Tabelle"  }] }},
-            {text: "Lagebericht", links: { file: "lagebericht", representations: [{ urlobj: "lagebericht", name: "Lagebericht Tabelle"  }] }},
-            {text: "Anhang", links: { file: "anhang", representations: [{ urlobj: "anhang", name: "anhang"  }] }},
-        ]
 
         if(props.currentData){
 
