@@ -43,6 +43,7 @@
     border-right-style: solid;
     border-color: rgba(#535d7d, 0.3);
     background-color: #0c1e35;
+    border-radius: 0 10px 10px 0;
 
     &__logo {
         display: grid;
@@ -129,7 +130,6 @@
 
                 >.profile-email{
                     color: #c5cae0;
-                    opacity: 30%;
                 }
             }
         }
@@ -164,6 +164,7 @@
     border-right-style: solid;
     border-color: rgba(#535d7d, 0.3);
     background-color: #0c1e35;
+    border-radius: 0px 10px 10px 0px;
 
     &__logo {
         display: grid;
@@ -311,4 +312,8 @@
             cursor: pointer;
         }
     }
+}
+
+.hiddensidebar{
+    display: none;
 }
