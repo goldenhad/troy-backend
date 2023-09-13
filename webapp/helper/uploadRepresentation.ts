@@ -104,11 +104,11 @@ export const fileobjs = [{
                 name: "Sonstige betriebliche Aufwendungen"
             },
             {
-                urlobj: "anhang/mitarbeiterinnen",
+                urlobj: "anhang/sonstige/mitarbeiterinnen",
                 name: "Mitarbeiter/-innen"
             },
             {
-                urlobj: "anhang/altersversorgung",
+                urlobj: "anhang/sonstige/altersversorgung",
                 name: "Zusätzliche Altersversorgung"
             },
         ]
