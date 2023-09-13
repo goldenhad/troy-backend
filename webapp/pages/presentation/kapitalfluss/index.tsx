@@ -6,8 +6,11 @@ import { User } from '../../../helper/user'
 import getNumber from "@/helper/numberformat";
 
 type StylingProps = {
+    highlighted: boolean;
     bold: boolean,
-    colored: boolean
+    colored: boolean,
+    underlined: boolean,
+    special: boolean
 }
 
 type RowObject = {
@@ -56,7 +59,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                     columns: [],
                     styling: {
                         colored: false,
-                        bold: false
+                        bold: false,
+                        underlined: false,
+                        highlighted: false,
+                        special: false,
                     }
                 }
 
@@ -72,11 +78,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 rows.push(rowobj);
             }
 
-            const boldrows = [18, 25, 28];
+            const boldrows = [18, 25, 34];
             const colorsrows = [37];
+            const underlinedrows = [17, 18, 24, 25, 33, 34]
 
             boldrows.forEach((row) => {
                 rows[row-lowerLimit].styling.bold = true;
+            })
+
+            underlinedrows.forEach((row) => {
+                rows[row-lowerLimit].styling.underlined = true;
             })
 
             colorsrows.forEach((row) => {
@@ -111,7 +122,7 @@ export default function Kapitalfluss(props: InitialProps){
             console.log(rowobj.styling);
 
             return (
-                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.colored)? "colored-row": ""}`.replace(/\s+/g,' ').trim()}>
+                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
                     <td className="row-meaning">{row[0]}</td>
                     <td className="cell-spacer"><div className="spacer-content"></div></td>
                     <td className="cell-val">{getNumber(row[1])}</td>

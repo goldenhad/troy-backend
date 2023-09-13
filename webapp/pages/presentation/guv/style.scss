@@ -7,7 +7,11 @@ table{
 }
 
 thead {
-    background-color: #B8CA47;
+    > tr {
+        > th {
+            background-color: #B8CA47;
+        }
+    }
     color: white;
 }
 
@@ -17,16 +21,21 @@ td {
 
 .bordered-row{
     > td {
-        border: lightgray 1px solid;
+        border-bottom: lightgray 1px solid;
     }
 }
 
 .euro-row{
     > td {
-        border-bottom: #B8CA47 1px solid;
-        border-left: lightgray 1px solid;
-        border-right: lightgray 1px solid;
+        border-bottom: #B8CA47 4px solid;
+        //border-left: lightgray 1px solid;
+        //border-right: lightgray 1px solid;
+        text-align: right;
     }
+}
+
+.empty-headline-cell{
+    background-color: transparent !important;
 }
 
 tr{
@@ -36,6 +45,8 @@ tr{
 
 .cell-spacer{
     text-align: right;
+    border-bottom: none !important;
+    width: 2%;
 }
 
 .cell-enum{
@@ -44,7 +55,7 @@ tr{
 }
 
 .cell-numbers{
-    width: 50%;
+    width: 10%;
     text-align: right;
 }
 
@@ -54,7 +65,7 @@ tr{
 }
 
 .cell-content{
-    width: 40%;
+    width: 50%;
     padding-left: 10px;
 }
 
@@ -62,9 +73,33 @@ tr{
     height: 15px !important;
 }
 
-.spacer-content{
-    width: 50px;
+.underlined-row {
+    //font-weight: bold;
+    > .cell-content, .cell-numbers, .cell-enum{
+        border-bottom: #B8CA47 4px solid !important;
+    }
+    //border-top: #B8CA47 4px solid;
 }
+
+.special-row{
+
+    :nth-child(4){
+        border-bottom: #B8CA47 4px solid !important;
+    }
+
+    :nth-child(5){
+        border-bottom: #B8CA47 4px solid !important;
+    }
+
+    :nth-child(6){
+        border-bottom: #B8CA47 4px solid !important;
+    }
+
+    :nth-child(8){
+        border-bottom: #B8CA47 4px solid !important;
+    }
+}
+
 
 .bold-row {
     font-weight: bold;

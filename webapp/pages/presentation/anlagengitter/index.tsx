@@ -109,33 +109,42 @@ export default function Anlagengitter(props: InitialProps){
             let allempty = row.every((v: any) => v === null );
 
 
-            return (
-                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.colored)? "colored-row": ""}`.replace(/\s+/g,' ').trim()}>
-                    <td className="row-meaning">{row[0]}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[1])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[2])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[3])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[4])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[6])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val darker-cell">{getNumber(row[7])}</td>
-                    <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
-                    <td className="cell-val darker-cell">{getNumber(row[9])}</td>
-                    <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
-                    <td className="cell-val darker-cell">{getNumber(row[11])}</td>
-                    <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
-                    <td className="cell-val darker-cell">{getNumber(row[12])}</td>
-                    <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
-                    <td className="cell-val darker-cell">{getNumber(row[13])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val special-cell">{getNumber(row[14])}</td>
-                </tr>
-            );
+            if(!allempty){
+                return (
+                    <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.colored)? "colored-row": ""}`.replace(/\s+/g,' ').trim()}>
+                        <td className="row-meaning">{row[0]}</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-val">{getNumber(row[1])}</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-val">{getNumber(row[2])}</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-val">{getNumber(row[3])}</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-val">{getNumber(row[4])}</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-val">{getNumber(row[6])}</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-val darker-cell">{getNumber(row[7])}</td>
+                        <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-val darker-cell">{getNumber(row[9])}</td>
+                        <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-val darker-cell">{getNumber(row[11])}</td>
+                        <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-val darker-cell">{getNumber(row[12])}</td>
+                        <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-val darker-cell">{getNumber(row[13])}</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-val special-cell">{getNumber(row[14])}</td>
+                    </tr>
+                );
+            }else{
+                if(idx == 3 || idx == 15){
+                    return(<><tr></tr></>)
+                }
+                if(idx == 22){
+                    return(<><tr></tr><tr></tr></>)
+                }
+            }
         });
 
 

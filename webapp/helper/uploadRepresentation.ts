@@ -25,10 +25,16 @@ export const fileobjs = [{
     text: "Eigenkapitalspiegel",
     links: {
         file: "eigenkapitalspiegel",
-        representations: [{
-            urlobj: "eigenkapitalspiegel",
-            name: "Eigenkapitalspiegel Tabelle"
-        }]
+        representations: [
+            {
+                urlobj: "eigenkapitalspiegel/I",
+                name: "Eigenkapitalspiegel Tabelle I"
+            },
+            {
+                urlobj: "eigenkapitalspiegel/II",
+                name: "Eigenkapitalspiegel Tabelle II"
+            }
+        ]
     }
 },
 {

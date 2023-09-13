@@ -1,13 +1,9 @@
-import Image from "next/image";
 import "./style.scss"
-import axios from "axios";
-import router from "next/router";
 import { GetServerSideProps } from "next";
 import fs from 'fs';
 import { read } from 'xlsx';
-import { User } from '../../../helper/user'
+import { User } from '../../../../helper/user'
 import getNumber from "@/helper/numberformat";
-
 
 type StylingProps = {
     highlighted: boolean;
@@ -43,17 +39,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     } else {
 
         const year = new Date().getFullYear();
-        const path = `./public/data/${year}/guv.xlsx`;
+        const path = `./public/data/${year}/eigenkapitalspiegel.xlsx`;
         let guvdata: Array<any> = [1, 2, 3];
         if(fs.existsSync(path)){
 
             const buffer = fs.readFileSync(path);
             const workbook = read(buffer);
 
-            console.log(workbook.Sheets['GuV Deckblatt']["E14"]);
-            const cols: Array<String> = ["A", "B", "C", "D", "E", "F"];
-            const lowerLimit = 9;
-            const higherLimit = 63;
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+            const cols: Array<String> = alphabet.slice(8, 14).split("");
+            cols.unshift("A")
+            const lowerLimit = 19;
+            const higherLimit = 28;
 
             let rows: Array<RowObject> = [];
 
@@ -70,7 +68,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 }
 
                 cols.forEach((col) => {
-                    let val = workbook.Sheets['GuV Deckblatt'][col.concat(r.toString())];
+                    let val = workbook.Sheets['EK Spiegel nach DRS 22'][col.concat(r.toString())];
                     if(val){
                         rowobj.columns.push(val.v);
                     }else{
@@ -81,25 +79,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 rows.push(rowobj);
             }
 
-            const boldrows = [52, 56];
-            const colorsrows = [58, 63];
-            const underlinedrows = [50, 52, 54, 56];
-            const specialrows = [13, 26, 31, 35];
+            const boldrows = [19, 28];
+            const underlinedrows = [19,26, 27];
 
             boldrows.forEach((row) => {
                 rows[row-lowerLimit].styling.bold = true;
             })
 
-            colorsrows.forEach((row) => {
-                rows[row-lowerLimit].styling.colored = true;
-            })
-
             underlinedrows.forEach((row) => {
                 rows[row-lowerLimit].styling.underlined = true;
-            })
-
-            specialrows.forEach((row) => {
-                rows[row-lowerLimit].styling.special = true;
             })
 
             guvdata = rows;
@@ -116,7 +104,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 };
 
-export default function Guv(props: InitialProps){
+export default function Eigenkapitelspiegel(props: InitialProps){
 
     const getTableContent = () => {
 
@@ -126,19 +114,20 @@ export default function Guv(props: InitialProps){
 
             let allempty = row.every((v: any) => v === null );
 
-            console.log(rowobj.styling);
-
             if(!allempty){
                 return (
                     <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
-                        <td className="cell-enum">{row[0]}</td>
-                        <td className="cell-content">{row[1]}</td>
+                        <td className="row-meaning">{row[0]}</td>
                         <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-numbers">{getNumber(row[2])}</td>
+                        <td className="cell-val">{getNumber(row[1], true)}</td>
                         <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-numbers">{getNumber(row[3])}</td>
+                        <td className="cell-val">{getNumber(row[2], true)}</td>
                         <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-numbers">{getNumber(row[5])}</td>
+                        <td className="cell-val">{getNumber(row[3], true)}</td>
+                        <td className="cell-spacer-wide"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer-wide"><div className="spacer-content"></div></td>
+                        <td className="cell-val">{getNumber(row[5], true)}</td>
+
                     </tr>
                 );
             }
@@ -152,25 +141,37 @@ export default function Guv(props: InitialProps){
             <table>
                 <thead>
                     <tr>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-numbers"></th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-numbers"></th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-numbers"><div className="headline">Geschäftsjahr</div></th>
-                        <th className="cell-spacer empty-headline-cell"></th>
-                        <th className="cell-numbers"><div className="headline">Vorjahr</div></th>
+                        <th className="empty-headline-cell"></th>
+                        <th className="empty-headline-cell cell-spacer"></th>
+                        <th colSpan={5} className="cell-headline">Nicht beherrschbare Anteile</th>
+                        <th className="empty-headline-cell cell-spacer-wide"></th>
+                        <th className="empty-headline-cell cell-spacer-wide"></th>
+                        <th className="cell-headline">Konzerneigenkapital</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="euro-row">
+                    <tr className="special-headline-row">
+                        <td className="empty-headline-cell"></td>
+                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td>am Kapital</td>
+                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td>Am Jahres-Überschuss</td>
+                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td>Summe</td>
+                        <td className="cell-spacer-wide empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer-wide empty-headline-cell"><div className="spacer-content"></div></td>
                         <td></td>
-                        <td></td>
-                        <td className="cell-spacer"></td>
+                    </tr>
+                    <tr className="currency-row">
+                    <td className="empty-headline-cell"></td>
+                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
                         <td>€</td>
-                        <td className="cell-spacer"></td>
+                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
                         <td>€</td>
-                        <td className="cell-spacer"></td>
+                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td>€</td>
+                        <td className="cell-spacer-wide empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer-wide empty-headline-cell"><div className="spacer-content"></div></td>
                         <td>€</td>
                     </tr>
                     <tr className="row-spacer"></tr>
