@@ -1,0 +1,158 @@
+.presentation-page{
+    margin-right: 2px;
+}
+
+table{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+table td, table th { overflow-wrap: anywhere; }
+
+
+.empty-headline-cell{
+    background-color: transparent !important;
+}
+
+thead {
+    > tr {
+        > th {
+            background-color: #90B2B1;
+            color: white;
+            text-align: right;
+            font-weight: bold;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+    }
+}
+
+td {
+    padding-right: 10px;
+    padding-left: 10px;
+    border-left: none;
+    border-right: none;
+}
+
+.bordered-row{
+    > td {
+        border-bottom: lightgray 1px solid;
+    }
+}
+
+.euro-row{
+    >:nth-child(1) {
+        text-align: left;
+    }
+
+    > td {
+        //border-left: lightgray 1px solid;
+        //border-right: lightgray 1px solid;
+        border-bottom: #90B2B1 4px solid;
+        text-align: right;
+    }
+
+    >.cell-spacer{
+        border-bottom: none;
+    }
+
+    text-align: center;
+}
+
+.special-spacer-row{
+    border-bottom: black 1px solid;
+}
+
+tr{
+    height: 50px;
+    vertical-align: middle;
+}
+
+.cell-spacer{
+    text-align: right;
+    padding: 0px !important;
+    border-bottom: none !important;
+}
+
+.cell-val{
+    text-align: right;
+}
+
+.row-meaning{
+    width: 30%;
+}
+
+.headline{
+    width: 150px;
+    padding-right: 10px;
+}
+
+.cell-content{
+    width: 40%;
+    padding-left: 10px;
+}
+
+.row-spacer{
+    height: 30px !important;
+    > td {
+        border-bottom: none;
+    }
+}
+
+.spacer-content{
+    width: 10px;
+}
+
+.bold-row {
+    font-weight: bold;
+    > td {
+        border-bottom: none;
+    }
+}
+
+.special-row{
+    > td {
+        border-bottom: lightgray 5px solid;
+    }
+}
+
+.underlined-row {
+    //font-weight: bold;
+    > .cell-val, .cell-title{
+        border-bottom: #90B2B1 4px solid !important;
+    }
+    //border-top: #B8CA47 4px solid;
+}
+
+.colored-row {
+    background-color: #90B2B1;
+    color: white;
+    font-weight: bold;
+}
+
+.cell-enum{
+    width: 2%;
+    text-align: right;
+}
+
+.cell-add{
+    width: 5%;
+    text-align: right;
+}
+
+.cell-add-information{
+    width: 12%;
+    text-align: right;
+}
+
+.cell-title{
+    width: 30%;
+    text-align: left;
+}
+
+.highlighted-row{
+    > td {
+        border-bottom: 5px lightgray solid;
+    }
+}
+

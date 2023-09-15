@@ -25,3 +25,9 @@ model Role {
   name String
   User User[]
 }
+
+model Files {
+  id   Int    @id @default(autoincrement())
+  year Int
+  status Boolean
+}

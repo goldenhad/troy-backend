@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import './sidebar.scss';
-import { faHome, faUser, faAddressCard, faDoorOpen } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUser, faAddressCard, faDoorOpen, faUpload, faArchive, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import logoKlein from '../../public/logo_klein.png'
+import placeholderImage from '../../public/profile-placeholder.jpg'
 
 type ComoponentProps = {
     user: PrimitiveUser,
@@ -27,95 +29,104 @@ const sidebarNavItems = [
         icon: <FontAwesomeIcon icon={faUser} />,
         to: '/users/1',
         reg: /\/users\/\[\[...page\]\]/gm,
+    },
+    {
+        display: 'Archiv',
+        icon: <FontAwesomeIcon icon={faArchive} />,
+        to: '/archive/1',
+        reg: /(\/archive\/\[page\])|(\/archive\/details\/\[\[...page\]\])/gm,
+    },
+    {
+        display: 'Datenupload',
+        icon: <FontAwesomeIcon icon={faUpload} />,
+        to: '/upload',
+        reg: /^\/upload$/gm,
     }
 ]
 
-const isElementActive = (route: string, reg: RegExp) => {
-    const router = useRouter();
-
-    console.log("Regex: ", reg);
-    console.log("Route: ", router.pathname)
-    console.log("Ergebnis: ", router.pathname.match(reg));
-
-    return router.pathname.match(reg);
-}
-
-const getContent = (active: boolean) => {
-    if(active){
-        return(
-            <div className='nav-items'>
-                <div className={`${sidebarName(active)}__logo`}>
-                    <Image src="/logo_klein.png" width={50} height={50} alt={''}/>
-                </div>
-                <div className={`${sidebarName(active)}__menu`}>
-                    {
-                        sidebarNavItems.map((item, index) => (
-                            <Link href={item.to} key={index} style={{ textDecoration: 'none' }}>
-                                <div className={`${sidebarName(active)}__menu__item`}>
-                                    <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to, item.reg)? "active": ""}`}>
-                                        {item.icon}
-                                    </div>
-                                    <div className={`${sidebarName(active)}__menu__item__text ${isElementActive(item.to, item.reg)? "active": ""}`}>
-                                        {item.display}
-                                    </div>
-                                </div>
-                            </Link>
-                        ))
-                    }
-                </div>
-            </div>
-        );
-    }else{
-        return(
-            <div className='nav-items'>
-                <div className={`${sidebarName(active)}__logo`}>
-                    <Image src="/logo_klein.png" width={50} height={50} alt={''}/>
-                </div>
-                <div className={`${sidebarName(active)}__menu`}>
-                    {
-                        sidebarNavItems.map((item, index) => (
-                            <Link href={item.to} key={index} style={{ textDecoration: 'none' }}>
-                                <div className={`${sidebarName(active)}__menu__item`}>
-                                    <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to, item.reg)? "active": ""}`}>
-                                        {item.icon}
-                                    </div>
-                                </div>
-                            </Link>
-                        ))
-                    }
-                </div>
-            </div>
-        );
-    }
-}
-
-const sidebarName = (active: boolean) => {
-    return active ? "sidebar-full": "sidebar-reduced"
-}
-
-const getPopOverState = (active: boolean) => {
-    return (active)? "popover": "popover-hidden"
-}
-
-const getProfileInformation = (active: boolean, username: string, email: string) => {
-    if(active){
-        return(
-            <div className='profile-information'>
-                <div className='profile-username'>{username}</div>
-                <div className='profile-email'>{email}</div>
-            </div>
-        );
-    }else{
-        return <></>;
-    }
-}
 
 const Sidebar = (props: ComoponentProps) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [stepHeight, setStepHeight] = useState(0);
     const [active, setActive] = useState(false);
-    const [navModeText, setNavModeText] = useState(">");
+    const [navModeText, setNavModeText] = useState(<FontAwesomeIcon icon={faArrowRight} />);
     const [popOverShow, setPopOverShow] = useState(false);
+    const router = useRouter();
+
+
+    const isElementActive = (route: string, reg: RegExp) => {
+        return router.pathname.match(reg);
+    }
+    
+    const getContent = (active: boolean) => {
+        if(active){
+            return(
+                <div className='nav-items'>
+                    <div className={`${sidebarName(active)}__logo`}>
+                        <Image src={logoKlein} width={50} height={50} alt={''}/>
+                    </div>
+                    <div className={`${sidebarName(active)}__menu`}>
+                        {
+                            sidebarNavItems.map((item, index) => (
+                                <Link href={item.to} key={index} style={{ textDecoration: 'none' }}>
+                                    <div className={`${sidebarName(active)}__menu__item`}>
+                                        <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to, item.reg)? "active": ""}`}>
+                                            {item.icon}
+                                        </div>
+                                        <div className={`${sidebarName(active)}__menu__item__text ${isElementActive(item.to, item.reg)? "active": ""}`}>
+                                            {item.display}
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))
+                        }
+                    </div>
+                </div>
+            );
+        }else{
+            return(
+                <div className='nav-items'>
+                    <div className={`${sidebarName(active)}__logo`}>
+                        <Image src="/logo_klein.png" width={50} height={50} alt={''}/>
+                    </div>
+                    <div className={`${sidebarName(active)}__menu`}>
+                        {
+                            sidebarNavItems.map((item, index) => (
+                                <Link href={item.to} key={index} style={{ textDecoration: 'none' }}>
+                                    <div className={`${sidebarName(active)}__menu__item`}>
+                                        <div className={`${sidebarName(active)}__menu__item__icon ${isElementActive(item.to, item.reg)? "active": ""}`}>
+                                            {item.icon}
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))
+                        }
+                    </div>
+                </div>
+            );
+        }
+    }
+    
+    const sidebarName = (active: boolean) => {
+        return active ? "sidebar-full": "sidebar-reduced"
+    }
+    
+    const getPopOverState = (active: boolean) => {
+        return (active)? "custom-popover": "custom-popover-hidden"
+    }
+    
+    const getProfileInformation = (active: boolean, username: string, email: string) => {
+        if(active){
+            return(
+                <div className='profile-information'>
+                    <div className='profile-username'>{username}</div>
+                    <div className='profile-email'>{email}</div>
+                </div>
+            );
+        }else{
+            return <></>;
+        }
+    }
 
 
     return(
@@ -126,11 +137,13 @@ const Sidebar = (props: ComoponentProps) => {
                 <div className='bottom-box'>
                     <div className='sidebar-bottom'>
                         <div className='profile-image' onClick={() => {setPopOverShow(!popOverShow)}}>
-                            <Image src="/profile-placeholder.jpg" width={50} height={50} alt={''}/>
+                            <Image src={placeholderImage} width={50} height={50} alt={''}/>
                         </div>
-                        {getProfileInformation(active, props.user.username, props.user.email)}
+                        <div className={`profile-information ${(active)? "":"hiddensidebar"}`}>
+                            <div className='profile-username'>{props.user.username}</div>
+                        </div>
                     </div>
-                    <div className='nav-mode-switcher' onClick={() => {setActive(!active); (active)? setNavModeText(">"):setNavModeText("<") }}>{navModeText}</div>
+                    <div className='nav-mode-switcher' onClick={() => {setActive(!active); (active)? setNavModeText(<FontAwesomeIcon icon={faArrowRight} />):setNavModeText(<FontAwesomeIcon icon={faArrowLeft} />) }}>{navModeText}</div>
                 </div>
 
                 <div className={getPopOverState(popOverShow)}>
