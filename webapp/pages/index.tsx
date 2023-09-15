@@ -1,5 +1,4 @@
-import Layout from "@/components/layout/layout";
-import Sidebar from "@/components/sidebar/sidebar";
+import SidebarLayout from "@/components/layout/layout";
 import { GetServerSideProps } from "next";
 
 //Define a type for the cookie
@@ -39,10 +38,8 @@ type User = {
 
 export default function Dashboard(props: InitialProps){
     return(
-        <div>
-            <Layout user={props.InitialState}>
-                <h3>Hallo @{props.InitialState.username}</h3>
-            </Layout>
-        </div>
+      <SidebarLayout user={props.InitialState}>
+          <h3>Hallo @{props.InitialState.username}</h3>
+      </SidebarLayout>
     );
 }

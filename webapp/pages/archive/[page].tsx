@@ -1,18 +1,19 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import 'bootstrap/dist/css/bootstrap.css';
 import './style.scss'
 import { GetServerSideProps } from 'next'
 import React, { useState } from 'react';
-import Sidebar from '@/components/sidebar/sidebar';
-import { Modal, Button, InputGroup, FormControl, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBinoculars, faTrash, faArrowRight, faEye } from '@fortawesome/free-solid-svg-icons';
 import { prisma } from '../../db';
 import Layout from '@/components/layout/layout';
-import Link from 'next/link';
+import { Table, Button, Input, Modal, Form, Space, Alert, Select } from 'antd';
+import {
+    StopOutlined,
+    SearchOutlined
+} from '@ant-design/icons';
+
+
+
+
 
 
 
@@ -132,106 +133,65 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 
 
-export default function Archive(props: InitialProps){
-    //Define a state to handle the popups state
-    const [show, setShow] = useState(false);
-    //Helper functions to handle setState for the popup
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    const [showDelete, setShowDelete] = useState(false);
-    const handleDeleteClose = () => setShowDelete(false);
-    const handleDeleteShow = () => setShowDelete(true);
-
+export default function Users(props: InitialProps){
     const [searchVal, setSearchVal] = useState("");
-
-
-    const [ errMsg, setErrMsg ] = useState([]);
-
     const router = useRouter();
+    
 
-    const refreshData = () => {
-        router.replace(router.asPath);
-    }
-
-    const searchForEntry = (val: string) => {
-        if(val != ""){
-            router.push('/archive/' + val);
+    const searchForFile = () => {
+        if(searchVal != ""){
+            router.push('/archive/' + searchVal);
         }
     }
 
-    const paginationItems = (page: string, count: number) =>{
-        if( !isNaN(parseInt( page )) ){
-            let pageNo = parseInt( page );
 
-            let isThereApageLeft = (elementesPerPage*pageNo < count)? <><li className="page-item"><a className="page-link" href={"/archive/" + (pageNo+1)}>{pageNo+1}</a></li><li className="page-item"><a className="page-link" href={"/archive/" + (pageNo+1)}>Next</a></li></>: <></>;
-
-            if( pageNo > 1 ){
-                return(
-                    <ul className="pagination">
-                        <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                        <li className="page-item"><a className="page-link" href={"/archive/" + (pageNo-1)}>{pageNo-1}</a></li>
-                        <li className="page-item"><a className="page-link" href={"/archive/" + pageNo}>{pageNo}</a></li>
-                        {isThereApageLeft}
-                    </ul>
-                );
-            }else{
-                return(
-                    <ul className="pagination">
-                        <li className="page-item"><a className="page-link" href={"/archive/" + pageNo}>{pageNo}</a></li>
-                        {isThereApageLeft}
-                    </ul>
+    const columns = [
+        {
+            title: '#',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Jahr',
+            dataIndex: 'year',
+            key: 'year',
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (_: any, obj: any) =>{
+                return (obj.status)? "Freigegeben": "In Bearbeitung"
+            }
+        },
+        {
+            title: 'Aktion',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_: any, obj: any) => {
+                return (
+                    <Space direction='horizontal'>
+                        <Button href={`/archive/details/${obj.year}`}>Ansehen</Button>
+                    </Space>
                 );
             }
-        }
-    }
+        },
+    ]
+
 
     return(
         <div>
             <Layout user={props.InitialState}>
                 <div className="content">
                     <div className="addButtonRow">
-                        
                         <div className="searchBarBox">
-                            <div className="input-group mb-3">
-                                <input value={searchVal} onChange={(event) => {setSearchVal(event.target.value)}} type="text" className="form-control" placeholder="suchen..." aria-label="search" aria-describedby="basic-addon1" />
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text" id="basic-addon1"><button onClick={() => {searchForEntry(searchVal)}} className="searchButton" ><FontAwesomeIcon icon={faBinoculars} className="elementicon" size="xs" fixedWidth/></button></span>
-                                </div>
-                            </div>
+                            <Space.Compact style={{ width: '100%' }}>
+                                <Input placeholder="Suche..." onChange={(event) => {setSearchVal(event.target.value)}}/>
+                                <Button onClick={() => {searchForFile()}}><SearchOutlined /></Button>
+                            </Space.Compact>
                         </div>
                     </div>
-                    <table className="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Jahr</th>
-                                <th scope="col">Aktionen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {props.Data.entries.map((entry: Files) => {
-                                
-                                const currentyear = new Date().getFullYear();
-
-                                if(entry.year != currentyear){
-                                    return(
-                                        <tr key={entry.id}>
-                                            <th scope="row">{entry.id}</th>
-                                            <td>{entry.year}</td>
-                                            <td><Link href={`/archive/details/${entry.year}`}><FontAwesomeIcon icon={faEye}/></Link></td>
-                                        </tr>
-                                    );
-                                }
-                            })}
-                        </tbody>
-                    </table>
-
-                    <div className="paginationFooter">
-                        <nav aria-label="Page navigation users">
-                            {paginationItems(props.Data.pageNo, props.Data.entryCount)}
-                        </nav>
-                    </div>
+                    <Table className="data-table" columns={columns} dataSource={props.Data.entries} />
                 </div>
             </Layout>
         </div>

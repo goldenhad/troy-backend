@@ -1,10 +1,12 @@
+
 export const fileobjs = [{
     text: "Guv",
     links: {
         file: "guv",
         representations: [{
             urlobj: "guv",
-            name: "GUV Tabelle"
+            name: "GUV Tabelle",
+            icon: "table"
         }]
     }
 },
@@ -14,10 +16,12 @@ export const fileobjs = [{
         file: "konzernbilanz",
         representations: [{
             urlobj: "konzernbilanz/aktiva",
-            name: "Konzernbilanz Aktiva"
+            name: "Konzernbilanz Aktiva",
+            icon: "table"
         }, {
             urlobj: "konzernbilanz/passiva",
-            name: "Konzernbilanz Passiva"
+            name: "Konzernbilanz Passiva",
+            icon: "table"
         }]
     }
 },
@@ -28,11 +32,13 @@ export const fileobjs = [{
         representations: [
             {
                 urlobj: "eigenkapitalspiegel/I",
-                name: "Eigenkapitalspiegel Tabelle I"
+                name: "Eigenkapitalspiegel Tabelle I",
+                icon: "table"
             },
             {
                 urlobj: "eigenkapitalspiegel/II",
-                name: "Eigenkapitalspiegel Tabelle II"
+                name: "Eigenkapitalspiegel Tabelle II",
+                icon: "table"
             }
         ]
     }
@@ -43,7 +49,8 @@ export const fileobjs = [{
         file: "kapitalfluss",
         representations: [{
             urlobj: "kapitalfluss",
-            name: "Kapitalfluss Tabelle"
+            name: "Kapitalfluss Tabelle",
+            icon: "table"
         }]
     }
 },
@@ -53,7 +60,8 @@ export const fileobjs = [{
         file: "anlagengitter",
         representations: [{
             urlobj: "anlagengitter",
-            name: "Anlagengitter Tabelle"
+            name: "Anlagengitter Tabelle",
+            icon: "table"
         }]
     }
 },
@@ -63,7 +71,8 @@ export const fileobjs = [{
         file: "rueckstellung",
         representations: [{
             urlobj: "rueckstellung",
-            name: "Rueckstellungs Tabelle"
+            name: "Rueckstellungs Tabelle",
+            icon: "table"
         }]
     }
 },
@@ -73,7 +82,8 @@ export const fileobjs = [{
         file: "verbindlichkeiten",
         representations: [{
             urlobj: "verbindlichkeiten",
-            name: "Verbindlichkeiten Tabelle"
+            name: "Verbindlichkeiten Tabelle",
+            icon: "table"
         }]
     }
 },
@@ -91,31 +101,38 @@ export const fileobjs = [{
         representations: [
             {
                 urlobj: "anhang/umsatzerloes/hausbewirtschaftung",
-                name: "Umsatzerlös Hausbewirtschaftung"
+                name: "Umsatzerlös Hausbewirtschaftung",
+                icon: "table"
             },
             {
                 urlobj: "anhang/umsatzerloes/betreuungstaetigkeit",
-                name: "Umsatzerlös Betreuungstätigkeit"
+                name: "Umsatzerlös Betreuungstätigkeit",
+                icon: "table"
             },
             {
                 urlobj: "anhang/umsatzerloes/lieferungenundleistungen",
-                name: "Umsatzerlös Lieferungen und Leistungen"
+                name: "Umsatzerlös Lieferungen und Leistungen",
+                icon: "table"
             },
             {
                 urlobj: "anhang/sonstige/betrieblicheertraege",
-                name: "Sonstige betriebliche Erträge"
+                name: "Sonstige betriebliche Erträge",
+                icon: "table"
             },
             {
                 urlobj: "anhang/sonstige/betrieblicheaufwendungen",
-                name: "Sonstige betriebliche Aufwendungen"
+                name: "Sonstige betriebliche Aufwendungen",
+                icon: "table"
             },
             {
                 urlobj: "anhang/sonstige/mitarbeiterinnen",
-                name: "Mitarbeiter/-innen"
+                name: "Mitarbeiter/-innen",
+                icon: "table"
             },
             {
                 urlobj: "anhang/sonstige/altersversorgung",
-                name: "Zusätzliche Altersversorgung"
+                name: "Zusätzliche Altersversorgung",
+                icon: "table"
             },
         ]
     }

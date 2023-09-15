@@ -54,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
                     return res.status(200).send({errorcode: -1, message: "OK"});
                 }else{
-                    return res.status(400).send({ errorcode: 99, message: "The request method is forbidden!" });
+                    return res.status(400).send({ errorcode: 98, message: "The request method is forbidden!" });
                 }
             }else{
                 //If the needed data is not provided, send a bad request
