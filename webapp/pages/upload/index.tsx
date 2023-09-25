@@ -1,20 +1,16 @@
 import Layout from "@/components/layout/layout";
 import "./style.scss"
 import { GetServerSideProps } from "next";
-import { faFileUpload, faCircleInfo, faFileExcel, faChartSimple } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert, Button, Card, Modal } from "react-bootstrap";
+import { Card, List, Space, Button, Form, Alert, Modal, Upload } from "antd"
 import { SyntheticEvent, useRef, useState } from "react";
 import Link from "next/link";
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import axios, { AxiosError, AxiosResponse, isAxiosError } from "axios";
-import { rejects } from "assert";
 import { prisma } from '../../db';
 import { Files } from "@prisma/client";
 import { useRouter } from "next/router";
-import Router from "next/dist/server/router";
 import { fileobjs } from "@/helper/uploadRepresentation";
+import { FileExcelOutlined, TableOutlined, UploadOutlined } from '@ant-design/icons';
+import { RcFile } from "antd/es/upload";
 
 //Define a type for the cookie
 type User = {
@@ -30,13 +26,7 @@ interface InitialProps {
 }
 
 type FileObjKey = "guv" | "konzernbilanz" | "eigenkapitalspiegel" | "kapitalfluss" | "anlagengitter" | "rueckstellung" | "verbindlichkeiten"  | "lagebericht" | "anhang";
-enum FileTypes{ "guv", "konzernbilanz", "eigenkapitalspiegel", "kapitalfluss", "anlagengitter", "rueckstellung", "verbindlichkeiten", "lagebericht", "anhang" }; 
-
-
 type ErrorCode = "XMIMETYPE" | "XSIZE" | "XINVALID" | "OK" | "GENERIC";
-
-type FileErrorKey = "code" | "message";
-
 type FileError = {
     "code": ErrorCode,
     "message": string,
@@ -108,16 +98,35 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 };
 
+const keyToName = (key: FileObjKey) => {
+    switch(key){
+        case "guv":
+            return "Gewinn und Verlustrechnung";
+        case "konzernbilanz":
+            return "Konzernbilanz";
+        case "eigenkapitalspiegel":
+            return "Eigenkapitalspiegel";
+        case "kapitalfluss":
+            return "Kapitelflussrechnung";
+        case "anlagengitter":
+            return "Konzernanlagengitter";
+        case "rueckstellung":
+            return "Rückstellungsspiegel";
+        case "verbindlichkeiten":
+            return "Verbindindlichkeitenspiegel";
+        case "lagebericht":
+            return "Datentabelle Lageberericht";
+        case "anhang":
+            return "Datentabelle Anlage";
+        default:
+            return "";   
+    }
+}
 
 
-export default function Upload(props: InitialProps){
+export default function UploadPage(props: InitialProps){
     const [dataPresent, setDataPresent ] = useState(false);
-    //Define a state to handle the popups state
-    const [show, setShow] = useState(false);
-    //Helper functions to handle setState for the popup
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-    //State to handle file
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [files, setFiles] = useState<Fileobj>({
         "guv": undefined,
         "konzernbilanz": undefined,
@@ -148,53 +157,53 @@ export default function Upload(props: InitialProps){
     const year = new Date().getFullYear();
 
 
-    const getFileOptions = (fileobjs: Array<{text: string, links: { file: string, representations: Array<{ urlobj: string, name: string }> }}>) => {
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const getFileOptions = (fileobjs: Array<{text: string, links: { file: string, representations: Array<{ urlobj: string, name: string, icon: string }> }}>) => {
         
         return fileobjs.map((fileobj, idx) => {
                 return(
-                    <Card className="file-card" key={idx}>
-                        <Card.Header className="file-header">{fileobj.text}</Card.Header>
-                        <Card.Body>
-                            <div className="data-content">
-                                <ul className="option-list">
-                                    <li>
-                                        <Link href={`/data/${year}/${fileobj.links.file}.xlsx`}>
-                                            <div className="file-options">
-                                                <FontAwesomeIcon className="option-icon" icon={faFileExcel} />
-                                                <div className="option-name">Datei</div>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    { 
-                                        fileobj.links.representations.map((repobj, idy) => {
-                                            return(
-                                                <li key={idy}>
-                                                    <Link href={`/presentation/${repobj.urlobj}`} target="_blank">
-                                                        <div className="file-options">
-                                                            <FontAwesomeIcon className="option-icon" icon={faChartSimple} />
-                                                            <div className="option-name">{repobj.name}</div>
-                                                        </div>
-                                                    </Link>
-                                                </li>
-                                            );
-                                        })
-                                    }
-                                </ul>
-                            </div>
-                        </Card.Body>
+
+                    <Card
+                        key={idx}
+                        title={fileobj.text}
+                        style={{
+                            width: "100%"
+                        }}
+                        >
+                        <List
+                            itemLayout="horizontal"
+                            dataSource={[{urlobj: "guv", name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
+                            renderItem={(item: {urlobj: string, name: string, icon: any}, index: number) => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    avatar={(item.icon == "excel")? <FileExcelOutlined />: <TableOutlined />}
+                                    title={<Link href={`/presentation/${item.urlobj}`} target="_blank">{item.name}</Link>}
+                                    description=""
+                                />
+                            </List.Item>
+                            )}
+                        />
                     </Card>
                 );
         })
     }
 
     const getPresentation = () => {
-        
-
         if(props.currentData){
-
             return(
                 <div className="data-list">
-                    {getFileOptions(fileobjs)}
+                    <Space size="large" direction="vertical" style={{
+                            width: "100%"
+                    }}>
+                        {getFileOptions(fileobjs)}
+                    </Space>
                 </div>
             );
         }else{
@@ -206,13 +215,13 @@ export default function Upload(props: InitialProps){
         }
     }
 
-    const uploadToClient = (event: SyntheticEvent & {target: {files: FileList | null}}, file: FileObjKey) => {
-        if (event.target.files && event.target.files[0]) {
-          const i = event.target.files[0];
+    const uploadToClient = (file: RcFile, filename: FileObjKey) => {
+        if (file) {
+          const i = file;
     
           if(i){
             let currobj = files;
-            currobj[file] = i;
+            currobj[filename] = i;
 
             setFiles(currobj);
 
@@ -232,32 +241,6 @@ export default function Upload(props: InitialProps){
           }
         }
     };
-
-    const keyToName = (key: FileObjKey) => {
-        switch(key){
-            case "guv":
-                return "Gewinn und Verlustrechnung";
-            case "konzernbilanz":
-                return "Konzernbilanz";
-            case "eigenkapitalspiegel":
-                return "Eigenkapitalspiegel";
-            case "kapitalfluss":
-                return "Kapitelflussrechnung";
-            case "anlagengitter":
-                return "Konzernanlagengitter";
-            case "rueckstellung":
-                return "Rückstellungsspiegel";
-            case "verbindlichkeiten":
-                return "Verbindindlichkeitenspiegel";
-            case "lagebericht":
-                return "Datentabelle Lageberericht";
-            case "anhang":
-                return "Datentabelle Anlage";
-            default:
-                return "";   
-        }
-    }
-    
 
     const uploadFileToServer = async (event: SyntheticEvent) => {
         if(files){
@@ -346,7 +329,7 @@ export default function Upload(props: InitialProps){
                             currobj[key as FileObjKey] = undefined;
                         });
                         setFiles(currobj);
-                        handleClose();
+                        handleCancel();
 
                         router.reload()
                     }
@@ -375,20 +358,12 @@ export default function Upload(props: InitialProps){
         }
     }
 
-    const renderTooltip = (props: any) => (
-        <Tooltip className="upload-hover-hint" {...props}>
-          <div className="upload-hint">
-            Die Daten sind nach dem Upload durch die Anwendung nicht mehr editierbar. Ein Bearbeiten der Daten ist nur durch erneuten Upload möglich!
-         </div>
-        </Tooltip>
-    );
-
     const getErrors = () => {
         return Object.keys(errorObj).map((key) => {
             let file: FileError | undefined = errorObj[key as FileObjKey];
 
             if(file){
-                return <Alert key={key} variant="danger">{file.message}</Alert>
+                return <Alert key={key} type="error" message={file.message}/>
             }else{
                 return <></>
             }
@@ -402,18 +377,141 @@ export default function Upload(props: InitialProps){
             <Layout user={props.InitialState}>
                 <div className="content">
                     <div className="action-row">
-                        <Button className="upload-button" variant="secondary" onClick={handleShow}>
-                            <FontAwesomeIcon icon={faFileUpload} />
-                            <div className="upload-button-text">Upload</div>
+                        <Button type="primary" onClick={showModal}>
+                            <UploadOutlined />
+                            Upload
                         </Button>
                     </div>
 
                     <div className="data-presentation">
-                        <h2>Daten Geschäftsbericht {year}</h2>
+                        <h2 className="page-headline">Daten Geschäftsbericht {year}</h2>
                         {getPresentation()}
                     </div>
 
-                    <Modal className="upload-modal" show={show} onHide={handleClose} size="lg">
+                    <Modal
+                        title="Dateien hochladen"
+                        open={isModalOpen}
+                        onCancel={handleCancel}
+                        footer = {[]}
+                    >
+                        <Form 
+                            layout='horizontal'
+                        >
+                            <Space direction="vertical">
+                                <Form.Item
+                                    label="Konzern GuV"
+                                    name="guv" 
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "guv")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Konzernbilanz"
+                                    name="konzernbilanz" 
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "konzernbilanz")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Eigenkapitalspiegel"
+                                    name="eigenkapitalspiegel" 
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "eigenkapitalspiegel")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Kapitalfluss"
+                                    name="kapitalfluss" 
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "kapitalfluss")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Anlagengitter"
+                                    name="anlagengitter" 
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "anlagengitter")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Rueckstellung"
+                                    name="rueckstellung" 
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "rueckstellung")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Verbindlichkeiten"
+                                    name="verbindlichkeiten" 
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "verbindlichkeiten")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Lagebericht"
+                                    name="lagebericht" 
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "lagebericht")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Anhang"
+                                    name="anhang"
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "anhang")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <div className="upload-errors">
+                                    {(errorVisible)? getErrors(): <></>}
+                                </div>
+                            </Space>
+
+                            <div className="upload-hint">
+                                Die Daten sind nach dem Upload durch die Anwendung nicht mehr editierbar. Ein Bearbeiten der Daten ist nur durch erneuten Upload möglich!
+                            </div>
+
+
+                            <Form.Item className='modal-buttom-row'>
+                                <Space direction='horizontal'>
+                                    <Button key="close" onClick={handleCancel}>
+                                        Abbrechen
+                                    </Button>
+                                    <Button onClick={uploadFileToServer}  key="submit" type="primary">
+                                        Hochladen
+                                    </Button>
+                                </Space>
+                            </Form.Item>
+                        </Form>
+                    </Modal>
+
+                    {/* <Modal className="upload-modal" show={show} onHide={handleClose} size="lg">
                         <Modal.Header closeButton>
                             <Modal.Title>Upload</Modal.Title>
                         </Modal.Header>
@@ -484,7 +582,7 @@ export default function Upload(props: InitialProps){
                             </div>
 
                             <div className="upload-section">
-                                <Button variant="primary" onClick={uploadFileToServer}>Upload</Button>
+                                <Button onClick={uploadFileToServer}>Upload</Button>
                                 <OverlayTrigger
                                     placement="right"
                                     delay={{ show: 250, hide: 400 }}
@@ -501,7 +599,7 @@ export default function Upload(props: InitialProps){
                                 {(errorVisible)? getErrors(): <></>}
                             </div>
                         </Modal.Body>
-                    </Modal>
+                    </Modal> */}
                 </div>
             </Layout>
         </div>

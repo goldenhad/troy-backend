@@ -3,7 +3,7 @@ import "./style.scss"
 import axios from "axios";
 import router from "next/router";
 import { GetServerSideProps } from "next";
-import { Alert } from "react-bootstrap";
+import { Alert, Button, Checkbox, Form, Input } from 'antd';
 import { useState } from "react";
 
 
@@ -26,17 +26,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 export default function Login(){
     const [ loginFailed, setLoginFailed ] = useState(false);
 
-    const login = async (event: React.SyntheticEvent) => {
-        event.preventDefault();
-    
-        const target = event.target as typeof event.target & {
-            username: { value: string };
-            password: { value: string };
-        };
-    
+    const onFinish = (values: any) => {
         axios.post('/api/login', {
-            username: target.username.value,
-            password: target.password.value
+            username: values.username,
+            password: values.password
         })
           .then(function (response) {
             setLoginFailed(false);
@@ -52,9 +45,91 @@ export default function Login(){
             console.log(error);
             setLoginFailed(true);
         });
-    }
+    };
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
+        setLoginFailed(true);
+    };
 
     return(
+        <main>
+            <div style={{
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center"
+            }}>
+                <div>
+                    <Image src={"/logo_wohnbau.svg"} alt="Logo" width={244} height={244}/>
+                </div>
+                <Form
+                    name="basic"
+                    labelCol={{
+                        span: 8,
+                    }}
+                    wrapperCol={{
+                        span: 24,
+                    }}
+                    style={{
+                        width: 600,
+                    }}
+                    initialValues={{
+                        remember: true,
+                    }}
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                    onChange={() => {setLoginFailed(false)}}
+                    autoComplete="off"
+                    layout="vertical"
+                >
+                    <Form.Item
+                    label="Benutzer"
+                    name="username"
+                    rules={[
+                        {
+                        required: true,
+                        message: 'Bitte geben Sie einen Benutzernamen an!',
+                        },
+                    ]}
+                    >
+                    <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                    label="Passwort"
+                    name="password"
+                    rules={[
+                        {
+                        required: true,
+                        message: 'Bitte geben Sie ein Passwort an!',
+                        },
+                    ]}
+                    >
+                    <Input.Password />
+                    </Form.Item>
+
+                    <Alert style={{marginBottom: 20, display: (loginFailed)? "block": "none"}} message="Beim Anmelden ist etwas schief gelaufen bitte versuchen Sie es noch einmal!" type="error" />
+
+                    <Form.Item
+                        wrapperCol={{
+                            offset: 0,
+                            span: 24,
+                        }}
+                        style={{
+                            textAlign: "center"
+                        }}
+                    >
+                        <Button type="primary" htmlType="submit">
+                            Anmelden
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </div>
+        </main>
+    );
+
+    /*return(
         <div className="login-page">
             <div className="login-content">
                 <Image src="logo_wohnbau.svg" width={250} height={100} alt="Logo"/>
@@ -83,5 +158,5 @@ export default function Login(){
                 </div>
             </div>
         </div>
-    );
+    );*/
 }

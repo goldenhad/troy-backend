@@ -8,46 +8,36 @@
     height: 90vh;
 }
 
+.hideError{
+    display: none;
+}
+
+
+
+.data-table{
+    width: 100%;
+}
+
+.modal-buttom-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.delete-modal-buttom-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.information-text{
+    margin-bottom: 20px;
+}
+
 .addButtonRow{
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     margin-bottom: 25px;
-}
-
-.hideError{
-    display: none;
-}
-
-.elementicon{
-    height: 15px; 
-}
-
-.paginationFooter {
-    display: flex;
-    flex-direction: column;
-    margin-top: auto;
-}
-
-.searchBarBox{
-    width: 20%;
-}
-
-.searchButton {
-    background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
-}
-
-.inputPrepend{
-    width: 30%;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
 }

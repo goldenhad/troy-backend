@@ -1,6 +1,5 @@
 import type { AppProps } from 'next/app'
 import './globals.css'
-import 'bootstrap/dist/css/bootstrap.css'
 import Head from 'next/head';
 import { Roboto } from 'next/font/google';
 
