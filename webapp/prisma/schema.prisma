@@ -18,16 +18,21 @@ model User {
   salt      String
   roleid    Int?
   role      Role?      @relation(fields: [roleid], references: [id])
+  Files     Files[]
 }
 
 model Role {
   id   Int    @id @default(autoincrement())
   name String
+  capabilities String @default("{}")
   User User[]
 }
 
 model Files {
   id   Int    @id @default(autoincrement())
   year Int
-  status Boolean
+  status String
+  responsibleId Int
+  responsible User @relation(fields: [responsibleId], references: [id])
+  commentary String @default("")
 }

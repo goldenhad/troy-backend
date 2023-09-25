@@ -10,6 +10,7 @@ import {
     StopOutlined,
     SearchOutlined
 } from '@ant-design/icons';
+import { ParsedRole } from '@/helper/user';
 
 
 
@@ -27,13 +28,14 @@ type User = {
     id: number,
     username: string,
     email: string,
-    role: Role,
+    role: ParsedRole,
 }
 
 //Redefine the product type for the product query
 type Role = {
     id: number,
-    name: string
+    name: string,
+    capabilities: string,
 }
   
 interface InitialProps {
