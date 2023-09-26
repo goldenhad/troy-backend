@@ -6,7 +6,7 @@ import { SyntheticEvent, useRef, useState } from "react";
 import Link from "next/link";
 import axios, { AxiosError, AxiosResponse, isAxiosError } from "axios";
 import { prisma } from '../../db';
-import { Files, Role } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import { fileobjs } from "@/helper/uploadRepresentation";
 import { FileExcelOutlined, TableOutlined, UploadOutlined } from '@ant-design/icons';
@@ -15,14 +15,22 @@ import { ParsedRole, UserRights } from "@/helper/user";
 const { Paragraph } = Typography;
 
 //Define a type for the cookie
-type User = {
+type LocalUser = {
     username: string;
     email: string;
     role: ParsedRole;
 };
+
+type Files = {
+    id: number;
+    year: number;
+    status: string;
+    commentary: string;
+    responsible: User;
+}
   
 interface InitialProps {
-    InitialState: User;
+    InitialState: LocalUser;
     Files: Array<Files> | undefined;
     currentData: Files;
 }
@@ -74,12 +82,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         return { props: { InitialState: {} } };
     } else {
 
-        let userobj: User = JSON.parse(Buffer.from(cookies.login, "base64").toString("ascii"));
+        let userobj: LocalUser = JSON.parse(Buffer.from(cookies.login, "base64").toString("ascii"));
 
         if(userobj.role.capabilities.canUnfreeze || userobj.role.capabilities.canUploadFiles){
             let currentData = null
             const year = new Date().getFullYear();
-            let files: Array<Files> | null = await prisma.files.findMany();
+            let files: Array<Files> | null = await prisma.files.findMany({include: {responsible: true}});
             if(!files){
                 files = null;
             }else{
@@ -89,7 +97,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             }
 
             if(!currentData){
-                currentData = {id: -1, year: -1, status: "undefined"};
+                currentData = {id: -1, year: -1, status: "undefined", responsible: {id: -1, name: "", email: ""}};
             }
 
             return {
@@ -332,6 +340,7 @@ export default function UploadPage(props: InitialProps){
 
                 const year = new Date().getFullYear();
                 const fileres = await axios.post(`/api/files`, {year: year, status: "erstellt"})
+                const mailret = await axios.post(`/api/message`, { type: "erstellt", reponsiblemail: "maximilian-krebs@online.de", reponsiblename: props.currentData.responsible.username })
 
                 errorProm.then(() => {
                     if(errArr.length > 0){
@@ -384,12 +393,14 @@ export default function UploadPage(props: InitialProps){
 
     const freezeFiles = async () => {
         const fileres = await axios.put(`/api/files`, {id: props.currentData.id, status: "freigegeben"});
+        const mailret = await axios.post(`/api/message`, { type: "freeze", reponsiblemail: props.currentData.responsible.email, reponsiblename: props.currentData.responsible.username })
         handleCancel("freeze");
         router.reload();
     }
 
     const requestRevision = async (values: any) => {
         const fileres = await axios.put(`/api/files`, {id: props.currentData.id, status: "revision", commentary: values.commentary});
+        const mailret = await axios.post(`/api/message`, { type: "revision", reponsiblemail: props.currentData.responsible.email, reponsiblename: props.currentData.responsible.username })
         handleCancel("revision");
         router.reload();
     }
