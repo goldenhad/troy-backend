@@ -42,15 +42,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         return { props: { InitialState: {} } };
     } else {
 
-        const year = new Date().getFullYear();
-        const path = `./public/data/${year}/guv.xlsx`;
+        let qyear = -1;
+        if(ctx.query.year){
+            qyear = parseInt(ctx.query.year as string);
+        }
+
+        const path = `./public/data/${qyear}/guv.xlsx`;
+
+
+        
+
         let guvdata: Array<any> = [1, 2, 3];
         if(fs.existsSync(path)){
 
             const buffer = fs.readFileSync(path);
             const workbook = read(buffer);
 
-            console.log(workbook.Sheets['GuV Deckblatt']["E14"]);
             const cols: Array<String> = ["A", "B", "C", "D", "E", "F"];
             const lowerLimit = 9;
             const higherLimit = 63;
@@ -103,16 +110,23 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             })
 
             guvdata = rows;
+
+            return {
+                props: {
+                    InitialState: JSON.parse(
+                    Buffer.from(cookies.login, "base64").toString("ascii")
+                    ),
+                    data: guvdata,
+                },
+            };
+        }else{
+            res.writeHead(302, { Location: "/" });
+            res.end();
+
+            return { props: { InitialState: {} } };
         }
 
-        return {
-            props: {
-                InitialState: JSON.parse(
-                Buffer.from(cookies.login, "base64").toString("ascii")
-                ),
-                data: guvdata,
-            },
-        };
+        
     }
 };
 

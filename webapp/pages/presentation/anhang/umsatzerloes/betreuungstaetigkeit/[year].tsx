@@ -37,8 +37,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         return { props: { InitialState: {} } };
     } else {
+        let qyear = -1;
+        if(ctx.query.year){
+            qyear = parseInt(ctx.query.year as string);
+        }
 
-        const year = new Date().getFullYear();
+        const year = qyear;
         const path = `./public/data/${year}/anhang.xlsx`;
         let guvdata: Array<any> = [1, 2, 3];
         if(fs.existsSync(path)){
@@ -49,8 +53,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
             const cols: Array<String> = alphabet.slice(0, 5).split("");
-            const lowerLimit = 2;
-            const higherLimit = 8;
+            const lowerLimit = 23;
+            const higherLimit = 28;
 
             let rows: Array<RowObject> = [];
 
@@ -67,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 }
 
                 cols.forEach((col) => {
-                    let val = workbook.Sheets['Mitarbeiter'][col.concat(r.toString())];
+                    let val = workbook.Sheets['GuV U-Erlöse'][col.concat(r.toString())];
                     if(val){
                         rowobj.columns.push(val.v);
                     }else{
@@ -78,28 +82,34 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 rows.push(rowobj);
             }
 
-            const underlinedrows = [rows.length-4, rows.length-3, rows.length-2, rows.length-1];
-            const boldrows = [rows.length-3, rows.length-1]
+            const underlinedrows = [27, 28];
+            const boldrows = [28]
 
             boldrows.forEach((row) => {
-                rows[row].styling.bold = true;
+                rows[row-lowerLimit].styling.bold = true;
             })
 
             underlinedrows.forEach((row) => {
-                rows[row].styling.underlined = true;
+                rows[row-lowerLimit].styling.underlined = true;
             })
 
             guvdata = rows;
-        }
+        
 
-        return {
-            props: {
-                InitialState: JSON.parse(
-                Buffer.from(cookies.login, "base64").toString("ascii")
-                ),
-                data: guvdata,
-            },
-        };
+            return {
+                props: {
+                    InitialState: JSON.parse(
+                    Buffer.from(cookies.login, "base64").toString("ascii")
+                    ),
+                    data: guvdata,
+                },
+            };
+        }else{
+            res.writeHead(302, { Location: "/" });
+            res.end();
+
+            return { props: { InitialState: {} } };
+        }
     }
 };
 
@@ -108,26 +118,25 @@ export default function Verbindlichkeiten(props: InitialProps){
 
     const getTableContent = () => {
         
+        console.log(props.data)
 
         return props.data.map((rowobj, idx) => {
             let row = rowobj.columns;
             let allempty = row.every((v: any) => v === null );
 
-            if(idx == props.data.length - 3){
-                row[0] = "Gesamtbetrag";
+            if(idx == props.data.length - 1){
+                row[1] = "Gesamtbetrag";
             }
             
-            if(!allempty){
-                return (
-                    <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
-                        <td className="cell-title">{row[0]}</td>
-                        <td className="cell-spacer" ><div className="spacer-content"></div></td>
-                        <td className="cell-val">{row[1]}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-val">{row[2]}</td>
-                    </tr>
-                );
-            }
+            return (
+                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
+                    <td className="cell-title">{row[1]}</td>
+                    <td className="cell-spacer" ><div className="spacer-content"></div></td>
+                    <td className="cell-val">{getNumber(row[3])}</td>
+                    <td className="cell-spacer"><div className="spacer-content"></div></td>
+                    <td className="cell-val">{getNumber(row[4])}</td>
+                </tr>
+            );
         });
 
 
@@ -138,14 +147,21 @@ export default function Verbindlichkeiten(props: InitialProps){
             <table>
                 <thead>
                     <tr>
-                        <th className="cell-title">Anzahl Mitarbeiter/-innen</th>
+                        <th className="cell-title">Umsatzerlös aus Betreuungstätigkeit</th>
                         <th className="cell-spacer"></th>
-                        <th className="cell-headline">Vollzeit</th>
+                        <th className="cell-headline">{currentYear}</th>
                         <th className="cell-spacer"></th>
-                        <th className="cell-headline">Teilzeit</th>
+                        <th className="cell-headline">{currentYear-1}</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <tr className="euro-row">
+                        <td></td>
+                        <td className="cell-spacer"></td>
+                        <td>T€</td>
+                        <td className="cell-spacer"></td>
+                        <td>T€</td>
+                    </tr>
                     {getTableContent()}
                 </tbody>
             </table>

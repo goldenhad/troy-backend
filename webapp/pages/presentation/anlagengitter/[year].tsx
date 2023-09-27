@@ -34,8 +34,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         return { props: { InitialState: {} } };
     } else {
+        let qyear = -1;
+        if(ctx.query.year){
+            qyear = parseInt(ctx.query.year as string);
+        }
 
-        const year = new Date().getFullYear();
+        const year = qyear;
         const path = `./public/data/${year}/anhang.xlsx`;
         let guvdata: Array<any> = [1, 2, 3];
         if(fs.existsSync(path)){
@@ -84,16 +88,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             })
 
             guvdata = rows;
-        }
+        
 
-        return {
-            props: {
-                InitialState: JSON.parse(
-                Buffer.from(cookies.login, "base64").toString("ascii")
-                ),
-                data: guvdata,
-            },
-        };
+            return {
+                props: {
+                    InitialState: JSON.parse(
+                    Buffer.from(cookies.login, "base64").toString("ascii")
+                    ),
+                    data: guvdata,
+                },
+            };
+        }else{
+            res.writeHead(302, { Location: "/" });
+            res.end();
+
+            return { props: { InitialState: {} } };
+        }
     }
 };
 

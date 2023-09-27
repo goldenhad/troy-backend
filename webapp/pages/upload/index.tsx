@@ -211,12 +211,12 @@ export default function UploadPage(props: InitialProps){
                         >
                         <List
                             itemLayout="horizontal"
-                            dataSource={[{urlobj: "guv", name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
+                            dataSource={[{urlobj: `/data/${year}/${fileobj.links.file}`, name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
                             renderItem={(item: {urlobj: string, name: string, icon: any}, index: number) => (
                             <List.Item>
                                 <List.Item.Meta
                                     avatar={(item.icon == "excel")? <FileExcelOutlined />: <TableOutlined />}
-                                    title={<Link href={`/presentation/${item.urlobj}`} target="_blank">{item.name}</Link>}
+                                    title={(item.name == "Datei")? <Link href={`${item.urlobj}`} target="_blank">{item.name}</Link>: <Link href={`${item.urlobj}/${year}`} target="_blank">{item.name}</Link>}
                                     description=""
                                 />
                             </List.Item>
