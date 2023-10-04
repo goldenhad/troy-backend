@@ -61,7 +61,7 @@ export default function Login(){
                 alignItems: "center"
             }}>
                 <div>
-                    <Image src={"/logo_wohnbau.svg"} alt="Logo" width={244} height={244}/>
+                    <img src={"/logo_wohnbau.svg"} alt="Logo" width={244} height={244}/>
                 </div>
                 <Form
                     name="basic"

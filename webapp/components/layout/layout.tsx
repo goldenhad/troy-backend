@@ -126,7 +126,7 @@ export default function SidebarLayout({children, user}: ComponentProps){
                 }}
             >
                 <div className="sidebar-logo">
-                    <Image src="/logo_klein.png" width={50} height={50} alt="Logo" />
+                    <img src="/logo_klein.png" width={50} height={50} alt="Logo" />
                 </div>
                 <Menu
                     theme="dark"
