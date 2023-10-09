@@ -31,5 +31,5 @@ services:
             - wohnbaunetwork
 
 networks:
-  mailbuddynetwork:
+  wohnbaunetwork:
     name: wohnbaunetwork

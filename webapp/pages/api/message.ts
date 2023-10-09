@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     }else if(data.type == "revision"){
                         try {
                             let text = `Hallo @${data.reponsiblename},\neine Überprüfung des Qualitätsmanagements hat ergeben, dass ihre hochgeladenen Daten noch Fehler aufweisen und nochmal überprüft werden müssen.\nSobald Sie die Dateien bearbeitet haben können Sie diese erneut hochladen.`;
-                            let html = `Hallo<b>@${data.reponsiblename},<br>eine Überprüfung des Qualitätsmanagements hat ergeben, dass ihre hochgeladenen Daten noch Fehler aufweisen und nochmal überprüft werden müssen.<br>Sobald Sie die Dateien bearbeitet haben können Sie diese erneut hochladen.`;
+                            let html = `Hallo<b>@${data.reponsiblename}</b>,<br>eine Überprüfung des Qualitätsmanagements hat ergeben, dass ihre hochgeladenen Daten noch Fehler aufweisen und nochmal überprüft werden müssen.<br>Sobald Sie die Dateien bearbeitet haben können Sie diese erneut hochladen.`;
                             await sendMail(data.reponsiblemail, "Überprüfung erforderlich 🛑", text, html);
     
                         }catch(e){
