@@ -1,7 +1,7 @@
 import Layout from "@/components/layout/layout";
 import "./style.scss"
 import { GetServerSideProps } from "next";
-import { Card, List, Space, Button, Form, Alert, Modal, Upload, Tag, Input, Typography } from "antd"
+import { Card, List, Space, Button, Form, Alert, Modal, Upload, Tag, Input, Typography, Collapse } from "antd"
 import { SyntheticEvent, useRef, useState } from "react";
 import Link from "next/link";
 import axios, { AxiosError, AxiosResponse, isAxiosError } from "axios";
@@ -131,7 +131,7 @@ export default function UploadPage(props: InitialProps){
     const getFileOptions = (fileobjs: Array<{text: string, links: { file: string, representations: Array<{ urlobj: string, name: string, icon: string }> }}>) => {
         
         return fileobjs.map((fileobj, idx) => {
-                return(
+                /* return(
 
                     <Card
                         key={idx}
@@ -154,6 +154,30 @@ export default function UploadPage(props: InitialProps){
                             )}
                         />
                     </Card>
+                ); */
+                return (
+                    <Collapse
+                        size="large"
+                        items={[
+                            {
+                            key: idx,
+                            label: fileobj.text,
+                            children: <List
+                                itemLayout="horizontal"
+                                dataSource={[{urlobj: `/data/${year}/${fileobj.links.file}`, name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
+                                renderItem={(item: {urlobj: string, name: string, icon: any}, index: number) => (
+                                <List.Item>
+                                    <List.Item.Meta
+                                        avatar={(item.icon == "excel")? <FileExcelOutlined />: <TableOutlined />}
+                                        title={(item.name == "Datei")? <Link href={`${item.urlobj}`} target="_blank">{item.name}</Link>: <Link href={`${item.urlobj}/${year}`} target="_blank">{item.name}</Link>}
+                                        description=""
+                                    />
+                                </List.Item>
+                            )}
+                        />,
+                            },
+                        ]}
+                        />
                 );
         })
     }
