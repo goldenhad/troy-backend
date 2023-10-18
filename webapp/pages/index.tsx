@@ -1,11 +1,13 @@
 import SidebarLayout from "@/components/layout/layout";
+import { ParsedRole } from "@/helper/user";
+import { Role } from "@prisma/client";
 import { GetServerSideProps } from "next";
 
 //Define a type for the cookie
 type User = {
     username: string;
     email: string;
-    roleid: number;
+    role: ParsedRole;
   };
   
   interface InitialProps {

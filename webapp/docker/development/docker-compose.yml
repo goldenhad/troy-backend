@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+    wohnbau-database:
+        image: mariadb
+        container_name: wohnbau-database
+        restart: always
+        environment:
+            MARIADB_DATABASE: Space
+            MARIADB_USER: ${DBUSER}
+            MARIADB_PASSWORD: ${DBPASSWORD}
+            MARIADB_RANDOM_ROOT_PASSWORD: '1'
+        ports:
+            - 3306:3306
+        volumes:
+            - ${DBPATH}:/var/lib/mysql
+        networks:
+            - wohnbaunetwork
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - wohnbau-database
+        environment:
+            PMA_HOST: wohnbau-database
+            PMA_PORT: 3306
+            PMA_ARBITRARY: 1
+        restart: always
+        ports:
+            - 8081:80
+        networks:
+            - wohnbaunetwork
+
+networks:
+  wohnbaunetwork:
+    name: wohnbaunetwork

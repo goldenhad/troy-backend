@@ -27,7 +27,9 @@
     "eslint-config-next": "13.4.12",
     "file-type": "^18.5.0",
     "formidable": "^3.5.0",
-    "next": "13.4.12",
+    "next": "latest",
+    "nodemailer": "^6.9.5",
+    "prisma": "^5.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "5.1.6",
@@ -37,7 +39,6 @@
     "@types/bcrypt": "^5.0.0",
     "@types/cookies": "^0.7.7",
     "@types/formidable": "^3.4.1",
-    "prisma": "^5.1.1",
     "sass": "^1.64.2"
   }
 }

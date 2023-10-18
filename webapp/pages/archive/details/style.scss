@@ -28,6 +28,7 @@
 }
 
 .data-presentation {
+    width: 100%;
     >.no-data-notice{
         font-size: 20px;
 
@@ -89,86 +90,32 @@
     }
 }
 
-.upload-section{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    margin-bottom: 20px;
-}
-
-.upload-hint-trigger{
-    margin-left: 20px;
-    color: #bfbfbf;
+.page-headline{
+    font-weight: bold;
 }
 
 .upload-hint{
-    text-align: center;
+    text-align: justify;
 }
 
-.upload-error{
-    color: red;
+a {
+    text-decoration: unset;
 }
 
-.upload-hint-trigger:hover{
-    cursor: pointer;
+.ant-form-item-label{
+    width: 150px;
+    text-align: left;
 }
 
-.filelist{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 30px;
-}
-
-.fileitem {
+.modal-buttom-row{
     display: flex;
     flex-direction: row;
-    align-items: center;
-
-    >.filename {
-        width: 40%;
-        font-weight: bold;
-    }
-
-    margin-bottom: 20px;
-}
-
-.data-list {
+    justify-content: center;
     margin-top: 20px;
 }
 
-.data-content{
+.data-headline{
     display: flex;
     flex-direction: row;
-}
-
-.file-card{
-    margin-bottom: 20px;
-}
-
-.file-header{
-    font-weight: 600;
-}
-
-.option-list{
-    list-style: none;
-}
-
-.file-options{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-size: 18px;
-
-    color: #308efe;
-
-    &:hover {
-        color: #1A84B1;
-        cursor: pointer;
-    }
-}
-
-.option-icon{
-    margin-right: 10px;
+    margin-bottom: 50px;
 }

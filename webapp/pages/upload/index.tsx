@@ -1,28 +1,38 @@
 import Layout from "@/components/layout/layout";
 import "./style.scss"
 import { GetServerSideProps } from "next";
-import { Card, List, Space, Button, Form, Alert, Modal, Upload } from "antd"
+import { Card, List, Space, Button, Form, Alert, Modal, Upload, Tag, Input, Typography, Collapse } from "antd"
 import { SyntheticEvent, useRef, useState } from "react";
 import Link from "next/link";
 import axios, { AxiosError, AxiosResponse, isAxiosError } from "axios";
 import { prisma } from '../../db';
-import { Files } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import { fileobjs } from "@/helper/uploadRepresentation";
 import { FileExcelOutlined, TableOutlined, UploadOutlined } from '@ant-design/icons';
 import { RcFile } from "antd/es/upload";
+import { ParsedRole, UserRights } from "@/helper/user";
+const { Paragraph } = Typography;
 
 //Define a type for the cookie
-type User = {
+type LocalUser = {
     username: string;
     email: string;
-    roleid: number;
+    role: ParsedRole;
 };
+
+type Files = {
+    id: number;
+    year: number;
+    status: string;
+    commentary: string;
+    responsible: User;
+}
   
 interface InitialProps {
-    InitialState: User;
+    InitialState: LocalUser;
     Files: Array<Files> | undefined;
-    currentData: boolean;
+    currentData: Files;
 }
 
 type FileObjKey = "guv" | "konzernbilanz" | "eigenkapitalspiegel" | "kapitalfluss" | "anlagengitter" | "rueckstellung" | "verbindlichkeiten"  | "lagebericht" | "anhang";
@@ -71,30 +81,38 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         return { props: { InitialState: {} } };
     } else {
-        let currentData = null
-        const year = new Date().getFullYear();
-        let files: Array<Files> | null = await prisma.files.findMany();
-        if(!files){
-            files = null;
+
+        let userobj: LocalUser = JSON.parse(Buffer.from(cookies.login, "base64").toString("ascii"));
+
+        if(userobj.role.capabilities.canUnfreeze || userobj.role.capabilities.canUploadFiles){
+            let currentData = null
+            const year = new Date().getFullYear();
+            let files: Array<Files> | null = await prisma.files.findMany({include: {responsible: true}});
+            if(!files){
+                files = null;
+            }else{
+                currentData = files.find((fileobj) => {
+                    return fileobj.year == year;
+                })
+            }
+
+            if(!currentData){
+                currentData = {id: -1, year: -1, status: "undefined", responsible: {id: -1, name: "", email: ""}};
+            }
+
+            return {
+                props: {
+                    InitialState: userobj,
+                    Files: files,
+                    currentData: currentData,
+                },
+            };
         }else{
-            currentData = files.find((fileobj) => {
-                return fileobj.year == year;
-            })
-        }
+            res.writeHead(302, { Location: "/" });
+            res.end();
 
-        if(!currentData){
-            currentData = null;
+            return { props: { InitialState: {} } };
         }
-
-        return {
-        props: {
-            InitialState: JSON.parse(
-            Buffer.from(cookies.login, "base64").toString("ascii")
-            ),
-            Files: files,
-            currentData: currentData,
-        },
-        };
     }
 };
 
@@ -152,23 +170,37 @@ export default function UploadPage(props: InitialProps){
         "anhang": undefined,
         "generic": undefined,
     });
-    
     const router = useRouter();
     const year = new Date().getFullYear();
 
+    const [isFreezeOpen, setIsFreezeOpen] = useState(false);
+    const [isRevisionOpen, setIsRevisionOpen] = useState(false);    
 
-    const showModal = () => {
-        setIsModalOpen(true);
+
+    const showModal = (modal: "upload" | "freeze" | "revision") => {
+        if(modal == "upload"){
+            setIsModalOpen(true);
+        }else if(modal == "freeze"){
+            setIsFreezeOpen(true);
+        }else{
+            setIsRevisionOpen(true);
+        }
     };
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
+    const handleCancel = (modal: "upload" | "freeze" | "revision") => {
+        if(modal == "upload"){
+            setIsModalOpen(false);
+        }else if(modal == "freeze"){
+            setIsFreezeOpen(false);
+        }else{
+            setIsRevisionOpen(false);
+        }
     };
 
     const getFileOptions = (fileobjs: Array<{text: string, links: { file: string, representations: Array<{ urlobj: string, name: string, icon: string }> }}>) => {
         
         return fileobjs.map((fileobj, idx) => {
-                return(
+                /* return(
 
                     <Card
                         key={idx}
@@ -179,24 +211,48 @@ export default function UploadPage(props: InitialProps){
                         >
                         <List
                             itemLayout="horizontal"
-                            dataSource={[{urlobj: "guv", name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
+                            dataSource={[{urlobj: `/data/${year}/${fileobj.links.file}`, name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
                             renderItem={(item: {urlobj: string, name: string, icon: any}, index: number) => (
                             <List.Item>
                                 <List.Item.Meta
                                     avatar={(item.icon == "excel")? <FileExcelOutlined />: <TableOutlined />}
-                                    title={<Link href={`/presentation/${item.urlobj}`} target="_blank">{item.name}</Link>}
+                                    title={(item.name == "Datei")? <Link href={`${item.urlobj}`} target="_blank">{item.name}</Link>: <Link href={`${item.urlobj}/${year}`} target="_blank">{item.name}</Link>}
                                     description=""
                                 />
                             </List.Item>
                             )}
                         />
                     </Card>
+                ); */
+                return (
+                    <Collapse
+                        size="large"
+                        items={[
+                            {
+                            key: idx,
+                            label: fileobj.text,
+                            children: <List
+                                itemLayout="horizontal"
+                                dataSource={[{urlobj: `/data/${year}/${fileobj.links.file}`, name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
+                                renderItem={(item: {urlobj: string, name: string, icon: any}, index: number) => (
+                                <List.Item>
+                                    <List.Item.Meta
+                                        avatar={(item.icon == "excel")? <FileExcelOutlined />: <TableOutlined />}
+                                        title={(item.name == "Datei")? <Link href={`${item.urlobj}`} target="_blank">{item.name}</Link>: <Link href={`${item.urlobj}/${year}`} target="_blank">{item.name}</Link>}
+                                        description=""
+                                    />
+                                </List.Item>
+                            )}
+                        />,
+                            },
+                        ]}
+                        />
                 );
         })
     }
 
     const getPresentation = () => {
-        if(props.currentData){
+        if(props.currentData.id != -1){
             return(
                 <div className="data-list">
                     <Space size="large" direction="vertical" style={{
@@ -307,7 +363,8 @@ export default function UploadPage(props: InitialProps){
                 })
 
                 const year = new Date().getFullYear();
-                const fileres = await axios.post(`/api/files`, {year: year, status: true})
+                const fileres = await axios.post(`/api/files`, {year: year, status: "erstellt"})
+                const mailret = await axios.post(`/api/message`, { type: "erstellt", reponsiblemail: "maximilian-krebs@online.de", reponsiblename: props.currentData.responsible.username })
 
                 errorProm.then(() => {
                     if(errArr.length > 0){
@@ -329,7 +386,7 @@ export default function UploadPage(props: InitialProps){
                             currobj[key as FileObjKey] = undefined;
                         });
                         setFiles(currobj);
-                        handleCancel();
+                        handleCancel("upload");
 
                         router.reload()
                     }
@@ -358,6 +415,20 @@ export default function UploadPage(props: InitialProps){
         }
     }
 
+    const freezeFiles = async () => {
+        const fileres = await axios.put(`/api/files`, {id: props.currentData.id, status: "freigegeben"});
+        const mailret = await axios.post(`/api/message`, { type: "freeze", reponsiblemail: props.currentData.responsible.email, reponsiblename: props.currentData.responsible.username })
+        handleCancel("freeze");
+        router.reload();
+    }
+
+    const requestRevision = async (values: any) => {
+        const fileres = await axios.put(`/api/files`, {id: props.currentData.id, status: "revision", commentary: values.commentary});
+        const mailret = await axios.post(`/api/message`, { type: "revision", reponsiblemail: props.currentData.responsible.email, reponsiblename: props.currentData.responsible.username })
+        handleCancel("revision");
+        router.reload();
+    }
+
     const getErrors = () => {
         return Object.keys(errorObj).map((key) => {
             let file: FileError | undefined = errorObj[key as FileObjKey];
@@ -370,28 +441,85 @@ export default function UploadPage(props: InitialProps){
         })
     }
 
+    const getUploadButton = () => {
+        if(props.InitialState.role.capabilities.canUploadFiles && props.currentData.status != "freigegeben"){
+            return (
+                <Button type="primary" onClick={() => {showModal("upload")}}>
+                    <UploadOutlined />
+                    Upload
+                </Button>
+            );
+        }else{
+            return <></>;
+        }
+    }
+
+    const getFreezeButton = () => {
+        if(props.InitialState.role.capabilities.canUnfreeze && props.currentData.status == "erstellt"){
+            return (
+                <Button type="primary" style={{backgroundColor: "#52c41a", color: "white"}} onClick={() => {showModal("freeze")}}>
+                    Freigeben
+                </Button>
+            );
+        }else{
+            return <></>;
+        }
+    }
+
+    const getRevisionButton = () => {
+        if(props.InitialState.role.capabilities.canUnfreeze && props.currentData.status == "erstellt"){
+            return (
+                <Button type="primary" style={{backgroundColor: "#ff4d4f", color: "white"}} onClick={() => {showModal("revision")}}>
+                    Revision anfordern
+                </Button>
+            );
+        }else{
+            return <></>;
+        }
+    }
+
+    const getTag = (status: string) => {
+        console.log(status);
+        if(status == "erstellt"){
+            return(<Tag color="processing" style={{marginLeft: 20}}>Erstellt</Tag>);
+        }else if(status == "freigegeben"){
+            return(<Tag color="success" style={{marginLeft: 20}}>Freigegeben</Tag>);
+        }else if(status == "revision"){
+            return(<Tag color="error" style={{marginLeft: 20}}>Revision nötig</Tag>);
+        }else{
+            return <></>;
+        }
+    }
+
+    const getComment = () => {
+        if(props.currentData.status == "revision"){
+            return <Paragraph>Kommentar der Qualitätsmanager:in:<pre>{props.currentData.commentary}</pre></Paragraph>;
+        }else{
+            return <></>;
+        }
+    }
 
 
     return(
         <div>
             <Layout user={props.InitialState}>
                 <div className="content">
-                    <div className="action-row">
-                        <Button type="primary" onClick={showModal}>
-                            <UploadOutlined />
-                            Upload
-                        </Button>
-                    </div>
+                    <Space style={{marginBottom: 50}} direction="horizontal" size="large">
+                        {getUploadButton()}
+                        {getFreezeButton()}
+                        {getRevisionButton()}
+                    </Space>
 
                     <div className="data-presentation">
-                        <h2 className="page-headline">Daten Geschäftsbericht {year}</h2>
+                        <div className="data-headline"><h2 className="page-headline">Daten Geschäftsbericht {year}</h2>{getTag(props.currentData.status)}</div>
+                        {getComment()}
                         {getPresentation()}
                     </div>
 
                     <Modal
                         title="Dateien hochladen"
                         open={isModalOpen}
-                        onCancel={handleCancel}
+                        onCancel={() => {handleCancel("upload")}}
                         footer = {[]}
                     >
                         <Form 
@@ -500,7 +628,7 @@ export default function UploadPage(props: InitialProps){
 
                             <Form.Item className='modal-buttom-row'>
                                 <Space direction='horizontal'>
-                                    <Button key="close" onClick={handleCancel}>
+                                    <Button key="close" onClick={() => {handleCancel("upload")}}>
                                         Abbrechen
                                     </Button>
                                     <Button onClick={uploadFileToServer}  key="submit" type="primary">
@@ -511,95 +639,64 @@ export default function UploadPage(props: InitialProps){
                         </Form>
                     </Modal>
 
-                    {/* <Modal className="upload-modal" show={show} onHide={handleClose} size="lg">
-                        <Modal.Header closeButton>
-                            <Modal.Title>Upload</Modal.Title>
-                        </Modal.Header>
-
-                        <Modal.Body>
-                            <div className="filelist">
-                                <div className="fileitem">
-                                    <div className="filename">Konzern GuV</div>
-                                    <div className="fileuploadbutton">
-                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "guv")}/>
-                                    </div>
-                                </div>
-
-                                <div className="fileitem">
-                                    <div className="filename">Konzernbilanz</div>
-                                    <div className="fileuploadbutton">
-                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "konzernbilanz")}/>
-                                    </div>
-                                </div>
-
-                                <div className="fileitem">
-                                    <div className="filename">Konzern Eigenkapitalspiegel</div>
-                                    <div className="fileuploadbutton">
-                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "eigenkapitalspiegel")}/>
-                                    </div>
-                                </div>
-
-                                <div className="fileitem">
-                                    <div className="filename">Kapitalflussrechnung</div>
-                                    <div className="fileuploadbutton">
-                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "kapitalfluss")}/>
-                                    </div>
-                                </div>
-
-                                <div className="fileitem">
-                                    <div className="filename">Konzernanlagengitter</div>
-                                    <div className="fileuploadbutton">
-                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "anlagengitter")}/>
-                                    </div>
-                                </div>
-
-                                <div className="fileitem">
-                                    <div className="filename">Rückstellungsspiegel</div>
-                                    <div className="fileuploadbutton">
-                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "rueckstellung")}/>
-                                    </div>
-                                </div>
-
-                                <div className="fileitem">
-                                    <div className="filename">Verbindlichkeitenspiegel</div>
-                                    <div className="fileuploadbutton">
-                                        <input type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "verbindlichkeiten")}/>
-                                    </div>
-                                </div>
-
-                                <div className="fileitem">
-                                    <div className="filename">Lagebericht</div>
-                                    <div className="fileuploadbutton">
-                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "lagebericht")}/>
-                                    </div>
-                                </div>
-                                <div className="fileitem">
-                                    <div className="filename">Anhang</div>
-                                    <div className="fileuploadbutton">
-                                        <input  type="file" name="fileUpload" onChange={(event) => uploadToClient(event, "anhang")}/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="upload-section">
-                                <Button onClick={uploadFileToServer}>Upload</Button>
-                                <OverlayTrigger
-                                    placement="right"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={renderTooltip}
-                                >
-                                    <div className="upload-hint-trigger">
-                                        <FontAwesomeIcon icon={faCircleInfo} />
-                                    </div>
-                                </OverlayTrigger>
+                    <Modal
+                        title="Daten freigeben"
+                        open={isFreezeOpen}
+                        onCancel={() => {handleCancel("freeze")}}
+                        footer = {[]}
+                    >
+                        <Form 
+                            layout='horizontal'
+                        >
+                            
+                            <div className="upload-hint">
+                               Wollen Sie die Daten wirklich freigeben? Ein Upload ist danach nicht mehr möglich!
                             </div>
 
 
-                            <div className="upload-errors">
-                                {(errorVisible)? getErrors(): <></>}
-                            </div>
-                        </Modal.Body>
-                    </Modal> */}
+                            <Form.Item className='modal-buttom-row'>
+                                <Space direction='horizontal'>
+                                    <Button key="close" onClick={() => {handleCancel("freeze")}}>
+                                        Abbrechen
+                                    </Button>
+                                    <Button onClick={freezeFiles}  key="submit" type="primary">
+                                        Freigeben
+                                    </Button>
+                                </Space>
+                            </Form.Item>
+                        </Form>
+                    </Modal>
+
+                    <Modal
+                        title="Revision anfordern"
+                        open={isRevisionOpen}
+                        onCancel={() => {handleCancel("revision")}}
+                        footer = {[]}
+                    >
+                        <Form 
+                            layout='vertical'
+                            onFinish={requestRevision}
+                        >
+                            <Paragraph>
+                                Wollen Sie eine Revision durch den zuständigen Mitarbeiter anfordern? Der Mitarbeiter erhält eine Benachrichtung, dass die Daten überarbeitet werden müssen.
+                            </Paragraph>
+
+                            <Form.Item name={"commentary"} label="Anmerkung" >
+                                <Input.TextArea />
+                            </Form.Item>
+                            
+                            <Form.Item className='modal-buttom-row'>
+                                <Space direction='horizontal'>
+                                    <Button key="close" onClick={() => {handleCancel("revision")}}>
+                                        Abbrechen
+                                    </Button>
+                                    <Button  key="submit" type="primary" htmlType="submit">
+                                        Revision anfordern
+                                    </Button>
+                                </Space>
+                            </Form.Item>
+                        </Form>
+                    </Modal>
                 </div>
             </Layout>
         </div>

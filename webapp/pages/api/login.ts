@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     password: true,
                     salt: true,
                     email: true,
-                    roleid: true,
+                    role: true,
                 },
                 where: { username: data.username }
             });
@@ -55,7 +55,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                         'id': user.id,
                         'username': user.username,
                         'email': user.email,
-                        'roleid': user.roleid,
+                        'role': {
+                            id: user.role?.id,
+                            name: user.role?.name,
+                            capabilities: JSON.parse((user.role?.capabilities)? user.role?.capabilities: "")
+                        },
                     };
 
                     let B = Buffer.from(JSON.stringify( cookieData )).toString('base64');

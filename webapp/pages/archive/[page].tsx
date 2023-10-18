@@ -10,6 +10,7 @@ import {
     StopOutlined,
     SearchOutlined
 } from '@ant-design/icons';
+import { ParsedRole } from '@/helper/user';
 
 
 
@@ -31,6 +32,7 @@ type User = {
     username: string;
     email: string;
     roleid: number;
+    role: ParsedRole,
 };
 
 type Files = {
@@ -133,7 +135,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 
 
-export default function Users(props: InitialProps){
+export default function Archive(props: InitialProps){
     const [searchVal, setSearchVal] = useState("");
     const router = useRouter();
     

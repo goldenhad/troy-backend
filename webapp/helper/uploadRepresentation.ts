@@ -2,9 +2,9 @@
 export const fileobjs = [{
     text: "Guv",
     links: {
-        file: "guv",
+        file: "guv.xlsx",
         representations: [{
-            urlobj: "guv",
+            urlobj: "/presentation/guv",
             name: "GUV Tabelle",
             icon: "table"
         }]
@@ -13,13 +13,13 @@ export const fileobjs = [{
 {
     text: "Konzernbilanz",
     links: {
-        file: "konzernbilanz",
+        file: "konzernbilanz.xlsx",
         representations: [{
-            urlobj: "konzernbilanz/aktiva",
+            urlobj: "/presentation/konzernbilanz/aktiva",
             name: "Konzernbilanz Aktiva",
             icon: "table"
         }, {
-            urlobj: "konzernbilanz/passiva",
+            urlobj: "/presentation/konzernbilanz/passiva",
             name: "Konzernbilanz Passiva",
             icon: "table"
         }]
@@ -28,15 +28,15 @@ export const fileobjs = [{
 {
     text: "Eigenkapitalspiegel",
     links: {
-        file: "eigenkapitalspiegel",
+        file: "eigenkapitalspiegel.xlsx",
         representations: [
             {
-                urlobj: "eigenkapitalspiegel/I",
+                urlobj: "/presentation/eigenkapitalspiegel/I",
                 name: "Eigenkapitalspiegel Tabelle I",
                 icon: "table"
             },
             {
-                urlobj: "eigenkapitalspiegel/II",
+                urlobj: "/presentation/eigenkapitalspiegel/II",
                 name: "Eigenkapitalspiegel Tabelle II",
                 icon: "table"
             }
@@ -46,9 +46,9 @@ export const fileobjs = [{
 {
     text: "Kapitalfluss",
     links: {
-        file: "kapitalfluss",
+        file: "kapitalfluss.xlsx",
         representations: [{
-            urlobj: "kapitalfluss",
+            urlobj: "/presentation/kapitalfluss",
             name: "Kapitalfluss Tabelle",
             icon: "table"
         }]
@@ -57,9 +57,9 @@ export const fileobjs = [{
 {
     text: "Anlagengitter",
     links: {
-        file: "anlagengitter",
+        file: "anlagengitter.xlsx",
         representations: [{
-            urlobj: "anlagengitter",
+            urlobj: "/presentation/anlagengitter",
             name: "Anlagengitter Tabelle",
             icon: "table"
         }]
@@ -68,9 +68,9 @@ export const fileobjs = [{
 {
     text: "Rueckstellung",
     links: {
-        file: "rueckstellung",
+        file: "rueckstellung.xlsx",
         representations: [{
-            urlobj: "rueckstellung",
+            urlobj: "/presentation/rueckstellung",
             name: "Rueckstellungs Tabelle",
             icon: "table"
         }]
@@ -79,9 +79,9 @@ export const fileobjs = [{
 {
     text: "Verbindlichkeiten",
     links: {
-        file: "verbindlichkeiten",
+        file: "verbindlichkeiten.xlsx",
         representations: [{
-            urlobj: "verbindlichkeiten",
+            urlobj: "/presentation/verbindlichkeiten",
             name: "Verbindlichkeiten Tabelle",
             icon: "table"
         }]
@@ -90,47 +90,47 @@ export const fileobjs = [{
 {
     text: "Lagebericht",
     links: {
-        file: "lagebericht",
+        file: "lagebericht.xlsx",
         representations: []
     }
 },
 {
     text: "Anhang",
     links: {
-        file: "anhang",
+        file: "anhang.xlsx",
         representations: [
             {
-                urlobj: "anhang/umsatzerloes/hausbewirtschaftung",
+                urlobj: "/presentation/anhang/umsatzerloes/hausbewirtschaftung",
                 name: "Umsatzerlös Hausbewirtschaftung",
                 icon: "table"
             },
             {
-                urlobj: "anhang/umsatzerloes/betreuungstaetigkeit",
+                urlobj: "/presentation/anhang/umsatzerloes/betreuungstaetigkeit",
                 name: "Umsatzerlös Betreuungstätigkeit",
                 icon: "table"
             },
             {
-                urlobj: "anhang/umsatzerloes/lieferungenundleistungen",
+                urlobj: "/presentation/anhang/umsatzerloes/lieferungenundleistungen",
                 name: "Umsatzerlös Lieferungen und Leistungen",
                 icon: "table"
             },
             {
-                urlobj: "anhang/sonstige/betrieblicheertraege",
+                urlobj: "/presentation/anhang/sonstige/betrieblicheertraege",
                 name: "Sonstige betriebliche Erträge",
                 icon: "table"
             },
             {
-                urlobj: "anhang/sonstige/betrieblicheaufwendungen",
+                urlobj: "/presentation/anhang/sonstige/betrieblicheaufwendungen",
                 name: "Sonstige betriebliche Aufwendungen",
                 icon: "table"
             },
             {
-                urlobj: "anhang/sonstige/mitarbeiterinnen",
+                urlobj: "/presentation/anhang/sonstige/mitarbeiterinnen",
                 name: "Mitarbeiter/-innen",
                 icon: "table"
             },
             {
-                urlobj: "anhang/sonstige/altersversorgung",
+                urlobj: "/presentation/anhang/sonstige/altersversorgung",
                 name: "Zusätzliche Altersversorgung",
                 icon: "table"
             },

@@ -14,11 +14,14 @@ const { Header, Sider, Content } = Layout;
 import "./layout.scss"
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ParsedRole, UserRights } from "@/helper/user";
+import { Role } from "@prisma/client";
 
 
 type PrimitiveUser = {
     username: string,
-    email: string
+    email: string,
+    role: ParsedRole
 }
 
 type ComponentProps = {
@@ -32,30 +35,45 @@ const sidebarNavItems = [
         icon: <HomeOutlined />,
         to: '/',
         reg: /^\/$/gm,
+        caps: (userrights: {canEditUsers: boolean, canUnfreeze: boolean, canUploadFiles: boolean}) => {
+            return true;
+        }
     },
     {
         display: 'Benutzerverwaltung',
         icon: <UserOutlined />,
         to: '/users/1',
         reg: /\/users\/\[\[...page\]\]/gm,
+        caps: (userrights: UserRights) => {
+            return userrights.canEditUsers;
+        }
     },
     {
         display: 'Archiv',
         icon: <FolderOutlined />,
         to: '/archive/1',
         reg: /(\/archive\/\[page\])|(\/archive\/details\/\[\[...page\]\])/gm,
+        caps: (userrights: UserRights) => {
+            return true;
+        }
     },
     {
         display: 'Datenupload',
         icon: <CloudUploadOutlined />,
         to: '/upload',
         reg: /^\/upload$/gm,
+        caps: (userrights: UserRights) => {
+            return userrights.canUnfreeze || userrights.canUploadFiles;
+        }
     },
     {
         display: 'Ausloggen',
         icon: <LogoutOutlined />,
         to: '/logout',
         reg: /^\/logout$/gm,
+        caps: (userrights: UserRights) => {
+            return true;
+        }
     }
 ]
 
@@ -67,12 +85,18 @@ export default function SidebarLayout({children, user}: ComponentProps){
     const navItemsToMenuItems = () => {
         let menuitems: Array<any> = [];
 
+        let userRoleObj = user.role.capabilities;
+        console.log(userRoleObj);
+
         sidebarNavItems.forEach((elm, idx) => {
-            menuitems.push({
-                key: idx.toString(),
-                icon: elm.icon,
-                label: <Link href={elm.to}>{elm.display}</Link>
-            });
+            
+            if(elm.caps(userRoleObj)){
+                menuitems.push({
+                    key: idx.toString(),
+                    icon: elm.icon,
+                    label: <Link href={elm.to}>{elm.display}</Link>
+                });
+            }
         })
 
         return menuitems;
@@ -102,7 +126,7 @@ export default function SidebarLayout({children, user}: ComponentProps){
                 }}
             >
                 <div className="sidebar-logo">
-                    <Image src="/logo_klein.png" width={50} height={50} alt="Logo" />
+                    <img src="/logo_klein.png" width={50} height={50} alt="Logo" />
                 </div>
                 <Menu
                     theme="dark"

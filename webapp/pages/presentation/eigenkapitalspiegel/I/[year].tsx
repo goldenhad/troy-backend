@@ -37,8 +37,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         return { props: { InitialState: {} } };
     } else {
+        let qyear = -1;
+        if(ctx.query.year){
+            qyear = parseInt(ctx.query.year as string);
+        }
 
-        const year = new Date().getFullYear();
+        const year = qyear;
         const path = `./public/data/${year}/eigenkapitalspiegel.xlsx`;
         let guvdata: Array<any> = [1, 2, 3];
         if(fs.existsSync(path)){
@@ -48,8 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
             const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-            const cols: Array<String> = alphabet.slice(8, 14).split("");
-            cols.unshift("A")
+            const cols: Array<String> = alphabet.slice(0, 13).split("");
             const lowerLimit = 19;
             const higherLimit = 28;
 
@@ -91,16 +94,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             })
 
             guvdata = rows;
-        }
+        
 
-        return {
-            props: {
-                InitialState: JSON.parse(
-                Buffer.from(cookies.login, "base64").toString("ascii")
-                ),
-                data: guvdata,
-            },
-        };
+            return {
+                props: {
+                    InitialState: JSON.parse(
+                    Buffer.from(cookies.login, "base64").toString("ascii")
+                    ),
+                    data: guvdata,
+                },
+            };
+        }else{
+            res.writeHead(302, { Location: "/" });
+            res.end();
+
+            return { props: { InitialState: {} } };
+        }
     }
 };
 
@@ -114,6 +123,8 @@ export default function Eigenkapitelspiegel(props: InitialProps){
 
             let allempty = row.every((v: any) => v === null );
 
+            console.log(rowobj)
+
             if(!allempty){
                 return (
                     <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
@@ -124,10 +135,12 @@ export default function Eigenkapitelspiegel(props: InitialProps){
                         <td className="cell-val">{getNumber(row[2], true)}</td>
                         <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td className="cell-val">{getNumber(row[3], true)}</td>
-                        <td className="cell-spacer-wide"><div className="spacer-content"></div></td>
-                        <td className="cell-spacer-wide"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-val">{getNumber(row[4], true)}</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td className="cell-val">{getNumber(row[5], true)}</td>
-
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-val">{getNumber(row[6], true)}</td>
                     </tr>
                 );
             }
@@ -142,36 +155,65 @@ export default function Eigenkapitelspiegel(props: InitialProps){
                 <thead>
                     <tr>
                         <th className="empty-headline-cell"></th>
+                        <th className="empty-headline-cell"></th>
+                        <th colSpan={11} className="cell-headline">Eigenkapital des Mutterunternehmens</th>
                         <th className="empty-headline-cell cell-spacer"></th>
-                        <th colSpan={5} className="cell-headline">Nicht beherrschbare Anteile</th>
-                        <th className="empty-headline-cell cell-spacer-wide"></th>
-                        <th className="empty-headline-cell cell-spacer-wide"></th>
-                        <th className="cell-headline">Konzerneigenkapital</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="special-headline-row">
+                    <tr className="small-row">
+
+                    </tr>
+                    <tr className="euro-row">
                         <td className="empty-headline-cell"></td>
                         <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
-                        <td>am Kapital</td>
-                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
-                        <td>Am Jahres-Überschuss</td>
-                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td>Geschäftsguthaben</td>
+                        <td colSpan={9} className="long-cell">Ergebnisrücklagen</td>
+                        <td>Bilanzgewinn</td>
+                    </tr>
+                    <tr className="special-headline-row no-border">
+                        <td></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td></td>
+                    </tr>
+                    <tr className="special-headline-row">
+                        <td></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td>Gesetzliche Rücklage</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td>Bauerneuerungsrücklage</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td>Andere Ergebnisrücklagen</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td>Summe</td>
-                        <td className="cell-spacer-wide empty-headline-cell"><div className="spacer-content"></div></td>
-                        <td className="cell-spacer-wide empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td></td>
                     </tr>
                     <tr className="currency-row">
-                    <td className="empty-headline-cell"></td>
-                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td>€</td>
-                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td>€</td>
-                        <td className="cell-spacer empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td>€</td>
-                        <td className="cell-spacer-wide empty-headline-cell"><div className="spacer-content"></div></td>
-                        <td className="cell-spacer-wide empty-headline-cell"><div className="spacer-content"></div></td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td>€</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
+                        <td>€</td>
+                        <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td>€</td>
                     </tr>
                     <tr className="row-spacer"></tr>

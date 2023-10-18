@@ -10,6 +10,7 @@ import {
     StopOutlined,
     SearchOutlined
 } from '@ant-design/icons';
+import { ParsedRole } from '@/helper/user';
 
 
 
@@ -27,13 +28,14 @@ type User = {
     id: number,
     username: string,
     email: string,
-    role: Role,
+    role: ParsedRole,
 }
 
 //Redefine the product type for the product query
 type Role = {
     id: number,
-    name: string
+    name: string,
+    capabilities: string,
 }
   
 interface InitialProps {
@@ -152,11 +154,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function Users(props: InitialProps){
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [userToEdit, setUserToEdit] = useState({id: -1, role: {id: -1, name: "undefined"}});
     const [userToDelete, setUserToDelete] = useState(-1);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [searchVal, setSearchVal] = useState("");
     const [ errMsg, setErrMsg ] = useState([]);
+    const [ editErrMsg, setEditErrMsg ] = useState([]);
     const router = useRouter();
+    const [form] = Form.useForm();
     
     const showModal = () => {
         setIsModalOpen(true);
@@ -172,6 +178,14 @@ export default function Users(props: InitialProps){
 
     const handleDeleteCancel = () => {
         setIsDeleteModalOpen(false);
+    };
+
+    const showEditModal = () => {
+        setIsEditModalOpen(true);
+    };
+
+    const handleEditCancel = () => {
+        setIsEditModalOpen(false);
     };
 
 
@@ -248,6 +262,96 @@ export default function Users(props: InitialProps){
 
     }
 
+    const editUser = async (values: any) => {
+        //Define a default case for the error
+        let error = false;
+        //Define a array so save error-messages
+        let msg: any = [];
+
+        if(values.userpassword){
+            if(values.userpassword != values.userpasswordwdhl){
+                error = true;
+                msg.push("Die eingegebenen Passwörter stimmen nicht überein!");
+            }
+    
+            if(!error){
+    
+                let rrole = rolesToId(values.role);
+                console.log(rrole);
+    
+                if(rrole != -1){
+                    axios.put('/api/users', {
+                        email: values.email,
+                        role: rrole,
+                        password: values.userpassword,
+                    })
+                    .then(function (response) {
+                        //reload data
+                        refreshData();
+                    })
+                    .catch(function (error) {
+            
+                        //TODO Add error handling
+                    });
+        
+                    setEditErrMsg([]);
+                    handleEditCancel();
+                }else{
+                    error = true;
+                    msg.push("Fehler bei der Rollenauswahl");
+                    setEditErrMsg(msg);
+                }
+            }else{
+                setEditErrMsg(msg);
+            }
+        }else{
+    
+            let rrole = rolesToId(values.role);
+            console.log(rrole);
+
+            if(rrole != -1){
+                axios.put('/api/users', {
+                    email: values.email,
+                    role: rrole,
+                })
+                .then(function (response) {
+                    //reload data
+                    refreshData();
+                })
+                .catch(function (error) {
+        
+                    //TODO Add error handling
+                });
+    
+                setEditErrMsg([]);
+                handleEditCancel();
+            }else{
+                error = true;
+                msg.push("Fehler bei der Rollenauswahl");
+                setEditErrMsg(msg);
+            }
+        }
+
+    }
+
+
+    const rolesToId = (role: string) => {
+        if(!isNaN(parseInt(role))){
+            return role;
+        }else{
+            let searchrole = {id: -1, name: "", capabilities: ""};
+            console.log(role);
+            props.Data.roles.forEach((r: Role) => {
+                if(r.name == role){
+                    searchrole = r;
+                }
+            });
+            console.log(searchrole);
+
+            return searchrole.id;
+        }
+    }
+
     //Maps the roles so we can display them in the corresponding select
     const getRoles = () => {
         let roles = [{value: "-1", label: "Bitte wählen Sie eine Rolle"}]
@@ -296,7 +400,7 @@ export default function Users(props: InitialProps){
                 if(obj.role.name == "admin"){
                     return (
                         <Space direction='horizontal'>
-                            <Button >Bearbeiten</Button>
+                            <Button onClick={() => {setUserToEdit({id: obj.id, role: obj.role.id}); form.setFieldValue('username', obj.username); form.setFieldValue('email', obj.email); form.setFieldValue('role', obj.role.name); showEditModal()}}>Bearbeiten</Button>
                             <Button onClick={() => {setUserToDelete(obj.id); showDeleteModal()}}>Löschen</Button>
                         </Space>
                     );
@@ -409,6 +513,80 @@ export default function Users(props: InitialProps){
                             <Form.Item className='modal-buttom-row'>
                                 <Space direction='horizontal'>
                                     <Button key="close" onClick={handleCancel}>
+                                        Abbrechen
+                                    </Button>
+                                    <Button htmlType="submit"  key="submit" type="primary">
+                                        Speichern
+                                    </Button>
+                                </Space>
+                            </Form.Item>
+                        </Form>
+                    </Modal>
+
+                    <Modal
+                        title="Benutzer bearbeiten"
+                        open={isEditModalOpen}
+                        onCancel={handleEditCancel}
+                        footer = {[]}
+                    >
+                        <Form 
+                            layout='vertical'
+                            onFinish={editUser}
+                            form={form}
+                        >
+                            <Form.Item
+                                label="Benutzername"
+                                name="username"
+                            >
+                                <Input placeholder="Benutzername..." disabled/>
+                            </Form.Item>
+
+                            <Form.Item
+                                label="E-Mail"
+                                name="email"
+                            >
+                                <Input placeholder="E-Mail..." disabled/>
+                            </Form.Item>
+
+                            <Form.Item
+                                label="Rolle"
+                                name="role"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Bitte wählen Sie eine Rolle aus!',
+                                    },
+                                ]}
+                            >
+                                <Select
+                                    defaultValue="-1"
+                                    options={getRoles()}
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="Passwort"
+                                name="userpassword"
+                                
+                            >
+                                <Input placeholder="Passwort..." type="password"/>
+                            </Form.Item>
+
+                            <Form.Item
+                                label="Passwort wdhl."
+                                name="userpasswordwdhl"
+                                
+                            >
+                                <Input placeholder=" wiederholen..." type="password"/>
+                            </Form.Item>
+                        
+                            {editErrMsg.map((err: String, key: number) => {
+                                return (<Alert key={key} message={err} type="error" />);
+                            })}
+
+                            <Form.Item className='modal-buttom-row'>
+                                <Space direction='horizontal'>
+                                    <Button key="close" onClick={handleEditCancel}>
                                         Abbrechen
                                     </Button>
                                     <Button htmlType="submit"  key="submit" type="primary">
