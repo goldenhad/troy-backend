@@ -227,6 +227,7 @@ export default function UploadPage(props: InitialProps){
                 return (
                     <Collapse
                         size="large"
+                        key={idx}
                         items={[
                             {
                             key: idx,
