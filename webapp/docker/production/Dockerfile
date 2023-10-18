@@ -36,14 +36,17 @@ ENV NODE_ENV=production
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
-COPY --from=builder /app/public ./public
+COPY --chown=nextjs:nodejs --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
+
+RUN mkdir /app/public/data
+RUN chown nextjs:nodejs /app/public/data
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./standalone
+COPY --from=builder --chown=nextjs:nodejs /app/public /app/standalone/public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static /app/standalone/.next/static
 
 USER nextjs
 
