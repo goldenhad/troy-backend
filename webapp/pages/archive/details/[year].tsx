@@ -12,6 +12,7 @@ import { fileobjs } from "@/helper/uploadRepresentation";
 import { FileExcelOutlined, TableOutlined, UploadOutlined } from '@ant-design/icons';
 import { RcFile } from "antd/es/upload";
 import { ParsedRole, UserRights } from "@/helper/user";
+import Path from 'path'
 const { Paragraph } = Typography;
 
 //Define a type for the cookie
@@ -165,7 +166,7 @@ export default function UploadPage(props: InitialProps){
                             label: fileobj.text,
                             children: <List
                                 itemLayout="horizontal"
-                                dataSource={[{urlobj: `/data/${year}/${fileobj.links.file}`, name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
+                                dataSource={[{urlobj: `/api/download?filename=${Path.parse(fileobj.links.file).name}&year=${year}`, name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
                                 renderItem={(item: {urlobj: string, name: string, icon: any}, index: number) => (
                                 <List.Item>
                                     <List.Item.Meta
