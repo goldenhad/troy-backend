@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             let loginObj = JSON.parse(Buffer.from(req.cookies.login, 'base64').toString('ascii'));
             console.log(loginObj.role.capabilities.canUploadFiles);
 
-            if(loginObj.role.id == 1 && loginObj.role.capabilities.canUploadFiles){
+            if(loginObj.role.id == 1 || loginObj.role.capabilities.canUploadFiles){
                 //Get the POST-data
                 let data = req.body;
 
@@ -74,7 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         if(req.cookies.login){
             let loginObj = JSON.parse(Buffer.from(req.cookies.login, 'base64').toString('ascii'));
 
-            if(loginObj.role.id == 1 && loginObj.role.capabilities.canUnfreeze){
+            if(loginObj.role.id == 1 || loginObj.role.capabilities.canUnfreeze){
                 let data = req.body;
 
                 if(data.status && data.id){
