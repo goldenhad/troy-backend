@@ -98,7 +98,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             }
 
             if(!currentData){
-                currentData = {id: -1, year: -1, status: "undefined", responsible: {id: -1, name: "", email: ""}};
+                let firstresponsible = await prisma.user.findFirst({where: { roleid: 3 }});
+                currentData = {id: -1, year: -1, status: "undefined", responsible: firstresponsible};
             }
 
             return {
@@ -364,9 +365,10 @@ export default function UploadPage(props: InitialProps){
                     });
                 })
 
+                console.log(props.currentData);
                 const year = new Date().getFullYear();
                 const fileres = await axios.post(`/api/files`, {year: year, status: "erstellt"})
-                const mailret = await axios.post(`/api/message`, { type: "erstellt", reponsiblemail: "maximilian-krebs@online.de", reponsiblename: props.currentData.responsible.username })
+                const mailret = await axios.post(`/api/message`, { type: "erstellt", reponsiblemail: props.currentData.responsible.email, reponsiblename: props.currentData.responsible.username })
 
                 errorProm.then(() => {
                     if(errArr.length > 0){
