@@ -47,8 +47,8 @@ RUN chown nextjs:nodejs /app/public/data
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./standalone
 COPY --from=builder --chown=nextjs:nodejs /app/public /app/standalone/public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static /app/standalone/.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/private-key.asc /app/private-key.asc
-COPY --from=builder --chown=nextjs:nodejs /app/public-key.asc /app/public-key.asc
+COPY --from=builder --chown=nextjs:nodejs /app/private-key.asc /app/standalone/private-key.asc
+COPY --from=builder --chown=nextjs:nodejs /app/public-key.asc /app/standalone/public-key.asc
 
 USER nextjs
 
