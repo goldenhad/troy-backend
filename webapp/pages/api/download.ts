@@ -3,6 +3,7 @@ import { prisma } from '../../db';
 require('dotenv').config();
 import fs, { readFileSync } from 'fs';
 import FileType from "file-type";
+import { decrypt } from '@/helper/decryptFile';
 
 
 const formidable = require("formidable");
@@ -38,6 +39,15 @@ const saveFile = async (file: any, filename: string) => {
     return;
 };
 
+function toBuffer(arrayBuffer: Uint8Array) {
+    const buffer = Buffer.alloc(arrayBuffer.byteLength);
+    const view = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < buffer.length; ++i) {
+      buffer[i] = view[i];
+    }
+    return buffer;
+  }
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData | Buffer>) {
 
     //Check if the request is a post request
@@ -52,12 +62,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 console.log(req.query);
                 
                 if(filename){
-                    const imageBuffer = readFileSync(`./public/data/${year}/${filename}.xlsx`);
+                    console.log(filename)
+                    const imageBuffer = readFileSync(`./public/data/${year}/${filename}.bin`);
+                    const decryptedbuffer = await decrypt(imageBuffer);
                     
                     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                     res.setHeader(`content-disposition`, `attachment; filename=${filename}.xlsx`);
 
-                    res.send(imageBuffer);
+                    res.send(toBuffer(decryptedbuffer));
                 }else{
                     return res.status(400).send({ errorcode: 4, message: "File not found" });
                 }

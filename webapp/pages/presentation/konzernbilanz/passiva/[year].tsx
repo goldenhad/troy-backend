@@ -4,6 +4,7 @@ import fs from 'fs';
 import { read } from 'xlsx';
 import { User } from '../../../../helper/user'
 import getNumber from "@/helper/numberformat";
+import { decrypt } from "@/helper/decryptFile";
 
 type StylingProps = {
     highlighted: boolean;
@@ -43,12 +44,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         }
 
         const year = qyear;
-        const path = `./public/data/${year}/konzernbilanz.xlsx`;
+        const path = `./public/data/${year}/konzernbilanz.bin`;
         let guvdata: Array<any> = [1, 2, 3];
         if(fs.existsSync(path)){
 
             const buffer = fs.readFileSync(path);
-            const workbook = read(buffer);
+            const decryptedbuffer = await decrypt(buffer);
+            const workbook = read(decryptedbuffer);
 
             const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 

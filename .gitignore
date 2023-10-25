@@ -40,3 +40,5 @@ webapp/docker/development/db/
 webapp/docker/production/db/
 webapp/docker/development/upload/
 webapp/docker/production/upload/
+
+*.asc

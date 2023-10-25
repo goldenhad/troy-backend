@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@prisma/client": "^5.1.1",
     "@types/node": "20.4.6",
+    "@types/openpgp": "^4.4.20",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
     "antd": "^5.9.1",
@@ -29,6 +30,7 @@
     "formidable": "^3.5.0",
     "next": "latest",
     "nodemailer": "^6.9.5",
+    "openpgp": "^5.11.0",
     "prisma": "^5.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -36,6 +38,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@openpgp/web-stream-tools": "^0.0.11-patch-0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookies": "^0.7.7",
     "@types/formidable": "^3.4.1",

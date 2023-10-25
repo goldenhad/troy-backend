@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../../db';
 require('dotenv').config();
 import fs from 'fs';
+import * as openpgp from 'openpgp';
 import FileType from "file-type";
 
 
@@ -24,17 +25,35 @@ export const config = {
 const saveFile = async (file: any, filename: string) => {
     const year = new Date().getFullYear();
     const data = fs.readFileSync(file.filepath);
+    try{
+        const pubkey = fs.readFileSync("./public-key.asc").toString();
 
-    if(!fs.existsSync(`./public/data`)){
-        fs.mkdirSync(`./public/data/`);
+        if(!fs.existsSync(`./public/data`)){
+            fs.mkdirSync(`./public/data/`);
+        }
+    
+        if(!fs.existsSync(`./public/data/${year}`)){
+            fs.mkdirSync(`./public/data/${year}`);
+        }
+    
+    
+    
+        try{
+            const encrypted = await openpgp.encrypt({
+                message: await openpgp.createMessage({binary: data}),
+                encryptionKeys: (await openpgp.readKey({armoredKey: pubkey})),
+            });
+        
+            fs.writeFileSync(`./public/data/${year}/${filename}.bin`, encrypted);
+            await fs.unlinkSync(file.filepath);
+        }catch(e){
+            console.log(e);
+        }
+    }catch(e){
+        console.log(e);
     }
 
-    if(!fs.existsSync(`./public/data/${year}`)){
-        fs.mkdirSync(`./public/data/${year}`);
-    }
-
-    fs.writeFileSync(`./public/data/${year}/${filename}.xlsx`, data);
-    await fs.unlinkSync(file.filepath);
+    
     return;
 };
 
@@ -62,7 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                             const locfile = parsedFiles.file[0];
                             if(locfile){
                                 console.log("Hole Datei");
-                                if(locfile.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
+                                if(locfile.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || true){
                                     console.log("Datei hat richtigen Typ");
                                     if(locfile.size <= 1024 * 1024 * 10){
                                         console.log("Datei ist klein genug");

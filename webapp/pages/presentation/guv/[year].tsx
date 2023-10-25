@@ -4,9 +4,11 @@ import axios from "axios";
 import router from "next/router";
 import { GetServerSideProps } from "next";
 import fs from 'fs';
-import { read } from 'xlsx';
+import { read, write, writeFile } from 'xlsx';
 import { User } from '../../../helper/user'
 import getNumber from "@/helper/numberformat";
+import * as openpgp from 'openpgp';
+import { decrypt } from "@/helper/decryptFile";
 
 
 type StylingProps = {
@@ -47,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             qyear = parseInt(ctx.query.year as string);
         }
 
-        const path = `./public/data/${qyear}/guv.xlsx`;
+        const path = `./public/data/${qyear}/guv.bin`;
 
 
         
@@ -56,7 +58,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         if(fs.existsSync(path)){
 
             const buffer = fs.readFileSync(path);
-            const workbook = read(buffer);
+            
+            const decryptedbuffer = await decrypt(buffer);
+            const workbook = read(decryptedbuffer);
 
             const cols: Array<String> = ["A", "B", "C", "D", "E", "F"];
             const lowerLimit = 9;
