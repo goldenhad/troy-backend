@@ -43,11 +43,11 @@ services:
             - ${UPLOADPATH}:/app/standalone/public
         networks:
             - wohnbaunetwork
-#            - proxynetwork
+            - proxynetwork
 
 networks:
   wohnbaunetwork:
     name: wohnbaunetwork
-#  proxynetwork:
-#    name: swag_proxynetwork
-#    external: true
+  proxynetwork:
+    name: swag_proxynetwork
+    external: true
