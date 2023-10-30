@@ -36,19 +36,24 @@ ENV NODE_ENV=production
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
-COPY --chown=nextjs:nodejs --from=builder /app/public ./public
+#COPY --chown=nextjs:nodejs --from=builder /app/public ./public
+COPY ./public ./public
 COPY --from=builder /app/prisma ./prisma
 
-RUN mkdir /app/public/data
+RUN mkdir -p /app/public/data
 RUN chown nextjs:nodejs /app/public/data
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./standalone
-COPY --from=builder --chown=nextjs:nodejs /app/public/logo_wohnbau.svg /app/standalone/public/logo_wohnbau.svg
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static /app/standalone/.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/private-key.asc /app/standalone/private-key.asc
-COPY --from=builder --chown=nextjs:nodejs /app/public-key.asc /app/standalone/public-key.asc
+#COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./standalone
+
+COPY ./.next/standalone ./
+COPY ./.next/static ./.next/static
+
+#COPY --from=builder --chown=nextjs:nodejs /app/public
+#COPY --from=builder --chown=nextjs:nodejs /app/.next/static /app/standalone/.next/static
+#COPY --from=builder --chown=nextjs:nodejs /app/private-key.asc /app/standalone/private-key.asc
+#COPY --from=builder --chown=nextjs:nodejs /app/public-key.asc /app/standalone/public-key.asc
 
 USER nextjs
 
@@ -57,4 +62,4 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME 0.0.0.0
 
-CMD ["node", "standalone/server.js"]
+CMD ["node", "server.js"]
