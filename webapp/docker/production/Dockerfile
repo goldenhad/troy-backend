@@ -46,7 +46,6 @@ RUN chown nextjs:nodejs /app/public/data
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./standalone
 COPY --from=builder --chown=nextjs:nodejs /app/public/logo_wohnbau.svg /app/standalone/public/logo_wohnbau.svg
-COPY --from=builder --chown=nextjs:nodejs /app/public/favicon.ico /app/standalone/public/favicon.svg
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static /app/standalone/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/private-key.asc /app/standalone/private-key.asc
 COPY --from=builder --chown=nextjs:nodejs /app/public-key.asc /app/standalone/public-key.asc
