@@ -43,6 +43,8 @@ COPY --from=builder /app/prisma ./prisma
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/private-key.asc /app/private-key.asc
+COPY --from=builder --chown=nextjs:nodejs /app/public-key.asc /app/public-key.asc
 
 
 USER nextjs
