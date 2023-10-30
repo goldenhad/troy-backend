@@ -40,7 +40,7 @@ services:
             - wohnbau-database
         volumes:
             - ${DBPATH}:/var/lib/mysql
-            - ${UPLOADPATH}:/app/standalone/public
+            - ${UPLOADPATH}:/app/public
         networks:
             - wohnbaunetwork
             - proxynetwork
