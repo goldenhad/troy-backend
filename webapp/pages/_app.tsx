@@ -14,6 +14,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/x-icon" href="logo_klein.ico" />
+        <title>Wohnbau-WML | Geschäftsbericht</title>
       </Head>
       <main className={roboto.className}>
         <Component {...pageProps} />
