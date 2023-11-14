@@ -17,9 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         let data = req.body;
 
         //Check if the needed fields are provided
-        if( data.year && data.file){
+        if( data.year){
             try {
-                let year = data.year;                
+                let year = parseInt(data.year);                
 
                 let existsingfile = await prisma.files.findFirst({where: {year: year}});
                 
@@ -30,6 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
                                 
             }catch(e){
+                console.log(e);
                 return res.status(400).send({ errorcode: 1, message: "The provided Data has the wrong format" });
             }
 
