@@ -35,30 +35,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     //Get the cookies from the current request
     const { cookies } = req;
 
-    //Check if the login cookie is set
-    if (!cookies.login) {
-        //Redirect if the cookie is not set
-        res.writeHead(302, { Location: "/login" });
-        res.end();
+    let qyear = -1;
+    if(ctx.query.year){
+        qyear = parseInt(ctx.query.year as string);
+    }
 
-        return { props: { InitialState: {} } };
-    } else {
-
-        let qyear = -1;
-        if(ctx.query.year){
-            qyear = parseInt(ctx.query.year as string);
-        }
-
-        const path = `./public/data/${qyear}/guv.bin`;
-
-
-        
-
-        let guvdata: Array<any> = [1, 2, 3];
-        if(fs.existsSync(path)){
+    const path = `./public/data/${qyear}/guv.bin`;
+    
+    let guvdata: Array<any> = [1, 2, 3];
+    if(fs.existsSync(path)){
+        try{
+            await axios.post("/api/exists", {year: qyear, file: "guv"});
 
             const buffer = fs.readFileSync(path);
-            
+        
             const decryptedbuffer = await decrypt(buffer);
             const workbook = read(decryptedbuffer);
 
@@ -117,20 +107,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
             return {
                 props: {
-                    InitialState: JSON.parse(
-                    Buffer.from(cookies.login, "base64").toString("ascii")
-                    ),
+                    InitialState: {},
                     data: guvdata,
                 },
             };
-        }else{
-            res.writeHead(302, { Location: "/" });
+        }catch(e){
+            res.writeHead(302, { Location: "/notfound" });
             res.end();
 
             return { props: { InitialState: {} } };
         }
 
-        
+    }else{
+        res.writeHead(302, { Location: "/notfound" });
+        res.end();
+
+        return { props: { InitialState: {} } };
     }
 };
 
