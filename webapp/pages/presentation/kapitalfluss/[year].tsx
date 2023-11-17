@@ -103,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         if (!cookies.login) {
             let pub = await yearPublished(qyear);
             if(!pub){
-                res.writeHead(302, { Location: "/notfound" });
+                res.writeHead(302, { Location: "/notpublished" });
                 res.end();
     
                 return { props: { InitialState: {} } };
