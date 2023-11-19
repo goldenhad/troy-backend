@@ -1,4 +1,4 @@
-import "./style.scss"
+import "./notpublished.module.scss"
 import { GetServerSideProps } from "next";
 import fs from 'fs';
 import { read } from 'xlsx';
