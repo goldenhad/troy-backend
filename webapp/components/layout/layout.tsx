@@ -129,7 +129,7 @@ export default function SidebarLayout({children, user}: ComponentProps){
                     <img src="/logo_klein.png" width={50} height={50} alt="Logo" />
                 </div>
                 <Menu
-                    theme="light"
+                    theme="dark"
                     mode="inline"
                     defaultSelectedKeys={[getActiveIndex()]}
                     items={navItemsToMenuItems()}

@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import './globals.css'
 import Head from 'next/head';
 import { Roboto } from 'next/font/google';
+import { ConfigProvider, theme } from 'antd';
 
 const roboto = Roboto({
   weight: ['100', '300', '400', '500', '700', '900'],
@@ -10,6 +11,8 @@ const roboto = Roboto({
 
  
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const { defaultAlgorithm, darkAlgorithm } = theme;
+
   return(
     <>
       <Head>
@@ -18,7 +21,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <title>Wohnbau-WML | Geschäftsbericht</title>
       </Head>
       <main className={roboto.className}>
-        <Component {...pageProps} />
+      <ConfigProvider
+        theme={{
+          algorithm: defaultAlgorithm,
+        }}>
+          <Component {...pageProps} />
+      </ConfigProvider>
+        
       </main>
     </>
   );
