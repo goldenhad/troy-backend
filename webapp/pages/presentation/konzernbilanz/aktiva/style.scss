@@ -207,6 +207,7 @@ tr{
 .tablestructure {
     display: flex;
     flex-direction: column;
+    background-color: white;
 
     .tableheadlinerow {
         display: flex;
@@ -317,7 +318,7 @@ tr{
 
     .colored-row {
         background-color: #9ac440;
-        color: #f4f4f5;
+        color: white;
         font-weight: 700;
         margin-top: 30px;
 
