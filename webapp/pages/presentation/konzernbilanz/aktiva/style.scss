@@ -213,7 +213,7 @@ tr{
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        background-color: #9ac440;
+        background-color: #b9ca48;
         color: white;
         font-weight: 700;
 
@@ -241,7 +241,7 @@ tr{
 
         .tablecellwide{
             width: 60%;
-            border-bottom: 1px solid #9ac440;
+            border-bottom: 1px solid #b9ca48;
         }
 
         .tablecellspacer{
@@ -259,7 +259,7 @@ tr{
             padding-left: 5px;
             padding-right: 5px;
 
-            border-bottom: 1px solid #9ac440;
+            border-bottom: 1px solid #b9ca48;
         }
     }
 
@@ -286,7 +286,7 @@ tr{
         font-weight: 700;
 
         .tablecellwide{
-            border-top: 2px solid #9ac440;
+            border-top: 2px solid #b9ca48;
             border-bottom: none !important;
 
             .possiblecontent-count{
@@ -299,7 +299,7 @@ tr{
         }
 
         .tablecellnumber{
-            border-top: 2px solid #9ac440;
+            border-top: 2px solid #b9ca48;
             border-bottom: none !important;
         }
     }
@@ -317,7 +317,7 @@ tr{
     }
 
     .colored-row {
-        background-color: #9ac440;
+        background-color: #b9ca48;
         color: white;
         font-weight: 700;
         margin-top: 30px;
@@ -334,7 +334,7 @@ tr{
         
 
         .tablecellwide {
-            border-bottom: 2px solid #9ac440;
+            border-bottom: 2px solid #b9ca48;
 
             .possiblecontent-enum{
                 border-bottom: none !important;
@@ -352,7 +352,7 @@ tr{
         }
 
         .tablecellnumber {
-            border-bottom: 2px solid #9ac440 !important;
+            border-bottom: 2px solid #b9ca48 !important;
             width: 100px;
         }
     }
