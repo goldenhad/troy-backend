@@ -202,30 +202,6 @@ export default function UploadPage(props: InitialProps){
     const getFileOptions = (fileobjs: Array<{text: string, links: { file: string, representations: Array<{ urlobj: string, name: string, icon: string }> }}>) => {
         
         return fileobjs.map((fileobj, idx) => {
-                /* return(
-
-                    <Card
-                        key={idx}
-                        title={fileobj.text}
-                        style={{
-                            width: "100%"
-                        }}
-                        >
-                        <List
-                            itemLayout="horizontal"
-                            dataSource={[{urlobj: `/data/${year}/${fileobj.links.file}`, name: "Datei", icon: "excel"}, ...fileobj.links.representations]}
-                            renderItem={(item: {urlobj: string, name: string, icon: any}, index: number) => (
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={(item.icon == "excel")? <FileExcelOutlined />: <TableOutlined />}
-                                    title={(item.name == "Datei")? <Link href={`${item.urlobj}`} target="_blank">{item.name}</Link>: <Link href={`${item.urlobj}/${year}`} target="_blank">{item.name}</Link>}
-                                    description=""
-                                />
-                            </List.Item>
-                            )}
-                        />
-                    </Card>
-                ); */
                 return (
                     <Collapse
                         size="large"
@@ -241,7 +217,7 @@ export default function UploadPage(props: InitialProps){
                                 <List.Item>
                                     <List.Item.Meta
                                         avatar={(item.icon == "excel")? <FileExcelOutlined />: <TableOutlined />}
-                                        title={(item.name == "Datei")? <Link href={`${item.urlobj}`} target="_blank">{item.name}</Link>: <Link href={`${item.urlobj}/${year}`} target="_blank">{item.name}</Link>}
+                                        title={(item.name == "Datei")? <Link href={`${item.urlobj}`} target="_blank">{item.name}</Link>: <Link href={`${item.urlobj}`} target="_blank">{item.name}</Link>}
                                         description=""
                                     />
                                 </List.Item>

@@ -68,7 +68,7 @@ async function parseFile(path: string){
         const boldrows = [18, 26, 34, 46]
         const highlightedrow = [16, 23, 32, 38, 42, 43,];
         const colorsrows = [53];
-        const specialrow = [17, 24, 33, 45];
+        const specialrow: Array<any> = [55];
 
         specialrow.forEach((row) => {
             rows[row-lowerLimit].styling.special = true;
@@ -158,11 +158,11 @@ export default function KonzernbilanzII(props: InitialProps){
             let allempty = row.every((v: any) => v === null );
 
             if(row[0] == "Eigenkapital insgesamt" || row[0] == "Bilanzsumme" || row[0] == "Treuhandverbindlichkeiten"  ){
-                row[1] = row[0];
+                row[2] = row[0];
                 row[0] = "";
             }
             
-            return (
+            /* return (
                 <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
                     <td className="cell-enum">{row[0]}</td>
                     <td className="cell-add">{row[1]}</td>
@@ -174,7 +174,24 @@ export default function KonzernbilanzII(props: InitialProps){
                     <td className="cell-spacer"><div className="spacer-content"></div></td>
                     <td className="cell-val">{getNumber(row[6])}</td>
                 </tr>
-            );
+            ); */
+            if(!allempty){
+                return (
+                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
+                        <div className="tablecellwide">
+                            <div className="possiblecontent-enum">{row[0]}</div>
+                            <div className="possiblecontent-count">{row[1]}</div>
+                            <div className="possiblecontent-title">{row[2]}</div>
+                        </div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[3], false)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[4], false)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[6], false)}</div>
+                    </div>
+                );
+            }
         });
 
 
@@ -182,7 +199,27 @@ export default function KonzernbilanzII(props: InitialProps){
 
     return(
         <div className="presentation-page">
-            <table>
+            <div className="tablestructure">
+                <div className="tableheadlinerow">
+                    <div className="tablecell">Geschäftsjahr</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Vorjahr</div>
+                </div>
+
+                <div className="tableeurorow">
+                    <div className="tablecellwide"></div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                </div>
+
+                {getTableContent()}
+            </div>
+
+            {/* <table>
                 <thead>
                     <tr>
                         <th className="cell-enum"></th>
@@ -210,7 +247,7 @@ export default function KonzernbilanzII(props: InitialProps){
                     </tr>
                     {getTableContent()}
                 </tbody>
-            </table>
+            </table> */}
         </div>
     );
 }
