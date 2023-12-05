@@ -199,7 +199,7 @@ export default function Anlagengitter(props: InitialProps){
                         <div className="tablecellspacer"></div>
                         <div className="tablecellnumber">{getNumber(row[13], false)}</div>
                         <div className="tablecellspacer"></div>
-                        <div className="tablecellnumber">{getNumber(row[14], false)}</div>
+                        <div className="tablecellnumber specialcell">{getNumber(row[14], false)}</div>
                     </div>
                 );
             }else{

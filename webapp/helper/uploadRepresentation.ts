@@ -62,10 +62,16 @@ export const fileobjs = [{
     links: {
         file: "anlagengitter.xlsx",
         representations: [{
-            urlobj: `/display?year=${currentyear}&table=anlagengitter`,
-            name: "Anlagengitter Tabelle",
+            urlobj: `/display?year=${currentyear}&table=anlagengitter/I`,
+            name: "Anlagengitter Tabelle I",
             icon: "table"
-        }]
+        },
+        {
+            urlobj: `/display?year=${currentyear}&table=anlagengitter/I`,
+            name: "Anlagengitter Tabelle II",
+            icon: "table"
+        }    
+    ]
     }
 },
 {
