@@ -68,7 +68,8 @@ export default function DisplayPage(props: InitialProps){
             tl == "eigenkapitalspiegel/I" ||
             tl == "eigenkapitalspiegel/II" ||
             tl == "kapitalfluss" ||
-            tl == "anlagengitter" ||
+            tl == "anlagengitter/I" ||
+            tl == "anlagengitter/II" ||
             tl == "rueckstellung" ||
             tl == "verbindlichkeiten" ||
             tl == "anhang/sonstige/altersversorgung" ||

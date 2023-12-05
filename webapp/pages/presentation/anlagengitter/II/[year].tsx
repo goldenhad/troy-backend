@@ -2,14 +2,17 @@ import "./style.scss"
 import { GetServerSideProps } from "next";
 import fs from 'fs';
 import { read } from 'xlsx';
-import { User } from '../../../helper/user'
+import { User } from '../../../../helper/user'
 import getNumber from "@/helper/numberformat";
 import { decrypt } from "@/helper/decryptFile";
 import yearPublished from "@/helper/filefunctions";
 
 type StylingProps = {
+    highlighted: boolean;
     bold: boolean,
-    colored: boolean
+    colored: boolean,
+    underlined: boolean,
+    special: boolean
 }
 
 type RowObject = {
@@ -42,7 +45,10 @@ async function parseFile(path: string){
             columns: [],
             styling: {
                 colored: false,
-                bold: false
+                bold: false,
+                underlined: false,
+                highlighted: false,
+                special: false,
             }
         }
 
@@ -60,6 +66,12 @@ async function parseFile(path: string){
 
     const boldrows = [4, 8, 20];
     const colorsrows = [6, 18, 25, 27];
+    const highlightedrow = [5, 17, 24];
+    const specialrow: Array<any> = [];
+
+    specialrow.forEach((row) => {
+        rows[row-lowerLimit].styling.special = true;
+    })
 
     boldrows.forEach((row) => {
         rows[row-lowerLimit].styling.bold = true;
@@ -67,6 +79,10 @@ async function parseFile(path: string){
 
     colorsrows.forEach((row) => {
         rows[row-lowerLimit].styling.colored = true;
+    })
+
+    highlightedrow.forEach((row) => {
+        rows[row-lowerLimit].styling.highlighted = true;
     })
     
     return rows;
@@ -140,7 +156,7 @@ export default function Anlagengitter(props: InitialProps){
 
 
             if(!allempty){
-                return (
+                /* return (
                     <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.colored)? "colored-row": ""}`.replace(/\s+/g,' ').trim()}>
                         <td className="row-meaning">{row[0]}</td>
                         <td className="cell-spacer"><div className="spacer-content"></div></td>
@@ -166,13 +182,32 @@ export default function Anlagengitter(props: InitialProps){
                         <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td className="cell-val special-cell">{getNumber(row[14])}</td>
                     </tr>
+                ); */
+                return (
+                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
+                        <div className="tablecellwide">
+                            {row[0]}
+                        </div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[7], false)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[9], false)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[11], false)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[12], false)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[13], false)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[14], false)}</div>
+                    </div>
                 );
             }else{
                 if(idx == 3 || idx == 15){
-                    return(<><tr></tr></>)
+                    return(<><div></div></>)
                 }
                 if(idx == 22){
-                    return(<><tr></tr><tr></tr></>)
+                    return(<><div></div><div></div></>)
                 }
             }
         });
@@ -180,7 +215,7 @@ export default function Anlagengitter(props: InitialProps){
 
     }
 
-    return(
+    /* return(
         <div className="presentation-page">
             <table>
                 <thead>
@@ -239,6 +274,45 @@ export default function Anlagengitter(props: InitialProps){
                     {getTableContent()}
                 </tbody>
             </table>
+        </div>
+    ); */
+    return(
+        <div className="presentation-page">
+            <div className="tablestructure">
+                <div className="tableheadlinerow">
+                    <div className="tablecellwide">Anlagenspiegel {currentYear}</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Abschreibungen (kumuliert) 01.01.{currentYear}</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Abschreibungen des Geschäftsjahres</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Änderungen im Zusammenhang mit Abgängen</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Abschreibungen (kumuliert) 31.12.{currentYear}</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Buchwert 31.12.{currentYear}</div>
+                    <div className="tablecell tablecellspacer special-spacer"></div>
+                    <div className="tablecell special-header">Buchwert Vohrjahr</div>
+                </div>
+
+                <div className="tableeurorow">
+                    <div className="tablecellwide"></div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                </div>
+
+                {getTableContent()}
+            </div>
         </div>
     );
 }
