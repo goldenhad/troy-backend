@@ -66,7 +66,8 @@ async function parseFile(path: string){
 
     const boldrows = [18, 25, 34];
     const colorsrows = [37];
-    const underlinedrows = [17, 18, 24, 25, 33, 34]
+    const underlinedrows = [17, 18, 24, 25, 33, 34];
+    const highlightedrow = [36];
 
     boldrows.forEach((row) => {
         rows[row-lowerLimit].styling.bold = true;
@@ -78,6 +79,10 @@ async function parseFile(path: string){
 
     colorsrows.forEach((row) => {
         rows[row-lowerLimit].styling.colored = true;
+    })
+
+    highlightedrow.forEach((row) => {
+        rows[row-lowerLimit].styling.highlighted = true;
     })
 
     return rows;
@@ -149,7 +154,7 @@ export default function Kapitalfluss(props: InitialProps){
 
             let allempty = row.every((v: any) => v === null );
 
-            return (
+            /* return (
                 <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
                     <td className="row-meaning">{row[0]}</td>
                     <td className="cell-spacer"><div className="spacer-content"></div></td>
@@ -159,13 +164,27 @@ export default function Kapitalfluss(props: InitialProps){
                     <td className="cell-spacer"><div className="spacer-content"></div></td>
                     <td className="cell-val">{getNumber(row[3])}</td>
                 </tr>
+            ); */
+            return(
+                <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
+                    <div className="tablecellwide">
+                        <div className="possiblecontent-enum">{}</div>
+                        <div className="possiblecontent-title">{row[0]}</div>
+                    </div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">{getNumber(row[1], false)}</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">{getNumber(row[2], false)}</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">{getNumber(row[3], false)}</div>
+                </div>
             );
         });
 
 
     }
 
-    return(
+    /* return(
         <div className="presentation-page">
             <table>
                 <thead>
@@ -192,6 +211,32 @@ export default function Kapitalfluss(props: InitialProps){
                     {getTableContent()}
                 </tbody>
             </table>
+        </div>
+    ); */
+    return(
+        <div className="presentation-page">
+            <div className="tablestructure">
+                <div className="tableheadlinerow">
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">{currentYear-1}</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">{currentYear-2}</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">+/-</div>
+                </div>
+
+                <div className="tableeurorow">
+                    <div className="tablecellwide"></div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">T€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">T€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">T€</div>
+                </div>
+
+                {getTableContent()}
+            </div>
         </div>
     );
 }

@@ -158,7 +158,7 @@ export default function Verbindlichkeiten(props: InitialProps){
                 row[1] = "Gesamtbetrag";
             }
             
-            if(idx % 2 == 0){
+            /* if(idx % 2 == 0){
                 return (
                     <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
                         <td className="cell-title">{row[1]}</td>
@@ -176,6 +176,27 @@ export default function Verbindlichkeiten(props: InitialProps){
                         <td className="cell-val">{getNumber(row[7])}<br />{getBracket(row[7], "l")}{getNumber(props.data[idx+1].columns[7])}{getBracket(row[7], "r")}</td>
                     </tr>
                 );
+            } */
+            if(idx % 2 == 0){
+                return (
+                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
+                        <div className="tablecellwide">
+                            <div className="possiblecontent-title">{row[1]}</div>
+                        </div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[2], true)}<br /><span className={"smallnumber"}>({getNumber(props.data[idx+1].columns[2], true)})</span></div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[3], true)}<br /><span className={"smallnumber"}>({getNumber(props.data[idx+1].columns[3], true)})</span></div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[4], true)}<br /><span className={"smallnumber"}>({getNumber(props.data[idx+1].columns[4], true)})</span></div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[5], true)}<br /><span className={"smallnumber"}>({getNumber(props.data[idx+1].columns[5], true)})</span></div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[6], true)}<br /><span className={"smallnumber"}>({getNumber(props.data[idx+1].columns[6], true)})</span></div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[7])}<br /><span className={"smallnumber"}>{getBracket(row[7], "l")}{getNumber(props.data[idx+1].columns[7])}{getBracket(row[7], "r")}</span></div>
+                    </div>
+                );
             }
         });
 
@@ -183,44 +204,43 @@ export default function Verbindlichkeiten(props: InitialProps){
     }
 
     return(
+        
         <div className="presentation-page">
-            <table>
-                <thead>
-                    <tr>
-                        <th className="cell-title">Verbindlichkeitenspiegel</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Insgesamt</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Restlaufzeit bis zu einem Jahr</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Restlaufzeit 1-5 Jahren</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Restlaufzeit über 5 Jahre</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Gesichert</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Art der Sicherung</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr className="euro-row">
-                        <td></td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>*)</td>
-                    </tr>
-                    {getTableContent()}
-                </tbody>
-            </table>
+            <div className="tablestructure">
+                <div className="tableheadlinerow">
+                    <div className="tablecellwide">Verbindlichkeitenspiegel</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Insgesamt</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Restlaufzeit bis zu einem Jahr</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Restlaufzeit<br/>1-5 Jahren</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Restlaufzeit über 5 Jahre</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Gesichert</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Art der Sicherung</div>
+                </div>
+
+                <div className="tableeurorow">
+                    <div className="tablecellwide"></div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                </div>
+
+                {getTableContent()}
+            </div>
             <p>*) GPR = Grundpfandrecht</p>
             <p>(Vohrjahreszahlen in Klammern)</p>
         </div>

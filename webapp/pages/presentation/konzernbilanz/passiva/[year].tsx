@@ -218,36 +218,6 @@ export default function KonzernbilanzII(props: InitialProps){
 
                 {getTableContent()}
             </div>
-
-            {/* <table>
-                <thead>
-                    <tr>
-                        <th className="cell-enum"></th>
-                        <th className="cell-add-information"></th>
-                        <th className="cell-title"></th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline"></th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Geschäftsjahr</th>
-                        <th className="empty-headline-cell cell-spacer"></th>
-                        <th className="cell-headline">Vorjahr</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr className="euro-row">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                    </tr>
-                    {getTableContent()}
-                </tbody>
-            </table> */}
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import "./style.scss"
-import axios from "axios";
+import axios, { all } from "axios";
 import router from "next/router";
 import { GetServerSideProps } from "next";
 import fs from 'fs';
@@ -70,7 +70,8 @@ async function parseFile(path: string){
     const boldrows = [52, 56];
     const colorsrows = [58, 63];
     const underlinedrows = [50, 52, 54, 56];
-    const specialrows = [13, 26, 31, 35];
+    const specialrows = [13, 27, 31, 35];
+    const highlightedrow = [57, 62];
 
     boldrows.forEach((row) => {
         rows[row-lowerLimit].styling.bold = true;
@@ -86,6 +87,10 @@ async function parseFile(path: string){
 
     specialrows.forEach((row) => {
         rows[row-lowerLimit].styling.special = true;
+    })
+
+    highlightedrow.forEach((row) => {
+        rows[row-lowerLimit].styling.highlighted = true;
     })
 
     return rows;
@@ -156,27 +161,67 @@ export default function Guv(props: InitialProps){
 
             let allempty = row.every((v: any) => v === null );
 
-            if(!allempty){
-                return (
-                    <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
-                        <td className="cell-enum">{row[0]}</td>
-                        <td className="cell-content">{row[1]}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-numbers">{getNumber(row[2])}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-numbers">{getNumber(row[3])}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-numbers">{getNumber(row[5])}</td>
-                    </tr>
-                );
+            if(rowobj.styling.special){
+                if(!allempty){
+                    return (
+                        <>
+                            <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
+                                <div className="tablecellwide">
+                                    <div className="possiblecontent-enum">{row[0]}</div>
+                                    <div className="possiblecontent-count">{}</div>
+                                    <div className="possiblecontent-title">{row[1]}</div>
+                                </div>
+                                <div className="tablecellspacer"></div>
+                                <div className="tablecellnumber">{getNumber(row[2], false)}</div>
+                                <div className="tablecellspacer"></div>
+                                <div className="tablecellnumber"></div>
+                                <div className="tablecellspacer"></div>
+                                <div className="tablecellnumber">{getNumber(row[5], false)}</div>
+                            </div>
+                            <div key={idx + 9999} className={`tablecontentrow disaligned-row`}>
+                                <div className="tablecellwide">
+                                    <div className="possiblecontent-enum"></div>
+                                    <div className="possiblecontent-count">{}</div>
+                                    <div className="possiblecontent-title"></div>
+                                </div>
+                                <div className="tablecellspacer"></div>
+                                <div className="tablecellnumber"></div>
+                                <div className="tablecellspacer"></div>
+                                <div className="tablecellnumber">{getNumber(row[3], false)}</div>
+                                <div className="tablecellspacer"></div>
+                                <div className="tablecellnumber"></div>
+                            </div>
+                        </>
+                    );
+                }
+            }else{
+                if(!allempty){
+                    return(
+                        <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
+                            <div className="tablecellwide">
+                                <div className="possiblecontent-enum">{row[0]}</div>
+                                <div className="possiblecontent-count">{}</div>
+                                <div className="possiblecontent-title">{row[1]}</div>
+                            </div>
+                            <div className="tablecellspacer"></div>
+                            <div className="tablecellnumber">{getNumber(row[2], false)}</div>
+                            <div className="tablecellspacer"></div>
+                            <div className="tablecellnumber">{getNumber(row[3], false)}</div>
+                            <div className="tablecellspacer"></div>
+                            <div className="tablecellnumber">{getNumber(row[5], false)}</div>
+                        </div>
+                    );
+                }
             }
+
+            
         });
 
 
     }
 
     return(
-        <div className="presentation-page">
+        /*<div className="presentation-page">
             <table>
                 <thead>
                     <tr>
@@ -205,6 +250,29 @@ export default function Guv(props: InitialProps){
                     {getTableContent()}
                 </tbody>
             </table>
+        </div> */
+        <div className="presentation-page">
+            <div className="tablestructure">
+                <div className="tableheadlinerow">
+                    <div className="tablecell">Geschäftsjahr</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">Vorjahr</div>
+                </div>
+
+                <div className="tableeurorow">
+                    <div className="tablecellwide"></div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">€</div>
+                </div>
+
+                {getTableContent()}
+            </div>
         </div>
     );
+
+
 }
