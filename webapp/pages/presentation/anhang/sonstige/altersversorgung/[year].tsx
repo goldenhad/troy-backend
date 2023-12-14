@@ -153,7 +153,7 @@ export default function Verbindlichkeiten(props: InitialProps){
             let allempty = row.every((v: any) => v === null );
             
             if(!allempty){
-                return (
+                /* return (
                     <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
                         <td className="cell-title">{row[0]}</td>
                         <td className="cell-spacer" ><div className="spacer-content"></div></td>
@@ -161,6 +161,17 @@ export default function Verbindlichkeiten(props: InitialProps){
                         <td className="cell-spacer"><div className="spacer-content"></div></td>
                         <td className="cell-val">{formatNumber(row[2], idx, props.data.length-1)}</td>
                     </tr>
+                ); */
+                return(
+                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
+                        <div className="tablecellwide">
+                            <div className="possiblecontent-title">{row[0]}</div>
+                        </div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{formatNumber(row[1], idx, props.data.length-1)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{formatNumber(row[2], idx, props.data.length-1)}</div>
+                    </div>
                 );
             }
         });
@@ -168,7 +179,7 @@ export default function Verbindlichkeiten(props: InitialProps){
 
     }
 
-    return(
+    /* return(
         <div className="presentation-page">
             <table>
                 <thead>
@@ -184,6 +195,21 @@ export default function Verbindlichkeiten(props: InitialProps){
                     {getTableContent()}
                 </tbody>
             </table>
+        </div>
+    ); */
+    return(
+        <div className="presentation-page">
+            <div className="tablestructure">
+                <div className="tableheadlinerow">
+                    <div className="tablecellwide">Mitgliedschaft</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">KBV<br />VBL</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">KSG<br />kvw</div>
+                </div>
+
+                {getTableContent()}
+            </div>
         </div>
     );
 }

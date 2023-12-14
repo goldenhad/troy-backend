@@ -147,7 +147,7 @@ export default function Verbindlichkeiten(props: InitialProps){
                 row[1] = "Gesamtbetrag";
             }
             
-            return (
+            /* return (
                 <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
                     <td className="cell-title">{row[1]}</td>
                     <td className="cell-spacer" ><div className="spacer-content"></div></td>
@@ -155,13 +155,24 @@ export default function Verbindlichkeiten(props: InitialProps){
                     <td className="cell-spacer"><div className="spacer-content"></div></td>
                     <td className="cell-val">{getNumber(row[4])}</td>
                 </tr>
+            ); */
+            return(
+                <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
+                    <div className="tablecellwide">
+                        <div className="possiblecontent-title">{row[1]}</div>
+                    </div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">{getNumber(row[3], false)}</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">{getNumber(row[4], false)}</div>
+                </div>
             );
         });
 
 
     }
 
-    return(
+    /* return(
         <div className="presentation-page">
             <table>
                 <thead>
@@ -184,6 +195,29 @@ export default function Verbindlichkeiten(props: InitialProps){
                     {getTableContent()}
                 </tbody>
             </table>
+        </div>
+    ); */
+    return(
+        <div className="presentation-page">
+            <div className="tablestructure">
+                <div className="tableheadlinerow">
+                    <div className="tablecellwide">Umsatzerlös aus der Hausbewirtschaftung</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">{currentYear}</div>
+                    <div className="tablecell tablecellspacer"></div>
+                    <div className="tablecell">{currentYear-1}</div>
+                </div>
+
+                <div className="tableeurorow">
+                    <div className="tablecellwide"></div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">T€</div>
+                    <div className="tablecellspacer"></div>
+                    <div className="tablecellnumber">T€</div>
+                </div>
+
+                {getTableContent()}
+            </div>
         </div>
     );
 }

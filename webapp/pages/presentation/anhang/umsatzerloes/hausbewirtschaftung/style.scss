@@ -1,4 +1,4 @@
-.presentation-page{
+/* .presentation-page{
     margin-right: 2px;
 }
 
@@ -155,4 +155,281 @@ tr{
         border-bottom: 5px lightgray solid;
     }
 }
+ */
 
+.presentation-page{
+    font-size: 12px;
+    margin-right: 2px;
+}
+
+table{
+    width: 100%;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+table td, table th { 
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+ .tablestructure {
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f5;
+    width: 100%;
+
+    .tableheadlinerow {
+        display: flex;
+        flex-direction: row;
+        background-color: #90B2B1;
+        color: white;
+        font-weight: 700;
+
+        .tablecellwide {
+            width: 70%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 10px;
+            padding-right: 5px;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .tablecell {
+            width: 120px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-right: 10px;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            text-align: right;
+            align-items: center;
+        }
+
+        .tablecellspacer{
+            width: 40px;
+            padding-left: 0px;
+            padding-right: 0px;
+            background-color: #90B2B1;
+        }
+    }
+
+    .tableeurorow{
+        display: flex;
+        flex-direction: row;
+
+        .tablecellwide{
+            width: 70%;
+            border-bottom: 2px solid #90B2B1;
+        }
+
+        .tablecellspacer{
+            width: 40px;
+        }
+
+        .tablecellnumber{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+
+            width: 120px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+
+            border-bottom: 2px solid #90B2B1;
+        }
+    }
+
+    .bold-row {
+        font-weight: 700;
+        
+        .tablecellwide{
+            padding-left: 10px;
+
+            .possiblecontent-title{
+                border-bottom: none !important;
+            }
+            border-bottom: 2px solid #90B2B1 !important;
+        }
+
+        .tablecellnumber{
+            border-bottom: 2px solid #90B2B1 !important;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+
+    .highlighted-row {
+        >* {
+            border-bottom: none !important;
+        }
+
+        .tablecellnumber{
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+
+    .special-row {
+
+        .tablecellwide{
+            border-bottom: none !important;
+            border-top: none !important;
+            border-bottom: 2px solid #b0aa9b !important;
+            padding-left: 10px;
+
+            .possiblecontent-count{
+                border-top: none !important;
+
+            }
+
+            .possiblecontent-title{
+                border-top: none !important;
+                border-bottom: none !important;
+            }
+        }
+
+        .tablecellnumber{
+            border-top: none !important;
+            border-bottom: none !important;
+            padding-left: 5px;
+            padding-right: 5px;
+            border-bottom: 2px solid #90B2B1 !important;
+        }
+    }
+
+    .disaligned-row{
+        height: 34px;
+    }
+
+    .none-row {
+        .tablecellwide{
+            padding-left: 10px;
+            .possiblecontent-title{
+                border-bottom: none !important;
+            }
+        }
+
+        .tablecellnumber{
+            border-bottom: none !important;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+
+    .colored-row {
+        color: white;
+        font-weight: 700;
+
+        .tablecellspacer{
+            background-color: #f4f4f5 !important;
+        }
+
+        .tablecellwide{
+            background-color: #90B2B1;
+            padding-left: 10px;
+            .possiblecontent-title{
+                border-bottom: none !important;
+            }
+            border-bottom: none !important;
+        }
+
+        .tablecellnumber{
+            background-color: #90B2B1;
+            border-bottom: none !important;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+
+    .underlined-row {
+        
+
+        .tablecellwide {
+            border-bottom: 2px solid #90B2B1 !important;
+            padding-left: 10px;
+
+            .possiblecontent-enum{
+                border-bottom: none !important;
+            }
+            .possiblecontent-count{
+                border-bottom: none !important;
+            }
+            .possiblecontent-title{
+                border-bottom: none !important;
+            }
+        }
+
+        .tablecellspacer {
+            border-bottom: none !important;
+        }
+
+        .tablecellnumber {
+            border-bottom: 2px solid #90B2B1 !important;
+            width: 120px;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+
+    .tablecontentrow{
+        display: flex;
+        flex-direction: row;
+
+        .tablecellwide{
+            width: 70%;
+            display: flex;
+            flex-direction: row;
+
+            padding-top: 10px;
+            padding-left: 10px;
+            padding-right: 5px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #b0aa9b;
+            
+
+            .possiblecontent-enum {
+                width: 6%;
+                padding-bottom: 5px;
+                border-bottom: none !important;
+            }
+
+            .possiblecontent-count {
+                width: 10%;
+                padding-bottom: 5px;
+                text-wrap: nowrap;
+            }
+
+            .possiblecontent-title {
+                width: 100%;
+            }
+        }
+
+        .tablecellspacer{
+            width: 40px;
+        }
+
+        .tablecellnumber{
+            width: 120px;
+            border-bottom: 1px solid #b0aa9b;
+
+            padding-left: 5px;
+            padding-right: 5px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+        }
+    }
+}
