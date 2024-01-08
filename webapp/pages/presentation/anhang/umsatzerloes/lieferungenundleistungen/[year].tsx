@@ -35,8 +35,8 @@ async function parseFile(path: string){
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     const cols: Array<String> = alphabet.slice(0, 5).split("");
-    const lowerLimit = 14;
-    const higherLimit = 19;
+    const lowerLimit = 23;
+    const higherLimit = 28;
 
     let rows: Array<RowObject> = [];
 
@@ -64,8 +64,8 @@ async function parseFile(path: string){
         rows.push(rowobj);
     }
 
-    const underlinedrows = [18, 19];
-    const boldrows = [19]
+    const underlinedrows = [27, 28];
+    const boldrows = [28]
 
     boldrows.forEach((row) => {
         rows[row-lowerLimit].styling.bold = true;
@@ -179,7 +179,7 @@ export default function Verbindlichkeiten(props: InitialProps){
             <table>
                 <thead>
                     <tr>
-                        <th className="cell-title">Umsatzerlös aus anderen Lieferungen und Leistungen</th>
+                        <th className="cell-title">Umsatzerlös aus Betreuungstätigkeit</th>
                         <th className="cell-spacer"></th>
                         <th className="cell-headline">{currentYear}</th>
                         <th className="cell-spacer"></th>
@@ -203,7 +203,7 @@ export default function Verbindlichkeiten(props: InitialProps){
         <div className="presentation-page">
             <div className="tablestructure">
                 <div className="tableheadlinerow">
-                    <div className="tablecellwide">Umsatzerlös aus der Hausbewirtschaftung</div>
+                    <div className="tablecellwide">Umsatzerlös aus der Lieferungen und Leistungen</div>
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">{currentYear}</div>
                     <div className="tablecell tablecellspacer"></div>
