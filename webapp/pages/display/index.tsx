@@ -72,6 +72,10 @@ export default function DisplayPage(props: InitialProps){
             tl == "anlagengitter/II" ||
             tl == "rueckstellung" ||
             tl == "verbindlichkeiten" ||
+            tl == "lagebericht/bestand" ||
+            tl == "lagebericht/neubau" ||
+            tl == "lagebericht/ertragslage" ||
+            tl == "lagebericht/finanzlage" ||
             tl == "anhang/sonstige/altersversorgung" ||
             tl == "anhang/sonstige/betrieblicheaufwendungen" ||
             tl == "anhang/sonstige/betrieblicheertraege" ||

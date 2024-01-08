@@ -100,7 +100,28 @@ export const fileobjs = [{
     text: "Lagebericht",
     links: {
         file: "lagebericht.xlsx",
-        representations: []
+        representations: [
+            {
+                urlobj: `/display?year=${currentyear}&table=lagebericht/bestand`,
+                name: "Bestandsmanagement",
+                icon: "table"
+            },
+            {
+                urlobj: `/display?year=${currentyear}&table=lagebericht/neubau`,
+                name: "Neubau",
+                icon: "table"
+            },
+            {
+                urlobj: `/display?year=${currentyear}&table=lagebericht/ertragslage`,
+                name: "Ertragslage",
+                icon: "table"
+            },
+            {
+                urlobj: `/display?year=${currentyear}&table=lagebericht/finanzlage`,
+                name: "Fianzlage",
+                icon: "table"
+            },
+        ]
     }
 },
 {
