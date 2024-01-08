@@ -4,6 +4,8 @@
 
 table{
     width: 100%;
+    border-spacing: 0px;
+    border-collapse: separate;
 }
 
 .empty-headline-cell{
@@ -117,6 +119,7 @@ tr{
 
 .cell-spacer{
     text-align: right;
+    border-bottom: none !important;
 }
 
 .cell-val{

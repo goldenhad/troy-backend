@@ -117,11 +117,12 @@ tr{
 
 .cell-spacer{
     text-align: right;
+    border-bottom: none !important;
 }
 
 .cell-spacer-wide{
     width: 10%;
-    border-bottom: none;
+    border-bottom: none !important;
 }
 
 .cell-val{

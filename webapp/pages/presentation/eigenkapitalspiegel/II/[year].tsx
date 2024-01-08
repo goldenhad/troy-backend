@@ -23,6 +23,7 @@ type RowObject = {
 interface InitialProps {
     InitialState: User;
     data: Array<any>;
+    scale: boolean;
 }
 
 const FILEREF = 'eigenkapitalspiegel';
@@ -118,6 +119,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 props: {
                     InitialState: {},
                     data: guvdata,
+                    scale: (ctx.query.scaled)? ctx.query.scaled=="1": false
                 },
             };
         }else{
@@ -167,7 +169,7 @@ export default function Eigenkapitelspiegel(props: InitialProps){
     }
 
     return(
-        <div className="presentation-page">
+        <div className="presentation-page" style={{zoom: (props.scale)? 0.6: 1}}>
             <table>
                 <thead>
                     <tr>
