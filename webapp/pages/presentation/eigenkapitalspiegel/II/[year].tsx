@@ -169,7 +169,7 @@ export default function Eigenkapitelspiegel(props: InitialProps){
     }
 
     return(
-        <div className="presentation-page" style={{zoom: (props.scale)? 0.6: 1}}>
+        <div className="presentation-page" style={{zoom: (props.scale)? 0.6: 1, transformOrigin: `0 0`}}>
             <table>
                 <thead>
                     <tr>
