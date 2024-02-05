@@ -84,7 +84,7 @@ export default function DisplayPage(props: InitialProps){
             tl == "anhang/umsatzerloes/hausbewirtschaftung" ||
             tl == "anhang/umsatzerloes/lieferungenundleistungen"
         ){
-            return `/presentation/${tl}/${props.year}`;
+            return `/presentation/${tl}/${props.year}?scaled=1`;
         }else{
             return "";
         }
@@ -95,7 +95,7 @@ export default function DisplayPage(props: InitialProps){
             <Layout user={props.InitialState}>
                 <div className="content">
                     <div className="data-presentation">
-                        <iframe src={parseTable()} width={912} height={850}></iframe>
+                        <iframe src={parseTable()} width={912} height={500}></iframe>
                     </div>
                 </div>
             </Layout>

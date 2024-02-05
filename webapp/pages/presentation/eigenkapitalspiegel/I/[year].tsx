@@ -172,7 +172,7 @@ export default function Eigenkapitelspiegel(props: InitialProps){
     }
 
     return(
-        <div className="presentation-page" style={{transform: `scale(${(props.scale)? 0.6: 1})`, transformOrigin: `0 0`}}>
+        <div className="presentation-page" style={{transform: `scale(${(props.scale)? 0.6: 1})`, transformOrigin: `0 0`, height: 450}}>
             <table>
                 <thead>
                     <tr>
