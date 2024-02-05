@@ -23,6 +23,7 @@ type RowObject = {
 interface InitialProps {
     InitialState: User;
     data: Array<any>;
+    scale: boolean;
 }
 
 const FILEREF = 'rueckstellung';
@@ -223,7 +224,7 @@ export default function Rueckstellungen(props: InitialProps){
         </div>
     ); */
     return(
-        <div className="presentation-page">
+        <div className="presentation-page" style={{transform: `scale(${(props.scale)? 0.6: 1})`, transformOrigin: `0 0`}}>
             <div className="tablestructure">
                 <div className="tableheadlinerow">
                     <div className="tablecellwide">Rückstellungsspiegel</div>

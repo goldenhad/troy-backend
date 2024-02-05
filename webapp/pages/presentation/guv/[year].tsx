@@ -28,6 +28,7 @@ type RowObject = {
 interface InitialProps {
     InitialState: User;
     data: Array<any>;
+    scale: boolean;
 }
 
 const FILEREF = 'guv';
@@ -251,7 +252,7 @@ export default function Guv(props: InitialProps){
                 </tbody>
             </table>
         </div> */
-        <div className="presentation-page">
+        <div className="presentation-page" style={{transform: `scale(${(props.scale)? 0.6: 1})`, transformOrigin: `0 0`}}>
             <div className="tablestructure">
                 <div className="tableheadlinerow">
                     <div className="tablecell">Geschäftsjahr</div>

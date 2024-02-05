@@ -95,7 +95,7 @@ export default function DisplayPage(props: InitialProps){
             <Layout user={props.InitialState}>
                 <div className="content">
                     <div className="data-presentation">
-                        <iframe src={parseTable()} width={912} height={850}></iframe>
+                        <iframe src={parseTable()} width={912} height={480}></iframe>
                     </div>
                 </div>
             </Layout>
