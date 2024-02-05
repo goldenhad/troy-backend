@@ -84,7 +84,7 @@ export default function DisplayPage(props: InitialProps){
             tl == "anhang/umsatzerloes/hausbewirtschaftung" ||
             tl == "anhang/umsatzerloes/lieferungenundleistungen"
         ){
-            return `/presentation/${tl}/${props.year}`;
+            return `/presentation/${tl}/${props.year}?scaled=1`;
         }else{
             return "";
         }
