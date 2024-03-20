@@ -8,14 +8,18 @@ import {
     Title,
     Tooltip,
     Legend,
+    PointElement,
+    LineElement,
   } from 'chart.js';
 import { useEffect, useState } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
     BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend
@@ -23,7 +27,8 @@ ChartJS.register(
 
 type ComponentProps = {
     data: Array<SalesData>,
-    availableYears: Array<string>
+    availableYears: Array<string>,
+    title: string
 }
 
 export type SalesData = {
@@ -37,38 +42,56 @@ export type DataSet = {
     backgroundColor: string
 }
 
-export const options = {
-    responsive: true,
-    plugins: {
-            legend: {
-            position: 'top' as const,
-        },
-            title: {
-            display: true,
-            text: 'Chart.js Bar Chart',
-        },
-    },
-};
 
 
-export default function SalesChart({ data, availableYears }: ComponentProps){
+export default function SalesChart({ data, availableYears, title }: ComponentProps){
     const [ selectedYears, setSelectedYears ] = useState<Array<string>>([availableYears[availableYears.length - 1]]);
+    const [ mode, setMode ] = useState("bar");
     const [ datasets, setDatasets ] = useState<Array<DataSet>>([]);
+
+    const options = {
+        responsive: true,
+        plugins: {
+                legend: {
+                position: 'top' as const,
+            },
+                title: {
+                display: true,
+                text: `${title} pro Jahr`,
+            },
+        },
+    };
 
     useEffect(() => {
         let sets: Array<DataSet> = [];
-        data.forEach((entry: SalesData, idx: number) => {
-            if (selectedYears?.includes(entry.year.toString())){
-                sets.push({
-                    label: entry.year.toString(),
-                    data: [ entry.value ],
-                    backgroundColor: getColor(idx)
-                });
-            }
-        });
+        if(mode == "bar"){
+            data.forEach((entry: SalesData, idx: number) => {
+                if (selectedYears?.includes(entry.year.toString())){
+                    sets.push({
+                        label: entry.year.toString(),
+                        data: [ entry.value ],
+                        backgroundColor: getColor(idx)
+                    });
+                }
+            });
+        }else{
+            let labels = selectedYears;
+            let datavalues: number[] = [];
+            data.forEach((entry: SalesData, idx: number) => {
+                if (selectedYears?.includes(entry.year.toString())){
+                    datavalues.push(entry.value);
+                }
+            });
+
+            sets.push({
+                label: "Umsatz",
+                data: datavalues,
+                backgroundColor: getColor(1)
+            });
+        }
 
         setDatasets(sets);
-    }, [selectedYears, data]);
+    }, [selectedYears, data, mode]);
 
 
     const constructOptions = () => {
@@ -82,15 +105,45 @@ export default function SalesChart({ data, availableYears }: ComponentProps){
         return options;
     }
 
+    const getChart = () => {
+        if(mode=="bar"){
+            return(
+                <Bar
+                options={options}
+                data={{
+                    labels: [title],
+                    datasets: datasets
+                }}
+            />
+            );
+        }else{
+            return(
+                <Line
+                options={options}
+                data={{
+                    labels: selectedYears,
+                    datasets: datasets
+                }}
+            />
+            );
+        }
+    }
+
 
     return (
         <>
-            <Bar
-                options={options}
-                data={{
-                    labels: ["Umsatz"],
-                    datasets: datasets
+            {getChart()}
+            <Select
+                style={{ width: '100%' }}
+                placeholder="Please select"
+                defaultValue={"bar"}
+                onChange={(selected: string) => {
+                    setMode(selected);
                 }}
+                options={[
+                    {label: "Balkendiagramm", value: "bar"},
+                    {label: "Liniendiagramm", value: "line"}
+                ]}
             />
             <Select
                 mode="multiple"

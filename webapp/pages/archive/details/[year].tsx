@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     } else {
 
         let qyear = -1;
-        if(ctx.query.year){
+        if(ctx.params?.year){
             qyear = parseInt(ctx.query.year as string);
         }
 
@@ -93,7 +93,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         if(userobj.role.capabilities.canUnfreeze || userobj.role.capabilities.canUploadFiles){
             let currentData = null
-            const year = new Date().getFullYear();
+            const year = qyear;
             let files: Array<Files> | null = await prisma.files.findMany({include: {responsible: true}});
             if(!files){
                 files = null;
@@ -217,7 +217,6 @@ export default function UploadPage(props: InitialProps){
             return <></>;
         }
     }
-
 
     return(
         <div>
