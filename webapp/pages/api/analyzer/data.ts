@@ -36,48 +36,44 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     //Check if the request is a post request
     if(req.method == 'POST'){
 
-        if(req.cookies.login){
-            let postreq = req.body;
+        let postreq = req.body;
 
-            const yearsPublished: Array<number> = await getAllYearsPublished();
-            const years: Array<string> = [];
+        const yearsPublished: Array<number> = await getAllYearsPublished();
+        const years: Array<string> = [];
 
-            yearsPublished.forEach(year => {
-                years.push(year.toString());
-            });
+        yearsPublished.forEach(year => {
+            years.push(year.toString());
+        });
 
-            const data: Array<{ year: number, value: number }> = [];
+        const data: Array<{ year: number, value: number }> = [];
 
-            console.log(years);
+        console.log(years);
 
-            for(let i=0; i < years.length; i++){
-                const year = years[i];
+        for(let i=0; i < years.length; i++){
+            const year = years[i];
 
-                if(postreq.datasource == "SALES"){
-                    
-                }
-
-                let value = { v: 0 };
-
-                switch(postreq.datasource){
-                    case "SALES":
-                        value = await getSalesValuefromPath("GuV", "E59", `./public/data/${year}/guv.bin`);
-                        break;
-                    case "PROCEEDS":
-                        value = await getSalesValuefromPath("GuV", "E59", `./public/data/${year}/guv.bin`);
-                        break;
-                }
-
-                data.push({
-                    year: parseInt(year),
-                    value: value.v
-                });
+            if(postreq.datasource == "SALES"){
+                
             }
 
-            return res.status(200).send({ errorcode: 0, message: data });
-        }else{
-            return res.status(400).send({ errorcode: 99, message: [] });
+            let value = { v: 0 };
+
+            switch(postreq.datasource){
+                case "SALES":
+                    value = await getSalesValuefromPath("GuV", "E59", `./public/data/${year}/guv.bin`);
+                    break;
+                case "PROCEEDS":
+                    value = await getSalesValuefromPath("GuV", "E59", `./public/data/${year}/guv.bin`);
+                    break;
+            }
+
+            data.push({
+                year: parseInt(year),
+                value: value.v
+            });
         }
+
+        return res.status(200).send({ errorcode: 0, message: data });
     }else{
         //If the request is anything other than a POST
         return res.status(400).send({ errorcode: 1, message: [] });

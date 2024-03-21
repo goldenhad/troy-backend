@@ -27,7 +27,8 @@ ChartJS.register(
 
 type ComponentProps = {
     data: Array<SalesData>,
-    availableYears: Array<string>,
+    selectedYears: Array<string>,
+    mode: string,
     title: string
 }
 
@@ -44,9 +45,7 @@ export type DataSet = {
 
 
 
-export default function SalesChart({ data, availableYears, title }: ComponentProps){
-    const [ selectedYears, setSelectedYears ] = useState<Array<string>>([availableYears[availableYears.length - 1]]);
-    const [ mode, setMode ] = useState("bar");
+export default function SalesChart({ data, title, mode, selectedYears }: ComponentProps){
     const [ datasets, setDatasets ] = useState<Array<DataSet>>([]);
 
     const options = {
@@ -94,16 +93,7 @@ export default function SalesChart({ data, availableYears, title }: ComponentPro
     }, [selectedYears, data, mode]);
 
 
-    const constructOptions = () => {
-        const options: Array<{label: string, value: string}> = [];
-        availableYears.forEach((year) => {
-            options.push({
-                label: year,
-                value: year
-            })
-        });
-        return options;
-    }
+    
 
     const getChart = () => {
         if(mode=="bar"){
@@ -133,29 +123,6 @@ export default function SalesChart({ data, availableYears, title }: ComponentPro
     return (
         <>
             {getChart()}
-            <Select
-                style={{ width: '100%' }}
-                placeholder="Please select"
-                defaultValue={"bar"}
-                onChange={(selected: string) => {
-                    setMode(selected);
-                }}
-                options={[
-                    {label: "Balkendiagramm", value: "bar"},
-                    {label: "Liniendiagramm", value: "line"}
-                ]}
-            />
-            <Select
-                mode="multiple"
-                allowClear
-                style={{ width: '100%' }}
-                placeholder="Please select"
-                defaultValue={[availableYears[availableYears.length - 1]]}
-                onChange={(selected: Array<string>) => {
-                    setSelectedYears(selected);
-                }}
-                options={constructOptions()}
-            />
         </>
     );
 
