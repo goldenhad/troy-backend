@@ -85,8 +85,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
         const data: Array<{ year: number, value: number }> = [];
 
-        console.log(years);
-
         for(let i=0; i < years.length; i++){
             const year = years[i];
 
@@ -96,7 +94,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
             let value = { v: 0 };
 
-            console.log(postreq.company, postreq.datasource);
 
             const effectiveIndex = companyOffsetMapping(postreq.company) + dataSourceIndexMapping(postreq.datasource)
 
