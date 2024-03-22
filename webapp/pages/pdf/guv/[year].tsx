@@ -10,6 +10,8 @@ import getNumber from "@/helper/numberformat";
 import * as openpgp from 'openpgp';
 import { decrypt } from "@/helper/decryptFile";
 import yearPublished from "@/helper/filefunctions";
+import { useRef } from "react";
+import generatePDF from 'react-to-pdf';
 
 
 type StylingProps = {
@@ -152,6 +154,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export default function Guv(props: InitialProps){
+    const printref = useRef<HTMLInputElement>(null);
 
     const getTableContent = () => {
 
@@ -251,9 +254,10 @@ export default function Guv(props: InitialProps){
                 </tbody>
             </table>
         </div> */
-        <div className="presentation-page">
-            <div className="tablestructure">
-                <div className="tableheadlinerow">
+            <div>
+                <div className="presentation-page" ref={printref}>
+                <div className="tablestructure">
+                    <div className="tableheadlinerow">
                         <div className="tablecellwide"></div>
                         <div className="tablecellfiller"></div>
                         <div className="tablecell"></div>
@@ -263,17 +267,18 @@ export default function Guv(props: InitialProps){
                         <div className="tablecell">Vorjahr</div>
                     </div>
 
-                <div className="tableeurorow">
-                    <div className="tablecellwide"></div>
-                    <div className="tablecellspacer"></div>
-                    <div className="tablecellnumber">€</div>
-                    <div className="tablecellspacer"></div>
-                    <div className="tablecellnumber">€</div>
-                    <div className="tablecellspacer"></div>
-                    <div className="tablecellnumber">€</div>
-                </div>
+                    <div className="tableeurorow">
+                        <div className="tablecellwide"></div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">€</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">€</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">€</div>
+                    </div>
 
-                {getTableContent()}
+                    {getTableContent()}
+                </div>
             </div>
         </div>
     );

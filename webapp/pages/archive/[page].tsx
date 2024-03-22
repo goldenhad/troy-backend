@@ -163,7 +163,13 @@ export default function Archive(props: InitialProps){
             dataIndex: 'status',
             key: 'status',
             render: (_: any, obj: any) =>{
-                return (obj.status)? "Freigegeben": "In Bearbeitung"
+                if(obj.status == "erstellt"){
+                    return "erstellt";
+                }else if(obj.status == "freigegeben"){
+                    return "freigegeben";
+                }else{
+                    return "In Revision"
+                }
             }
         },
         {

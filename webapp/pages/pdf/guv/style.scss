@@ -131,6 +131,7 @@ table td, table th {
  .tablestructure {
     display: flex;
     flex-direction: column;
+    background-color: #f4f4f5;
     width: 100%;
 
     .tableheadlinerow {
@@ -190,20 +191,16 @@ table td, table th {
         .tablecellwide{
             width: 50%;
             border-bottom: 2px solid #b9ca48;
-            background-color: #f4f4f5;
         }
 
         .tablecellspacer{
             width: 25px;
-            background-color: #f4f4f5;
         }
 
         .tablecellnumber{
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
-            background-color: #f4f4f5;
-
 
             width: 130px;
             padding-top: 10px;
@@ -222,12 +219,10 @@ table td, table th {
             .possiblecontent-title{
                 border-bottom: none !important;
             }
-            background-color: #f4f4f5;
             border-bottom: 2px solid #b9ca48 !important;
         }
 
         .tablecellnumber{
-            background-color: #f4f4f5;
             border-bottom: 2px solid #b9ca48 !important;
             padding-left: 5px;
             padding-right: 5px;
@@ -237,7 +232,6 @@ table td, table th {
     .highlighted-row {
         >* {
             border-bottom: none !important;
-            background-color: #f4f4f5;
         }
 
         .tablecellnumber{
@@ -253,22 +247,16 @@ table td, table th {
             border-bottom: none !important;
             border-top: none !important;
             border-bottom: 2px solid #b0aa9b !important;
-            background-color: #f4f4f5;
-
 
 
             .possiblecontent-count{
                 border-top: none !important;
-                background-color: #f4f4f5;
-
 
             }
 
             .possiblecontent-title{
                 border-top: none !important;
                 border-bottom: none !important;
-                background-color: #f4f4f5;
-
             }
         }
 
@@ -278,8 +266,6 @@ table td, table th {
             padding-left: 5px;
             padding-right: 5px;
             border-bottom: 2px solid #b9ca48 !important;
-            background-color: #f4f4f5;
-
         }
     }
 
@@ -289,16 +275,12 @@ table td, table th {
 
     .none-row {
         .tablecellwide{
-            background-color: #f4f4f5;
             .possiblecontent-title{
                 border-bottom: none !important;
-                
             }
         }
 
         .tablecellnumber{
-            background-color: #f4f4f5;
-
             border-bottom: none !important;
             padding-left: 5px;
             padding-right: 5px;
@@ -314,7 +296,7 @@ table td, table th {
         }
 
         .tablecellwide{
-            background-color: #b9ca48 !important;
+            background-color: #b9ca48;
             .possiblecontent-title{
                 border-bottom: none !important;
             }
@@ -322,7 +304,7 @@ table td, table th {
         }
 
         .tablecellnumber{
-            background-color: #b9ca48 !important;
+            background-color: #b9ca48;
             border-bottom: none !important;
             padding-left: 5px;
             padding-right: 5px;
@@ -334,8 +316,6 @@ table td, table th {
 
         .tablecellwide {
             border-bottom: 2px solid #b9ca48 !important;
-            background-color: #f4f4f5;
-
 
             .possiblecontent-enum{
                 border-bottom: none !important;
@@ -350,13 +330,9 @@ table td, table th {
 
         .tablecellspacer {
             border-bottom: none !important;
-            background-color: #f4f4f5;
-
         }
 
         .tablecellnumber {
-            background-color: #f4f4f5;
-
             border-bottom: 2px solid #b9ca48 !important;
             width: 130px;
             padding-left: 5px;
@@ -378,15 +354,12 @@ table td, table th {
             padding-right: 5px;
             padding-bottom: 10px;
             border-bottom: 2px solid #b0aa9b;
-            background-color: #f4f4f5;
-
             
 
             .possiblecontent-enum {
                 width: 6%;
                 padding-bottom: 5px;
                 border-bottom: none !important;
-                
             }
 
             .possiblecontent-count {
@@ -402,7 +375,6 @@ table td, table th {
 
         .tablecellspacer{
             width: 25px;
-            background-color: #f4f4f5;
         }
 
         .tablecellnumber{
@@ -416,8 +388,6 @@ table td, table th {
             flex-direction: column;
             align-items: flex-end;
             justify-content: center;
-            background-color: #f4f4f5;
-
         }
     }
 }
