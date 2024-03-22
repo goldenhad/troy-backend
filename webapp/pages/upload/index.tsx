@@ -36,7 +36,7 @@ interface InitialProps {
     currentData: Files;
 }
 
-type FileObjKey = "guv" | "konzernbilanz" | "eigenkapitalspiegel" | "kapitalfluss" | "anlagengitter" | "rueckstellung" | "verbindlichkeiten"  | "lagebericht" | "anhang";
+type FileObjKey = "guv" | "konzernbilanz" | "eigenkapitalspiegel" | "kapitalfluss" | "anlagengitter" | "rueckstellung" | "verbindlichkeiten"  | "lagebericht" | "anhang" | "kennzahlen";
 type ErrorCode = "XMIMETYPE" | "XSIZE" | "XINVALID" | "OK" | "GENERIC";
 type FileError = {
     "code": ErrorCode,
@@ -52,7 +52,8 @@ type Fileobj = {
     "rueckstellung": undefined | File,
     "verbindlichkeiten": undefined | File,
     "lagebericht": undefined | File,
-    "anhang": undefined | File
+    "anhang": undefined | File,
+    "kennzahlen": undefined | File
 }
 
 type FileobjErr = {
@@ -65,6 +66,7 @@ type FileobjErr = {
     "verbindlichkeiten": undefined | FileError,
     "lagebericht": undefined | FileError,
     "anhang": undefined | FileError,
+    "kennzahlen": undefined | FileError,
     "generic": undefined | FileError,
 }
   
@@ -156,7 +158,8 @@ export default function UploadPage(props: InitialProps){
         "rueckstellung": undefined,
         "verbindlichkeiten": undefined,
         "lagebericht": undefined,
-        "anhang": undefined
+        "anhang": undefined,
+        "kennzahlen": undefined
     });
     const uploadButtonRef = useRef<HTMLInputElement>(null);
     const [errorVisible, setErrorVisible] = useState(false);
@@ -171,6 +174,7 @@ export default function UploadPage(props: InitialProps){
         "lagebericht": undefined,
         "anhang": undefined,
         "generic": undefined,
+        "kennzahlen": undefined
     });
     const router = useRouter();
     const year = new Date().getFullYear();
@@ -272,6 +276,7 @@ export default function UploadPage(props: InitialProps){
                 "lagebericht": undefined,
                 "anhang": undefined,
                 "generic": undefined,
+                "kennzahlen": undefined
             });
           }
         }
@@ -296,6 +301,7 @@ export default function UploadPage(props: InitialProps){
                 "lagebericht": undefined,
                 "anhang": undefined,
                 "generic": undefined,
+                "kennzahlen": undefined
             });
 
             if(allPresent){
@@ -592,6 +598,16 @@ export default function UploadPage(props: InitialProps){
                                     labelAlign="left"
                                 >
                                     <Upload beforeUpload={(info) => uploadToClient(info, "anhang")}>
+                                        <Button icon={<UploadOutlined />}>Datei hochladen</Button>
+                                    </Upload>
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Kennzahlen"
+                                    name="kennzahlen"
+                                    labelAlign="left"
+                                >
+                                    <Upload beforeUpload={(info) => uploadToClient(info, "kennzahlen")}>
                                         <Button icon={<UploadOutlined />}>Datei hochladen</Button>
                                     </Upload>
                                 </Form.Item>

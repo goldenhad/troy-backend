@@ -30,6 +30,44 @@ async function getSalesValuefromPath(file: string, cell: string, path: string){
     return val;
 }
 
+const dataSourceIndexMapping = (datasource: string) => {
+    switch (datasource) {
+        case "PROCEEDS":
+          return 5;
+        case "OVERSHOOT":
+          return 6;
+        case "SALES":
+          return 7;
+        case "CAPITAL":
+          return 8;
+        case "NEWBUILDINGS":
+          return 11;
+        case "MODERNIZINGS":
+          return 12;
+        case "FLATS":
+          return 16;
+        case "BUSINESSES":
+          return 17;
+        default:
+          return 200; // oder einen anderen Standardwert, falls kein Fall zutrifft
+      }
+}
+
+const companyOffsetMapping = (company: string) => {
+    switch (company) {
+        case "WOHNBAU":
+          return 0;
+        case "SIEDLUNG":
+          return 20;
+        case "KREISBAU":
+          return 40;
+        case "STEINFURT":
+          return 60;
+        default:
+          return 400; // oder einen anderen Standardwert, falls kein Fall zutrifft
+      }
+}
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
 
@@ -58,18 +96,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
             let value = { v: 0 };
 
-            switch(postreq.datasource){
-                case "SALES":
-                    value = await getSalesValuefromPath("GuV", "E59", `./public/data/${year}/guv.bin`);
-                    break;
-                case "PROCEEDS":
-                    value = await getSalesValuefromPath("GuV", "E59", `./public/data/${year}/guv.bin`);
-                    break;
-            }
+            console.log(postreq.company, postreq.datasource);
+
+            const effectiveIndex = companyOffsetMapping(postreq.company) + dataSourceIndexMapping(postreq.datasource)
+
+            value = await getSalesValuefromPath("Tabelle1", `B${effectiveIndex}`, `./public/data/${year}/kennzahlen.bin`);
+
 
             data.push({
                 year: parseInt(year),
-                value: value.v
+                value: value.v + Math.random() * value.v
             });
         }
 

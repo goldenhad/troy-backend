@@ -167,4 +167,15 @@ export const fileobjs = [{
         ]
     }
 },
+{
+    text: "Kennzahlen",
+    links: {
+        file: "kennzahlen.xlsx",
+        representations: [{
+            urlobj: `/display?year=${currentyear}&table=kennzahlen`,
+            name: "Kennzahlen Tabelle",
+            icon: "table"
+        }]
+    }
+},
 ]

@@ -47,6 +47,19 @@ const refName = (val: SourceReference) => {
     }
 }
 
+const refCompany = (val: Company) => {
+    switch(val){
+        case Company.WOHNBAU:
+            return "WOHNBAU"
+        case Company.SIEDLUNG:
+            return "SIEDLUNG"
+        case Company.KREISBAU:
+            return "KREISBAU"
+        case Company.STEINFURT:
+            return "STEINFURT"
+    }
+}
+
 enum Company {
     WOHNBAU,
     SIEDLUNG,
@@ -76,7 +89,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function QuickAnalyzer({ availableYears }: InitialProps){
     const [ source, setSource ] = useState<SourceReference>(SourceReference.SALES);
-    const [ company, setCompany ] = useState<Company>();
+    const [ company, setCompany ] = useState<Company>(Company.WOHNBAU);
     const [ selectedYears, setSelectedYears ] = useState<Array<string>>([availableYears[availableYears.length - 1]]);
     const [ mode, setMode ] = useState("bar");
 
@@ -85,7 +98,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
     useEffect(() => {
         const getData = async () => {
             try{
-                const locData = await axios.post("/api/analyzer/data", { years: availableYears, datasource: refName(source), company: company });
+                const locData = await axios.post("/api/analyzer/data", { years: availableYears, datasource: refName(source), company: refCompany(company) });
                 setData(locData.data.message);
             }catch(e){
                 setData([]);
@@ -93,7 +106,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
         }
 
         getData();
-    }, [source, company]);
+    }, [source, company, availableYears]);
 
 
     const getTitle = () => {
