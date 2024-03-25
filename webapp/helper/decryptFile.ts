@@ -4,7 +4,7 @@ require('dotenv').config();
 
 
 export const decrypt = async (encrypted: Buffer) =>{
-    const privkey = fs.readFileSync("./private-key.asc").toString();
+    /* const privkey = fs.readFileSync("./private-key.asc").toString();
 
     const message = await openpgp.readMessage({
         armoredMessage: encrypted.toString() // parse armored message
@@ -23,8 +23,8 @@ export const decrypt = async (encrypted: Buffer) =>{
         message,
         decryptionKeys: privateKey,
         format: 'binary'
-    });
+    }); */
   
 
-    return decrypted.data;
+    return encrypted;
 }

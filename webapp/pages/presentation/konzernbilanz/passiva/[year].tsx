@@ -122,7 +122,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         }
     
         const year = qyear;
-        const path = `./public/data/${year}/${FILEREF}.bin`;
+        const path = `./public/data/${year}/${FILEREF}.xlsx`;
         let guvdata: Array<any> = [1, 2, 3];
         if(fs.existsSync(path)){
     

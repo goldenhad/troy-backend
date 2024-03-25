@@ -44,7 +44,7 @@ const saveFile = async (file: any, filename: string) => {
                 encryptionKeys: (await openpgp.readKey({armoredKey: pubkey})),
             });
         
-            fs.writeFileSync(`./public/data/${year}/${filename}.bin`, encrypted);
+            fs.writeFileSync(`./public/data/${year}/${filename}.xlsx`, encrypted);
             await fs.unlinkSync(file.filepath);
         }catch(e){
             console.log(e);

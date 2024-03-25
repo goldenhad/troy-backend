@@ -97,7 +97,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
             const effectiveIndex = companyOffsetMapping(postreq.company) + dataSourceIndexMapping(postreq.datasource)
 
-            value = await getSalesValuefromPath("Tabelle1", `B${effectiveIndex}`, `./public/data/${year}/kennzahlen.bin`);
+            value = await getSalesValuefromPath("Tabelle1", `B${effectiveIndex}`, `./public/data/${year}/kennzahlen.xlsx`);
 
 
             data.push({

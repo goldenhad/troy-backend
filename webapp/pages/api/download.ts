@@ -63,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 
                 if(filename){
                     console.log(filename)
-                    const imageBuffer = readFileSync(`./public/data/${year}/${filename}.bin`);
+                    const imageBuffer = readFileSync(`./public/data/${year}/${filename}.xlsx`);
                     const decryptedbuffer = await decrypt(imageBuffer);
                     
                     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
