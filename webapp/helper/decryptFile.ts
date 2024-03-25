@@ -10,10 +10,14 @@ export const decrypt = async (encrypted: Buffer) =>{
         armoredMessage: encrypted.toString() // parse armored message
     });
 
+    console.log(encrypted);
+
     const privateKey = await openpgp.decryptKey({
         privateKey: await openpgp.readPrivateKey({ armoredKey: privkey }),
         passphrase: process.env.PEPPER
     });
+
+    console.log(privkey);
 
     const decrypted = await openpgp.decrypt({
         message,
