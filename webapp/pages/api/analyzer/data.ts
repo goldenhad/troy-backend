@@ -26,6 +26,8 @@ async function getSalesValuefromPath(file: string, cell: string, path: string){
 
     let val = workbook.Sheets[file][cell];
 
+    console.log(file, cell, path, buffer);
+
 
     return val;
 }
@@ -99,10 +101,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
             value = await getSalesValuefromPath("Tabelle1", `B${effectiveIndex}`, `./public/data/${year}/kennzahlen.xlsx`);
 
-
             data.push({
                 year: parseInt(year),
-                value: value.v + Math.random() * value.v
+                value: value.v
             });
         }
 
