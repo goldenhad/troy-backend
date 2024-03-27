@@ -31,6 +31,9 @@ RUN yarn build
 FROM base AS runner
 WORKDIR /app
 
+ENV CHROME_BIN="/usr/bin/chromium-browser" \
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
+
 RUN apk add -q --update --no-cache \
       chromium \
       nss \
