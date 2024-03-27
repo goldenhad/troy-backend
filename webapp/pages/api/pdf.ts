@@ -33,8 +33,9 @@ const saveAsPdf = async (url: string, options: any) => {
     const page = await browser.newPage();
   
     await page.goto(`${process.env.WEBURL}${url}`, {
-        waitUntil: 'networkidle0'
-      });
+        waitUntil: 'networkidle0',
+        timeout: 0
+    });
   
     const result = await page.pdf(options);
     await browser.close();
