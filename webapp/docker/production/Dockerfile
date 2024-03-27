@@ -5,12 +5,15 @@ FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 
-# We don't need the standalone Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
 
-# Install Google Chrome Stable and fonts
-# Note: this installs the necessary libs to make the browser work with Puppeteer.
-RUN apk add chromium
+RUN apk update && apk add --no-cache --virtual \
+    .build-deps \
+    udev \
+    ttf-opensans \
+    chromium \
+    ca-certificates
 
 
 WORKDIR /app
