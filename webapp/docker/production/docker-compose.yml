@@ -50,3 +50,4 @@ networks:
     name: wohnbaunetwork
   proxynetwork:
     name: swag_proxynetwork
+    external: true
