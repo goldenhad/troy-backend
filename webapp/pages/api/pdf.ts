@@ -26,7 +26,9 @@ export const config = {
 
 const saveAsPdf = async (url: string, options: any) => {
     const browser = await puppeteer.launch({
-        args: ["--force-device-scale-factor=0.5"]
+        headless: true,
+        executablePath: process.env.CHROME_BIN || undefined,
+        args: ["--force-device-scale-factor=0.5", '--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage']
     });
     const page = await browser.newPage();
   
