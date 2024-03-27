@@ -14,7 +14,7 @@ RUN set -x \
     && apk add --no-cache \
     udev \
     ttf-freefont \
-    chromium \
+    chromium
 
 WORKDIR /app
 
