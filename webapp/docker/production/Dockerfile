@@ -5,16 +5,6 @@ FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 
-ENV CHROME_BIN="/usr/bin/chromium-browser" \
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
-
-RUN set -x \
-    && apk update \
-    && apk upgrade \
-    && apk add --no-cache \
-    udev \
-    ttf-freefont \
-    chromium
 
 WORKDIR /app
 
@@ -36,12 +26,22 @@ COPY . .
 # This will do the trick, use the corresponding env file for each environment.
 COPY .env .env.production
 RUN npx prisma generate
-RUN npx puppeteer browsers install chrome
 RUN yarn build
 
 # 3. Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
+
+ENV CHROME_BIN="/usr/bin/chromium-browser" \
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
+
+RUN set -x \
+    && apk update \
+    && apk upgrade \
+    && apk add --no-cache \
+    udev \
+    ttf-freefont \
+    chromium
 
 ENV NODE_ENV=production
 
