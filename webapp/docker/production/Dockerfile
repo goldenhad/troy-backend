@@ -31,19 +31,19 @@ RUN yarn build
 FROM base AS runner
 WORKDIR /app
 
-ENV CHROME_BIN="/usr/bin/chromium-browser" \
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
+#ENV CHROME_BIN="/usr/bin/chromium-browser" \
+#    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
 
-RUN apk add -q --update --no-cache \
-      chromium \
-      nss \
-      freetype \
-      freetype-dev \
-      harfbuzz \
-      ca-certificates \
-      ttf-freefont
+#RUN apk add -q --update --no-cache \
+#      chromium \
+#      nss \
+#      freetype \
+#      freetype-dev \
+#      harfbuzz \
+#      ca-certificates \
+#      ttf-freefont
 
-RUN /usr/bin/chromium-browser --no-sandbox --version > /etc/chromium-version
+# RUN /usr/bin/chromium-browser --no-sandbox --version > /etc/chromium-version
 
 
 ENV NODE_ENV=production
