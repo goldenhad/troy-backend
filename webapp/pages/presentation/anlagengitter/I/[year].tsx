@@ -156,33 +156,6 @@ export default function Anlagengitter(props: InitialProps){
 
 
             if(!allempty){
-                /* return (
-                    <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.colored)? "colored-row": ""}`.replace(/\s+/g,' ').trim()}>
-                        <td className="row-meaning">{row[0]}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-val">{getNumber(row[1])}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-val">{getNumber(row[2])}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-val">{getNumber(row[3])}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-val">{getNumber(row[4])}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-val">{getNumber(row[6])}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-val darker-cell">{getNumber(row[7])}</td>
-                        <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
-                        <td className="cell-val darker-cell">{getNumber(row[9])}</td>
-                        <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
-                        <td className="cell-val darker-cell">{getNumber(row[11])}</td>
-                        <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
-                        <td className="cell-val darker-cell">{getNumber(row[12])}</td>
-                        <td className="cell-spacer darker-cell"><div className="spacer-content"></div></td>
-                        <td className="cell-val darker-cell">{getNumber(row[13])}</td>
-                        <td className="cell-spacer"><div className="spacer-content"></div></td>
-                        <td className="cell-val special-cell">{getNumber(row[14])}</td>
-                    </tr>
-                ); */
                 return (
                     <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
                         <div className="tablecellwide">
@@ -213,67 +186,7 @@ export default function Anlagengitter(props: InitialProps){
 
     }
 
-    /* return(
-        <div className="presentation-page">
-            <table>
-                <thead>
-                    <tr>
-                        <th className="cell-headline table-headline">Anlagenspiegel {currentYear}</th>
-                        <th className="ecell-spacer"></th>
-                        <th className="cell-headline">AK/HK 01.01.{currentYear}</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Zugänge</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Abgänge</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">Umbuchungen</th>
-                        <th className="cell-spacer"></th>
-                        <th className="cell-headline">AK/HK 31.12.{currentYear}</th>
-                        <th className="empty-headline-cell cell-spacer"></th>
-                        <th className="cell-headline darker-headline">Abschreibungen (kumuliert) 01.01.{currentYear}</th>
-                        <th className="cell-spacer darker-headline"></th>
-                        <th className="cell-headline darker-headline">Abschreibungen des Geschäftsjahres</th>
-                        <th className="cell-spacer darker-headline"></th>
-                        <th className="cell-headline darker-headline">Änderungen im Zusammenhang mit Abgängen</th>
-                        <th className="cell-spacer darker-headline"></th>
-                        <th className="cell-headline darker-headline">Abschreibungen (kumuliert) 31.12.{currentYear}</th>
-                        <th className="cell-spacer darker-headline"></th>
-                        <th className="cell-headline darker-headline">Buchwert 31.12.{currentYear}</th>
-                        <th className="empty-headline-cell cell-spacer"></th>
-                        <th className="cell-headline special-headline">Buchwert Vohrjahr</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr className="euro-row">
-                        <td></td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                        <td className="cell-spacer"></td>
-                        <td>€</td>
-                    </tr>
-                    {getTableContent()}
-                </tbody>
-            </table>
-        </div>
-    ); */
+    
     return(
         <div className="presentation-page">
             <div className="tablestructure">

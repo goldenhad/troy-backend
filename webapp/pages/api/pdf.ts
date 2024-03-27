@@ -57,22 +57,104 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     let url = "";
                     let options = {
                         format: "a4",
-                        scale: 0.5,
-                        printBackground: true
+                        scale: 1,
+                        printBackground: true,
+                        landscape: false,
+                        margin: { left: '2cm', top: '1cm', right: '1cm', bottom: '1cm' }
                     };
 
                     switch(table){
                         case "guv":
+                            options.scale = 0.5;
                             url = `/presentation/guv/${year}?scaled=1`;
                             break;
                         case "aktiva":
-                            url = `/presentation/konzernbilanz/aktiva/${year}?scaled=1`;
+                            options.scale = 0.6;
+                            url = `/presentation/konzernbilanz/aktiva/${year}?scaled=0`;
                             break;
                         case "passiva":
-                            url = `/presentation/konzernbilanz/passiva/${year}?scaled=1`;
+                            options.scale = 0.6;
+                            url = `/presentation/konzernbilanz/passiva/${year}?scaled=0`;
+                            break;
+                        case "eks1":
+                            options.scale = 0.6;
+                            options.landscape = true;
+                            url = `/presentation/eigenkapitalspiegel/I/${year}?scaled=0`;
+                            break;
+                        case "eks2":
+                            options.scale = 0.6;
+                            options.landscape = true;
+                            url = `/presentation/eigenkapitalspiegel/II/${year}?scaled=0`;
+                            break;
+                        case "kapitalfluss":
+                            options.scale = 0.6;
+                            url = `/presentation/kapitalfluss/${year}?scaled=1`;
+                            break;
+                        case "anlagengitter1":
+                            options.scale = 0.6;
+                            options.landscape = true;
+                            url = `/presentation/anlagengitter/I/${year}?scaled=1`;
+                            break;
+                        case "anlagengitter2":
+                            options.scale = 0.6;
+                            options.landscape = true;
+                            url = `/presentation/anlagengitter/II/${year}?scaled=1`;
+                            break;
+                        case "rueckstellung":
+                            options.scale = 0.6;
+                            url = `/presentation/rueckstellung/${year}?scaled=1`;
+                            break;
+                        case "verbindlichkeiten":
+                            options.scale = 0.6;
+                            url = `/presentation/verbindlichkeiten/${year}?scaled=1`;
+                            break;
+                        case "lagebericht-bestand":
+                            options.scale = 0.6;
+                            url = `/presentation/lagebericht/bestand/${year}?scaled=1`;
+                            break;
+                        case "lagebericht-neubau":
+                            options.scale = 0.6;
+                            url = `/presentation/lagebericht/neubau/${year}?scaled=1`;
+                            break;
+                        case "lagebericht-ertrag":
+                            options.scale = 0.6;
+                            url = `/presentation/lagebericht/ertragslage/${year}?scaled=1`;
+                            break;
+                        case "lagebericht-finanzen":
+                            options.scale = 0.6;
+                            url = `/presentation/lagebericht/finanzlage/${year}?scaled=1`;
+                            break;
+                        case "anhang-hausbewirtschaftung":
+                            options.scale = 0.6;
+                            url = `/presentation/anhang/umsatzerloes/hausbewirtschaftung/${year}?scaled=1`;
+                            break;
+                        case "anhang-betreuungstaetigkeit":
+                            options.scale = 0.6;
+                            url = `/presentation/anhang/umsatzerloes/betreuungstaetigkeit/${year}?scaled=1`;
+                            break;
+                        case "anhang-lieferungenundleistungen":
+                            options.scale = 0.6;
+                            url = `/presentation/anhang/umsatzerloes/lieferungenundleistungen/${year}?scaled=1`;
+                            break;
+                        case "anhang-betrieblicheertraege":
+                            options.scale = 0.6;
+                            url = `/presentation/anhang/sonstige/betrieblicheertraege/${year}?scaled=1`;
+                            break;
+                        case "anhang-betrieblicheaufwendungen":
+                            options.scale = 0.6;
+                            url = `/presentation/anhang/sonstige/betrieblicheaufwendungen/${year}?scaled=1`;
+                            break;
+                        case "anhang-mitarbeiterinnen":
+                            options.scale = 0.6;
+                            url = `/presentation/anhang/sonstige/mitarbeiterinnen/${year}?scaled=1`;
+                            break;
+                        case "anhang-altersversorgung":
+                            options.scale = 0.6;
+                            url = `/presentation/anhang/sonstige/altersversorgung/${year}?scaled=1`;
                             break;
                     }
 
+                    console.log(url);
                     if(url != ""){
                         res.setHeader(
                             'Content-Disposition',

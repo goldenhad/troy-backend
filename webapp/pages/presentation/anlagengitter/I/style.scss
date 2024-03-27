@@ -1,144 +1,3 @@
-/* .presentation-page{
-    margin-right: 2px;
-}
-
-table{
-    width: 100%;
-    font-size: 0.8vw;
-}
-
-.empty-headline-cell{
-    background-color: transparent !important;
-}
-
-thead {
-    > tr {
-        > th {
-            background-color: #B8CA47;
-            color: white;
-            text-align: right;
-        }
-
-        > .table-headline{
-            text-align: left;
-        }
-        
-        > .special-headline{
-            background-color: #E2E9B5;
-            color: black;
-        }
-        
-        > .darker-headline{
-            background-color: #8E9E2D;
-        }
-    }
-}
-
-td, th {
-    padding-right: 10px;
-    padding-left: 10px;
-}
-
-.bordered-row{
-    > td {
-        border-bottom: lightgray 1px solid;
-    }
-
-    > .cell-spacer{
-        border-bottom: none !important;
-    }
-}
-
-.euro-row{
-    > td {
-        //border-left: lightgray 1px solid;
-        //border-right: lightgray 1px solid;
-        text-align: right;
-        border-bottom: #B8CA47 4px solid;
-    }
-
-    >.cell-spacer{
-        border-bottom: none;
-    }
-
-    text-align: right;
-}
-
-.special-spacer-row{
-    border-bottom: black 1px solid;
-}
-
-tr{
-    height: 50px;
-    vertical-align: middle;
-}
-
-.cell-spacer{
-    text-align: right;
-    width: 10px;
-}
-
-.cell-val{
-    text-align: right;
-}
-
-.row-meaning{
-    width: 40%;
-}
-
-.headline{
-    width: 150px;
-    padding-right: 10px;
-}
-
-.cell-content{
-    padding-left: 10px;
-}
-
-.row-spacer{
-    height: 15px !important;
-}
-
-.spacer-content{
-    width: 5px;
-}
-
-.bold-row {
-    font-weight: bold;
-    > td {
-        border-bottom: #B8CA47 4px solid;
-    }
-
-    > .cell-spacer {
-        border-bottom: none;
-        border-top: none;
-    }
-}
-
-.colored-row {
-    color: white;
-    font-weight: bold;
-
-    > td {
-        background-color: #B8CA47;
-        border-bottom: none !important;
-    }
-
-    > .cell-spacer {
-        background-color: transparent !important;
-    }
-
-    > .darker-cell{
-        background-color: #8E9E2D;
-    }
-
-    > .special-cell{
-        background-color: #E2E9B5;
-        color: black;
-    }
-} */
-
-
 .presentation-page{
     font-size: 11px;
     margin-right: 2px;
@@ -159,14 +18,13 @@ table td, table th {
  .tablestructure {
     display: flex;
     flex-direction: column;
-    background-color: #f4f4f5;
     width: 100%;
+    background-color: #f4f4f5;
 
     .tableheadlinerow {
         display: flex;
         flex-direction: row;
-        justify-content: flex-end;
-        background-color: #b9ca48;
+        justify-content: flex-start;
         color: white;
         font-weight: 700;
 
@@ -181,6 +39,8 @@ table td, table th {
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
+            background-color: #b9ca48;
+
         }
 
         .tablecell {
@@ -195,12 +55,16 @@ table td, table th {
             justify-content: flex-end;
             text-align: right;
             align-items: center;
+            background-color: #b9ca48;
+
         }
 
         .tablecellspacer{
             width: 25px;
             padding-left: 0px;
             padding-right: 0px;
+            background-color: #b9ca48;
+
         }
     }
 
@@ -304,14 +168,14 @@ table td, table th {
     .colored-row {
         color: white;
         font-weight: 700;
-        margin-bottom: 50px;
+        padding-bottom: 50px;
 
         .tablecellspacer{
             background-color: none !important;
         }
 
         .tablecellwide{
-            background-color: #b9ca48;
+            background-color: #b9ca48 !important;
             .possiblecontent-title{
                 border-bottom: none !important;
             }
@@ -319,7 +183,7 @@ table td, table th {
         }
 
         .tablecellnumber{
-            background-color: #b9ca48;
+            background-color: #b9ca48 !important;
             border-bottom: none !important;
             padding-left: 5px;
             padding-right: 5px;
@@ -370,6 +234,7 @@ table td, table th {
             padding-right: 5px;
             padding-bottom: 10px;
             border-bottom: 2px solid #b0aa9b;
+            background-color: #f4f4f5;
             
 
             .possiblecontent-enum {
@@ -391,6 +256,7 @@ table td, table th {
 
         .tablecellspacer{
             width: 25px;
+            background-color: #f4f4f5;
         }
 
         .tablecellnumber{
@@ -404,6 +270,7 @@ table td, table th {
             flex-direction: column;
             align-items: flex-end;
             justify-content: center;
+            background-color: #f4f4f5;
         }
     }
 }

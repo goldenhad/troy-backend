@@ -217,6 +217,7 @@ export default function Kapitalfluss(props: InitialProps){
         <div className="presentation-page">
             <div className="tablestructure">
                 <div className="tableheadlinerow">
+                    <div className="tablecellwide"></div>
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">{currentYear-1}</div>
                     <div className="tablecell tablecellspacer"></div>
