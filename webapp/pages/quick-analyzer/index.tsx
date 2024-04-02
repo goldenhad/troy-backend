@@ -60,11 +60,16 @@ const refCompany = (val: Company) => {
     }
 }
 
-enum Company {
+export enum Company {
     WOHNBAU,
     SIEDLUNG,
     KREISBAU,
     STEINFURT
+}
+
+export type CompRef = {
+    label: string,
+    key: Company,
 }
 
 
@@ -91,14 +96,15 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
     const [ source, setSource ] = useState<SourceReference>(SourceReference.SALES);
     const [ company, setCompany ] = useState<Company>(Company.WOHNBAU);
     const [ selectedYears, setSelectedYears ] = useState<Array<string>>([availableYears[availableYears.length - 1]]);
+    const [ selectedCompanies, setSelectedCompanies ] = useState<Array<Company>>([ Company.WOHNBAU ]);
     const [ mode, setMode ] = useState("bar");
 
-    const [ data, setData ] = useState<Array<{year: number, value: number}>>([]);
+    const [ data, setData ] = useState<Array<{ key: Company, items: Array<{ year: number, value: number }> }>>([]);
 
     useEffect(() => {
         const getData = async () => {
             try{
-                const locData = await axios.post("/api/analyzer/data", { years: availableYears, datasource: refName(source), company: refCompany(company) });
+                const locData = await axios.post("/api/analyzer/data", { years: availableYears, datasource: refName(source), companies: selectedCompanies });
                 setData(locData.data.message);
             }catch(e){
                 setData([]);
@@ -106,7 +112,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
         }
 
         getData();
-    }, [source, company, availableYears]);
+    }, [source, selectedCompanies, availableYears]);
 
 
     const getTitle = () => {
@@ -144,7 +150,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
     return(
         <>
             <div className="container">
-                <SalesChart data={data} selectedYears={selectedYears} title={getTitle()} mode={mode} />
+                <SalesChart data={data} selectedYears={selectedYears} selectedCompanies={selectedCompanies} title={getTitle()} mode={mode} />
             </div>
             <div className="inputcontainer">
                 <Select
@@ -192,26 +198,30 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                 />
                 <Select
                     className="chartselect"
+                    mode="multiple"
+                    allowClear
                     placeholder="Please select"
-                    defaultValue={"WOHNBAU"}
-                    onChange={(selected: string) => {
-                        switch(selected){
-                            case "WOHNBAU":
-                                setCompany(Company.WOHNBAU);
-                                break;
-                            case "SIEDLUNG":
-                                setCompany(Company.SIEDLUNG);
-                                break;
-                            case "KREISBAU":
-                                setCompany(Company.KREISBAU);
-                                break;
-                            case "STEINFURT":
-                                setCompany(Company.STEINFURT);
-                                break;
-                        }
+                    onChange={(selected: Array<string>) => {
+                        let compdata: Array<Company> = [];
+                        selected.forEach((sel: string) => {
+                            switch(sel){
+                                case("SIEDLUNG"):
+                                    compdata.push(Company.SIEDLUNG);
+                                    break;
+                                case("KREISBAU"):
+                                    compdata.push(Company.KREISBAU);
+                                    break;
+                                case("STEINFURT"):
+                                    compdata.push(Company.STEINFURT);
+                                    break;
+                            }
+                        })
+
+                        compdata.push(Company.WOHNBAU);
+
+                        setSelectedCompanies(compdata);
                     }}
                     options={[
-                        {label: "WohnBau Westmünsterland eG", value: "WOHNBAU"},
                         {label: "Kommunale Siedlungs- und Wohnungsbaugesellschaft mbH", value: "SIEDLUNG"},
                         {label: "Kreisbauverein GmbH", value: "KREISBAU"},
                         {label: "Wohnungsbaugesellschaft Kreis Steinfurt mbH", value: "STEINFURT"},
@@ -236,7 +246,17 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                     placeholder="Please select"
                     defaultValue={[availableYears[availableYears.length - 1]]}
                     onChange={(selected: Array<string>) => {
-                        setSelectedYears(selected);
+                        const sortedYears = selected.toSorted((a, b) => {
+                            if(parseInt(a) > parseInt(b)){
+                                return 1;
+                            }else if(parseInt(a) < parseInt(b)){
+                                return -1;
+                            }else{
+                                return 0;
+                            }
+                        });
+
+                        setSelectedYears(sortedYears);
                     }}
                     options={constructOptions()}
                 />

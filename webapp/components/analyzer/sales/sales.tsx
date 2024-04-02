@@ -1,4 +1,5 @@
 import { getColor } from '@/helper/charts';
+import { Company } from '@/pages/quick-analyzer';
 import { Select } from 'antd';
 import {
     Chart as ChartJS,
@@ -26,8 +27,9 @@ ChartJS.register(
 );
 
 type ComponentProps = {
-    data: Array<SalesData>,
+    data: Array<CompanyEntry>,
     selectedYears: Array<string>,
+    selectedCompanies: Array<Company>
     mode: string,
     title: string
 }
@@ -40,9 +42,29 @@ export type SalesData = {
 export type DataSet = {
     label: string,
     data: Array<number>,
-    backgroundColor: string
+    backgroundColor: string,
+    borderColor?: string,
 }
 
+type CompanyEntry = {
+    key: Company,
+    items: Array<SalesData>
+}
+
+
+const CompanyToString = (sel: Company) => {
+    switch(sel){
+        case(Company.WOHNBAU):
+            return "WohnBau Westmünsterland eG";
+        case(Company.SIEDLUNG):
+            return "Kommunale Siedlungs- und Wohnungsbaugesellschaft mbH";
+        case(Company.KREISBAU):
+            return "Kreisbauverein GmbH";
+            break;
+        case(Company.STEINFURT):
+            return "Wohnungsbaugesellschaft Kreis Steinfurt mbH";
+    }
+}
 
 
 export default function SalesChart({ data, title, mode, selectedYears }: ComponentProps){
@@ -52,41 +74,50 @@ export default function SalesChart({ data, title, mode, selectedYears }: Compone
         responsive: true,
         plugins: {
                 legend: {
-                position: 'top' as const,
-            },
+                    position: 'top' as const,
+                },
                 title: {
                 display: true,
                 text: `${title} pro Jahr`,
             },
         },
+        scales: {
+            x: {
+              stacked: true
+            },
+            y: {
+                stacked: true
+              }
+        }
     };
 
     useEffect(() => {
+        console.log(data);
         let sets: Array<DataSet> = [];
-        if(mode == "bar"){
-            data.forEach((entry: SalesData, idx: number) => {
-                if (selectedYears?.includes(entry.year.toString())){
-                    sets.push({
-                        label: entry.year.toString(),
-                        data: [ entry.value ],
-                        backgroundColor: getColor(idx)
-                    });
-                }
-            });
-        }else{
-            let labels = selectedYears;
-            let datavalues: number[] = [];
-            data.forEach((entry: SalesData, idx: number) => {
-                if (selectedYears?.includes(entry.year.toString())){
-                    datavalues.push(entry.value);
-                }
-            });
 
-            sets.push({
-                label: "Umsatz",
-                data: datavalues,
-                backgroundColor: getColor(1)
-            });
+        data.forEach((compEntry: CompanyEntry, idx: number) => {
+            let datapoints: Array<number> = [];
+
+            if(mode){
+                compEntry.items.forEach((entry: SalesData) => {
+                    if (selectedYears?.includes(entry.year.toString())){
+                        datapoints.push(entry.value);
+                    }
+                });
+
+                sets.push({
+                    label: CompanyToString(compEntry.key),
+                    data: datapoints,
+                    backgroundColor: "000000"
+                });
+            }
+        });
+
+        for(let i=0; i < sets.length; i++){
+            const reversedIndex = (sets.length - 1) - i;
+
+            sets[i].backgroundColor = getColor(reversedIndex);
+            sets[i].borderColor = getColor(reversedIndex);
         }
 
         setDatasets(sets);
@@ -101,7 +132,7 @@ export default function SalesChart({ data, title, mode, selectedYears }: Compone
                 <Bar
                 options={options}
                 data={{
-                    labels: [title],
+                    labels: selectedYears,
                     datasets: datasets
                 }}
             />
