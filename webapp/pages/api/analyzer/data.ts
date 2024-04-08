@@ -101,7 +101,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
               data.push({
                   year: parseInt(year),
-                  value: value.v + (Math.random() * 10000)
+                  value: value.v
               });
           }
 
