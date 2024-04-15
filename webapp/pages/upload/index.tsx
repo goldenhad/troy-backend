@@ -180,24 +180,29 @@ export default function UploadPage(props: InitialProps){
     const year = new Date().getFullYear();
 
     const [isFreezeOpen, setIsFreezeOpen] = useState(false);
-    const [isRevisionOpen, setIsRevisionOpen] = useState(false);    
+    const [isRevisionOpen, setIsRevisionOpen] = useState(false);
+    const [ isResetOpen, setIsResetOpen ] = useState(false);    
 
 
-    const showModal = (modal: "upload" | "freeze" | "revision") => {
+    const showModal = (modal: "upload" | "freeze" | "revision" | "reset") => {
         if(modal == "upload"){
             setIsModalOpen(true);
         }else if(modal == "freeze"){
             setIsFreezeOpen(true);
+        }else if(modal == "reset"){
+            setIsResetOpen(true);
         }else{
             setIsRevisionOpen(true);
         }
     };
 
-    const handleCancel = (modal: "upload" | "freeze" | "revision") => {
+    const handleCancel = (modal: "upload" | "freeze" | "revision" | "reset") => {
         if(modal == "upload"){
             setIsModalOpen(false);
         }else if(modal == "freeze"){
             setIsFreezeOpen(false);
+        }else if(modal == "reset"){
+            setIsResetOpen(false);
         }else{
             setIsRevisionOpen(false);
         }
@@ -408,6 +413,12 @@ export default function UploadPage(props: InitialProps){
         router.reload();
     }
 
+    const resetFiles = async () => {
+        const fileres = await axios.put(`/api/files`, {id: props.currentData.id, status: "erstellt"});
+        handleCancel("reset");
+        router.reload();
+    }
+
     const requestRevision = async (values: any) => {
         const fileres = await axios.put(`/api/files`, {id: props.currentData.id, status: "revision", commentary: values.commentary});
         const mailret = await axios.post(`/api/message`, { type: "revision", reponsiblemail: props.currentData.responsible.email, reponsiblename: props.currentData.responsible.username })
@@ -445,6 +456,18 @@ export default function UploadPage(props: InitialProps){
             return (
                 <Button type="primary" style={{backgroundColor: "#52c41a", color: "white"}} onClick={() => {showModal("freeze")}}>
                     Freigeben
+                </Button>
+            );
+        }else{
+            return <></>;
+        }
+    }
+
+    const getResetButton = () => {
+        if(props.InitialState.role.capabilities.canUnfreeze && props.currentData.status == "freigegeben"){
+            return (
+                <Button type="primary" style={{backgroundColor: "#FFCC03", color: "white"}} onClick={() => {showModal("reset")}}>
+                    Freigabe aufheben
                 </Button>
             );
         }else{
@@ -494,6 +517,7 @@ export default function UploadPage(props: InitialProps){
                         {getUploadButton()}
                         {getFreezeButton()}
                         {getRevisionButton()}
+                        {getResetButton()}
                     </Space>
 
                     <div className="data-presentation">
@@ -657,6 +681,34 @@ export default function UploadPage(props: InitialProps){
                                     </Button>
                                     <Button onClick={freezeFiles}  key="submit" type="primary">
                                         Freigeben
+                                    </Button>
+                                </Space>
+                            </Form.Item>
+                        </Form>
+                    </Modal>
+
+                    <Modal
+                        title="Freigabe aufheben"
+                        open={isResetOpen}
+                        onCancel={() => {handleCancel("reset")}}
+                        footer = {[]}
+                    >
+                        <Form 
+                            layout='horizontal'
+                        >
+                            
+                            <div className="upload-hint">
+                               Wollen Sie die Freigabe wirklich aufheben?
+                            </div>
+
+
+                            <Form.Item className='modal-buttom-row'>
+                                <Space direction='horizontal'>
+                                    <Button key="close" onClick={() => {handleCancel("reset")}}>
+                                        Abbrechen
+                                    </Button>
+                                    <Button onClick={resetFiles}  key="submit" type="primary">
+                                        Aufheben
                                     </Button>
                                 </Space>
                             </Form.Item>

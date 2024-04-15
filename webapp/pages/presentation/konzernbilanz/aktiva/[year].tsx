@@ -162,7 +162,7 @@ export default function KonzernbilanzI(props: InitialProps){
 
         return props.data.map((rowobj, idx) => {
             let row = rowobj.columns;
-            let allempty = row.every((v: any) => v === null );
+            let allempty = row.every((v: any) => v === null ) || (row[3] == 0 && row[6] == 0);
 
             if(row[0] == "Anlagevermögen insgesamt" || row[0] == "Bilanzsumme" || row[0] == "Treuhandvermögen"  ){
                 row[1] = row[0];

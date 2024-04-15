@@ -157,7 +157,7 @@ export default function KonzernbilanzII(props: InitialProps){
 
         return props.data.map((rowobj, idx) => {
             let row = rowobj.columns;
-            let allempty = row.every((v: any) => v === null );
+            let allempty = row.every((v: any) => v === null ) || (row[3] == 0 && row[6] == 0);
 
             if(row[0] == "Eigenkapital insgesamt" || row[0] == "Bilanzsumme" || row[0] == "Treuhandverbindlichkeiten"  ){
                 row[2] = row[0];

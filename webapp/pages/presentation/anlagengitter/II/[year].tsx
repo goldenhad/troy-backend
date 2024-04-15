@@ -152,7 +152,7 @@ export default function Anlagengitter(props: InitialProps){
 
             let row = rowobj.columns;
 
-            let allempty = row.every((v: any) => v === null );
+            let allempty = row.every((v: any) => v === null ) || ( row[7] == 0 && row[9] == 0 && row[11] == 0 && row[12] == 0 && row[13] == 0 );
 
 
             if(!allempty){

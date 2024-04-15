@@ -152,7 +152,7 @@ export default function Verbindlichkeiten(props: InitialProps){
 
         return props.data.map((rowobj, idx) => {
             let row = rowobj.columns;
-            let allempty = row.every((v: any) => v === null );
+            let allempty = row.every((v: any) => v === null ) || ( row[2] == 0 && row[3] == 0 && row[4] == 0 && row[5] == 0 && row[6] == 0 && row[7] == 0 );
 
             if(row[1] == "Summe"){
                 row[1] = "Gesamtbetrag";

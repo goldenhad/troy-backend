@@ -152,7 +152,7 @@ export default function Kapitalfluss(props: InitialProps){
 
             let row = rowobj.columns;
 
-            let allempty = row.every((v: any) => v === null );
+            let allempty = row.every((v: any) => v === null ) || ( row[1] == 0 && row[2] == 0 && row[3] == 0 );
 
             /* return (
                 <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
@@ -165,20 +165,22 @@ export default function Kapitalfluss(props: InitialProps){
                     <td className="cell-val">{getNumber(row[3])}</td>
                 </tr>
             ); */
-            return(
-                <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
-                    <div className="tablecellwide">
-                        <div className="possiblecontent-enum">{}</div>
-                        <div className="possiblecontent-title">{row[0]}</div>
+            if(!allempty){
+                return(
+                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
+                        <div className="tablecellwide">
+                            <div className="possiblecontent-enum">{}</div>
+                            <div className="possiblecontent-title">{row[0]}</div>
+                        </div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[1], false)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[2], false)}</div>
+                        <div className="tablecellspacer"></div>
+                        <div className="tablecellnumber">{getNumber(row[3], false)}</div>
                     </div>
-                    <div className="tablecellspacer"></div>
-                    <div className="tablecellnumber">{getNumber(row[1], false)}</div>
-                    <div className="tablecellspacer"></div>
-                    <div className="tablecellnumber">{getNumber(row[2], false)}</div>
-                    <div className="tablecellspacer"></div>
-                    <div className="tablecellnumber">{getNumber(row[3], false)}</div>
-                </div>
-            );
+                );
+            }
         });
 
 

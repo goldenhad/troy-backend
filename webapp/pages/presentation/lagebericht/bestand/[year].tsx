@@ -129,7 +129,7 @@ export default function Rueckstellungen(props: InitialProps){
 
         return props.data.map((rowobj, idx) => {
             let row = rowobj.columns;
-            let allempty = row.every((v: any) => v === null );
+            let allempty = row.every((v: any) => v === null ) || ( row[1] == 0 && row[2] == 0 && row[3] == 0 );
 
             
             /* return (
