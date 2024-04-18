@@ -31,7 +31,9 @@ type ComponentProps = {
     selectedYears: Array<string>,
     selectedCompanies: Array<Company>
     mode: string,
-    title: string
+    title: string,
+    step: number,
+    max: number
 }
 
 export type SalesData = {
@@ -67,7 +69,7 @@ const CompanyToString = (sel: Company) => {
 }
 
 
-export default function SalesChart({ data, title, mode, selectedYears }: ComponentProps){
+export default function SalesChart({ data, title, mode, selectedYears, step, max }: ComponentProps){
     const [ datasets, setDatasets ] = useState<Array<DataSet>>([]);
 
     const options = {
@@ -86,7 +88,11 @@ export default function SalesChart({ data, title, mode, selectedYears }: Compone
               stacked: true
             },
             y: {
-                stacked: true
+                stacked: true,
+                beginAtZero: true,
+                steps: 10,
+                stepValue: step,
+                max: max
               }
         }
     };

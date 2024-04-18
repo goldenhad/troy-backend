@@ -98,6 +98,8 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
     const [ selectedYears, setSelectedYears ] = useState<Array<string>>([availableYears[availableYears.length - 1]]);
     const [ selectedCompanies, setSelectedCompanies ] = useState<Array<Company>>([ Company.WOHNBAU ]);
     const [ mode, setMode ] = useState("bar");
+    const [ stepSize, setStepSize ] = useState(1000);
+    const [ max, setMax ] = useState(100000)
 
     const [ data, setData ] = useState<Array<{ key: Company, items: Array<{ year: number, value: number }> }>>([]);
 
@@ -150,7 +152,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
     return(
         <>
             <div className="container">
-                <SalesChart data={data} selectedYears={selectedYears} selectedCompanies={selectedCompanies} title={getTitle()} mode={mode} />
+                <SalesChart data={data} step={stepSize} max={max} selectedYears={selectedYears} selectedCompanies={selectedCompanies} title={getTitle()} mode={mode} />
             </div>
             <div className="inputcontainer">
                 <Select
@@ -163,24 +165,38 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 setSource(SourceReference.SALES);
                                 break;
                             case "OVERSHOOT":
+                                setStepSize(100);
+                                setMax(10000);
                                 setSource(SourceReference.OVERSHOOT);
                                 break;
                             case "PROCEEDS":
+                                setStepSize(1000);
+                                setMax(100000);
                                 setSource(SourceReference.PROCEEDS);
                                 break;
                             case "CAPITAL":
+                                setStepSize(10);
+                                setMax(500);
                                 setSource(SourceReference.CAPITAL);
                                 break;
                             case "NEWBUILDINGS":
+                                setStepSize(1000);
+                                setMax(100000);
                                 setSource(SourceReference.NEWBUILDINGS);
                                 break;
                             case "MODERNIZINGS":
+                                setStepSize(100);
+                                setMax(10000);
                                 setSource(SourceReference.MODERNIZINGS);
                                 break;
                             case "FLATS":
+                                setStepSize(100);
+                                setMax(10000);
                                 setSource(SourceReference.FLATS);
                                 break;
                             case "BUSINESSES":
+                                setStepSize(10);
+                                setMax(100);
                                 setSource(SourceReference.BUSINESSES);
                                 break;
                         }
@@ -200,7 +216,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                     className="chartselect"
                     mode="multiple"
                     allowClear
-                    placeholder="Please select"
+                    placeholder="Teilgesellschaften auswählen"
                     onChange={(selected: Array<string>) => {
                         let compdata: Array<Company> = [];
                         selected.forEach((sel: string) => {
@@ -246,7 +262,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                     placeholder="Please select"
                     defaultValue={[availableYears[availableYears.length - 1]]}
                     onChange={(selected: Array<string>) => {
-                        /* const sortedYears = selected.toSorted((a, b) => {
+                        const sortedYears = selected.toSorted((a, b) => {
                             if(parseInt(a) > parseInt(b)){
                                 return 1;
                             }else if(parseInt(a) < parseInt(b)){
@@ -254,9 +270,9 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                             }else{
                                 return 0;
                             }
-                        }); */
+                        });
 
-                        setSelectedYears(selected);
+                        setSelectedYears(sortedYears);
                     }}
                     options={constructOptions()}
                 />
