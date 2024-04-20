@@ -87,6 +87,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         years.push(year.toString());
     });
 
+    
+
     const data: Array<{ year: number, value: number }> = [];
 
     return { props: { availableYears: years } };
