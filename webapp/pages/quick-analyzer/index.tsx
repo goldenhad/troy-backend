@@ -164,6 +164,8 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                     onChange={(selected: string) => {
                         switch(selected){
                             case "SALES":
+                                setStepSize(1000);
+                                setMax(20000);
                                 setSource(SourceReference.SALES);
                                 break;
                             case "OVERSHOOT":
@@ -172,8 +174,8 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 setSource(SourceReference.OVERSHOOT);
                                 break;
                             case "PROCEEDS":
-                                setStepSize(1000);
-                                setMax(100000);
+                                setStepSize(10000);
+                                setMax(200000);
                                 setSource(SourceReference.PROCEEDS);
                                 break;
                             case "CAPITAL":
@@ -183,7 +185,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 break;
                             case "NEWBUILDINGS":
                                 setStepSize(1000);
-                                setMax(100000);
+                                setMax(50000);
                                 setSource(SourceReference.NEWBUILDINGS);
                                 break;
                             case "MODERNIZINGS":
@@ -198,7 +200,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 break;
                             case "BUSINESSES":
                                 setStepSize(10);
-                                setMax(100);
+                                setMax(50);
                                 setSource(SourceReference.BUSINESSES);
                                 break;
                         }
