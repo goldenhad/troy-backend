@@ -264,7 +264,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                     placeholder="Please select"
                     defaultValue={[availableYears[availableYears.length - 1]]}
                     onChange={(selected: Array<string>) => {
-                        const sortedYears = selected.toSorted((a, b) => {
+                        const sortedYears = selected.sort((a, b) => {
                             if(parseInt(a) > parseInt(b)){
                                 return 1;
                             }else if(parseInt(a) < parseInt(b)){
