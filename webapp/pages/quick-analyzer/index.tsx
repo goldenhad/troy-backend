@@ -174,8 +174,8 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 setSource(SourceReference.OVERSHOOT);
                                 break;
                             case "PROCEEDS":
-                                setStepSize(100000);
-                                setMax(1000000);
+                                setStepSize(10000);
+                                setMax(500000);
                                 setSource(SourceReference.PROCEEDS);
                                 break;
                             case "CAPITAL":
