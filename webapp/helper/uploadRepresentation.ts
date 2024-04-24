@@ -118,7 +118,7 @@ export const fileobjs = [{
             },
             {
                 urlobj: `/display?year=${currentyear}&table=lagebericht/finanzlage`,
-                name: "Fianzlage",
+                name: "Finanzlage",
                 icon: "table"
             },
         ]

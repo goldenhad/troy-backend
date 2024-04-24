@@ -36,8 +36,8 @@ async function parseFile(path: string){
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     const cols: Array<String> = alphabet.slice(0, 7).split("");
-    const lowerLimit = 7;
-    const higherLimit = 18;
+    const lowerLimit = 3;
+    const higherLimit = 14;
 
     let rows: Array<RowObject> = [];
 
@@ -54,7 +54,7 @@ async function parseFile(path: string){
         }
 
         cols.forEach((col) => {
-            let val = workbook.Sheets['Vermöges_Finanz_Lage'][col.concat(r.toString())];
+            let val = workbook.Sheets['Vermögens- und Finanzlage'][col.concat(r.toString())];
             if(val){
                 rowobj.columns.push(val.v);
             }else{
@@ -66,7 +66,7 @@ async function parseFile(path: string){
     }
 
     const underlinedrows = [3, 4, rows.length-2, rows.length-1];
-    const boldrows = [0, 6, rows.length-1]
+    const boldrows = [0, 4, 6, rows.length-1]
 
     boldrows.forEach((row) => {
         rows[row].styling.bold = true;
@@ -144,7 +144,7 @@ export default function Rueckstellungen(props: InitialProps){
             let allempty = row.every((v: any) => v === null ) || ( row[1] == 0 && row[2] == 0 && row[3] == 0 && row[4] == 0 && row[5] == 0 );
 
             if(idx == props.data.length - 1){
-                row[0] = "Bilanzgewinn";
+                //row[0] = "Bilanzgewinn";
             }
             
             /* return (

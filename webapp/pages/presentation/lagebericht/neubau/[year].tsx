@@ -35,9 +35,9 @@ async function parseFile(path: string){
 
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-    const cols: Array<String> = alphabet.slice(0, 7).split("");
-    const lowerLimit = 5;
-    const higherLimit = 15;
+    const cols: Array<String> = alphabet.slice(0, 8).split("");
+    const lowerLimit = 100;
+    const higherLimit = 109;
 
     let rows: Array<RowObject> = [];
 
@@ -54,7 +54,7 @@ async function parseFile(path: string){
         }
 
         cols.forEach((col) => {
-            let val = workbook.Sheets['Neubau'][col.concat(r.toString())];
+            let val = workbook.Sheets['Datentabelle Lagebericht'][col.concat(r.toString())];
             if(val){
                 rowobj.columns.push(val.v);
             }else{
@@ -143,9 +143,11 @@ export default function Rueckstellungen(props: InitialProps){
             let row = rowobj.columns;
             let allempty = row.every((v: any) => v === null ) || ( row[1] == 0 && row[2] == 0 && row[3] == 0 && row[4] == 0 && row[5] == 0 );
 
+            console.log(idx, props.data.length - 1);
+
             if(idx == props.data.length - 1){
-                row[0] = "Gesamtbetrag";
-                row[5] = "";
+                row[2] = "Gesamtbetrag";
+                //row[5] = "";
             }
             
             /* return (
@@ -164,21 +166,22 @@ export default function Rueckstellungen(props: InitialProps){
                 </tr>
             ); */
             if(!allempty){
+                console.log(row);
                 return (
                     <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
                         <div className="tablecellwide">
-                            <div className="possiblecontent-title">{row[0]}</div>
+                            <div className="possiblecontent-title">{row[2]}</div>
                         </div>
-                        <div className="tablecell tablecellspacer"></div>
-                        <div className="tablecellnumber">{row[1]}</div>
-                        <div className="tablecell tablecellspacer"></div>
-                        <div className="tablecellnumber">{row[2]}</div>
                         <div className="tablecell tablecellspacer"></div>
                         <div className="tablecellnumber">{row[3]}</div>
                         <div className="tablecell tablecellspacer"></div>
-                        <div className="tablecellnumber">{row[4].toLocaleString("de-DE", {minimumFractionDigits: 0})} m²</div>
+                        <div className="tablecellnumber">{row[4]}</div>
                         <div className="tablecell tablecellspacer"></div>
-                        <div className="tablecellnumber">{(row[5])?moment(ExcelDateToJSDate(row[5])).format("DD.MM.YYYY"): ""}</div>
+                        <div className="tablecellnumber">{row[5]}</div>
+                        <div className="tablecell tablecellspacer"></div>
+                        <div className="tablecellnumber">{row[6].toLocaleString("de-DE", {minimumFractionDigits: 0})} m²</div>
+                        <div className="tablecell tablecellspacer"></div>
+                        <div className="tablecellnumber">{(row[7])?moment(ExcelDateToJSDate(row[6])).format("DD.MM.YYYY"): ""}</div>
 
                     </div>
                 );

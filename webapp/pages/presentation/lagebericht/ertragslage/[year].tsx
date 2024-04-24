@@ -35,9 +35,9 @@ async function parseFile(path: string){
 
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-    const cols: Array<String> = alphabet.slice(0, 7).split("");
-    const lowerLimit = 6;
-    const higherLimit = 19;
+    const cols: Array<String> = alphabet.slice(0, 8).split("");
+    const lowerLimit = 140;
+    const higherLimit = 153;
 
     let rows: Array<RowObject> = [];
 
@@ -54,7 +54,7 @@ async function parseFile(path: string){
         }
 
         cols.forEach((col) => {
-            let val = workbook.Sheets['Ertragslage'][col.concat(r.toString())];
+            let val = workbook.Sheets['Datentabelle Lagebericht'][col.concat(r.toString())];
             if(val){
                 rowobj.columns.push(val.v);
             }else{
@@ -166,11 +166,11 @@ export default function Rueckstellungen(props: InitialProps){
                 return (
                     <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
                         <div className="tablecellwide">
-                            <div className="possiblecontent-title">{row[0]}</div>
+                            <div className="possiblecontent-title">{row[2]}</div>
                         </div>
-                        <div className="tablecellnumber">{getNumber(row[1], false)}</div>
-                        <div className="tablecellnumber">{getNumber(row[2], false)}</div>
                         <div className="tablecellnumber">{getNumber(row[3], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[4], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[5], false)}</div>
                     </div>
                 );
             }

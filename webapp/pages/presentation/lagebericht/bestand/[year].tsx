@@ -35,8 +35,8 @@ async function parseFile(path: string){
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     const cols: Array<String> = alphabet.slice(0, 7).split("");
-    const lowerLimit = 49;
-    const higherLimit = 87;
+    const lowerLimit = 7;
+    const higherLimit = 46;
 
     let rows: Array<RowObject> = [];
 
@@ -52,8 +52,10 @@ async function parseFile(path: string){
             }
         }
 
+
+
         cols.forEach((col) => {
-            let val = workbook.Sheets['Bestandsdaten'][col.concat(r.toString())];
+            let val = workbook.Sheets['Datentabelle Lagebericht'][col.concat(r.toString())];
             if(val){
                 rowobj.columns.push(val.v);
             }else{
@@ -63,6 +65,27 @@ async function parseFile(path: string){
 
         rows.push(rowobj);
     }
+
+    const boldrows: Array<number> = [46];
+    const colorsrows: Array<number> = [];
+    const underlinedrows: Array<number> = [45, 46];
+    const highlightedrow: Array<number> = [];
+
+    boldrows.forEach((row) => {
+        rows[row-lowerLimit].styling.bold = true;
+    })
+
+    underlinedrows.forEach((row) => {
+        rows[row-lowerLimit].styling.underlined = true;
+    })
+
+    colorsrows.forEach((row) => {
+        rows[row-lowerLimit].styling.colored = true;
+    })
+
+    highlightedrow.forEach((row) => {
+        rows[row-lowerLimit].styling.highlighted = true;
+    })
 
     return rows;
 }
@@ -151,11 +174,11 @@ export default function Rueckstellungen(props: InitialProps){
                 return (
                     <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
                         <div className="tablecellwide">
-                            <div className="possiblecontent-title">{row[0]}</div>
+                            <div className="possiblecontent-title">{row[2]}</div>
                         </div>
-                        <div className="tablecellnumber">{row[1]}</div>
-                        <div className="tablecellnumber">{row[2]}</div>
                         <div className="tablecellnumber">{row[3]}</div>
+                        <div className="tablecellnumber">{row[4]}</div>
+                        <div className="tablecellnumber">{row[5]}</div>
                     </div>
                 );
             }
