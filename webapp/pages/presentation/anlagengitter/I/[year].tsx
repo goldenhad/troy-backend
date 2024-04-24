@@ -66,7 +66,7 @@ async function parseFile(path: string){
 
     const boldrows = [4, 8, 20];
     const colorsrows = [6, 18, 25, 27];
-    const highlightedrow = [5, 17, 24];
+    const highlightedrow = [5];
     const specialrow: Array<any> = [];
 
     specialrow.forEach((row) => {
@@ -191,9 +191,9 @@ export default function Anlagengitter(props: InitialProps){
         <div className="presentation-page">
             <div className="tablestructure">
                 <div className="tableheadlinerow">
-                    <div className="tablecellwide">Anlagenspiegel {currentYear}</div>
+                    <div className="tablecellwide">Anlagenspiegel {currentYear-1}</div>
                     <div className="tablecell tablecellspacer"></div>
-                    <div className="tablecell">AK/HK 01.01.{currentYear}</div>
+                    <div className="tablecell">AK/HK 01.01.{currentYear-1}</div>
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">Zugänge</div>
                     <div className="tablecell tablecellspacer"></div>
@@ -201,7 +201,7 @@ export default function Anlagengitter(props: InitialProps){
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">Umbuchungen</div>
                     <div className="tablecell tablecellspacer"></div>
-                    <div className="tablecell">AK/HK 31.12.{currentYear}</div>
+                    <div className="tablecell">AK/HK 31.12.{currentYear-1}</div>
                 </div>
 
                 <div className="tableeurorow">

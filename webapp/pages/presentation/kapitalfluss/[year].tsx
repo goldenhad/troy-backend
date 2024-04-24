@@ -36,7 +36,7 @@ async function parseFile(path: string){
 
     const cols: Array<String> = alphabet.slice(0, 4).split("");
     const lowerLimit = 5;
-    const higherLimit = 37;
+    const higherLimit = 38;
 
     let rows: Array<RowObject> = [];
 
@@ -64,10 +64,10 @@ async function parseFile(path: string){
         rows.push(rowobj);
     }
 
-    const boldrows = [18, 25, 34];
-    const colorsrows = [37];
+    const boldrows = [18, 26, 35];
+    const colorsrows = [38];
     const underlinedrows = [17, 18, 24, 25, 33, 34];
-    const highlightedrow = [36];
+    const highlightedrow = [37];
 
     boldrows.forEach((row) => {
         rows[row-lowerLimit].styling.bold = true;
@@ -152,19 +152,9 @@ export default function Kapitalfluss(props: InitialProps){
 
             let row = rowobj.columns;
 
-            let allempty = row.every((v: any) => v === null ) || ( row[1] == 0 && row[2] == 0 && row[3] == 0 );
+            let allempty = row.every((v: any) => v === null ) || ( row[1] == 0 && row[2] == 0 && row[3] == 0 ) || ( !row[1] && !row[2] && !row[3] );
 
-            /* return (
-                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
-                    <td className="row-meaning">{row[0]}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[1])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[2])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[3])}</td>
-                </tr>
-            ); */
+
             if(!allempty){
                 return(
                     <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
@@ -186,35 +176,6 @@ export default function Kapitalfluss(props: InitialProps){
 
     }
 
-    /* return(
-        <div className="presentation-page">
-            <table>
-                <thead>
-                    <tr>
-                        <th className="cell-headline"></th>
-                        <th className="empty-headline-cell cell-spacer"></th>
-                        <th className="cell-headline">{currentYear}</th>
-                        <th className="empty-headline-cell cell-spacer"></th>
-                        <th className="cell-headline">{currentYear-1}</th>
-                        <th className="empty-headline-cell cell-spacer"></th>
-                        <th className="cell-headline">+/-</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr className="euro-row">
-                        <td></td>
-                        <td className="cell-spacer"></td>
-                        <td>T€</td>
-                        <td className="cell-spacer"></td>
-                        <td>T€</td>
-                        <td className="cell-spacer"></td>
-                        <td>T€</td>
-                    </tr>
-                    {getTableContent()}
-                </tbody>
-            </table>
-        </div>
-    ); */
     return(
         <div className="presentation-page">
             <div className="tablestructure">

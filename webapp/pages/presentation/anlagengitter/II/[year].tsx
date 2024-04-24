@@ -280,17 +280,17 @@ export default function Anlagengitter(props: InitialProps){
         <div className="presentation-page">
             <div className="tablestructure">
                 <div className="tableheadlinerow">
-                    <div className="tablecellwide">Anlagenspiegel {currentYear}</div>
+                    <div className="tablecellwide">Anlagenspiegel {currentYear-1}</div>
                     <div className="tablecell tablecellspacer"></div>
-                    <div className="tablecell">Abschreibungen (kumuliert) 01.01.{currentYear}</div>
+                    <div className="tablecell">Abschreibungen (kumuliert) 01.01.{currentYear-1}</div>
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">Abschreibungen des Geschäftsjahres</div>
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">Änderungen im Zusammenhang mit Abgängen</div>
                     <div className="tablecell tablecellspacer"></div>
-                    <div className="tablecell">Abschreibungen (kumuliert) 31.12.{currentYear}</div>
+                    <div className="tablecell">Abschreibungen (kumuliert) 31.12.{currentYear-1}</div>
                     <div className="tablecell tablecellspacer"></div>
-                    <div className="tablecell">Buchwert 31.12.{currentYear}</div>
+                    <div className="tablecell">Buchwert 31.12.{currentYear-1}</div>
                     <div className="tablecell tablecellspacer special-spacer"></div>
                     <div className="tablecell special-header">Buchwert Vohrjahr</div>
                 </div>

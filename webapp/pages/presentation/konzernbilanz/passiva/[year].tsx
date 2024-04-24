@@ -12,7 +12,9 @@ type StylingProps = {
     bold: boolean,
     colored: boolean,
     underlined: boolean,
-    special: boolean
+    special: boolean,
+    enumfree: boolean,
+    countfree: boolean
 }
 
 type RowObject = {
@@ -50,6 +52,8 @@ async function parseFile(path: string){
                     underlined: false,
                     highlighted: false,
                     special: false,
+                    enumfree: false,
+                    countfree: false
                 }
             }
 
@@ -70,6 +74,9 @@ async function parseFile(path: string){
         const highlightedrow = [16, 23, 32, 38, 42, 43,];
         const colorsrows = [53];
         const specialrow: Array<any> = [55];
+        const enumfree = [ 53, 55];
+        const countfree = [ 26, 53, 55 ]
+
 
         specialrow.forEach((row) => {
             rows[row-lowerLimit].styling.special = true;
@@ -89,6 +96,14 @@ async function parseFile(path: string){
 
         highlightedrow.forEach((row) => {
             rows[row-lowerLimit].styling.highlighted = true;
+        })
+
+        enumfree.forEach((row) => {
+            rows[row-lowerLimit].styling.enumfree = true;
+        })
+
+        countfree.forEach((row) => {
+            rows[row-lowerLimit].styling.countfree = true;
         })
 
         return rows;
@@ -157,32 +172,19 @@ export default function KonzernbilanzII(props: InitialProps){
 
         return props.data.map((rowobj, idx) => {
             let row = rowobj.columns;
-            let allempty = row.every((v: any) => v === null ) || (row[3] == 0 && row[6] == 0);
+            let allempty = row.every((v: any) => v === null ) || (row[3] == 0 && row[6] == 0) || (row[2] && !row[3] && !row[6]);
 
             if(row[0] == "Eigenkapital insgesamt" || row[0] == "Bilanzsumme" || row[0] == "Treuhandverbindlichkeiten"  ){
                 row[2] = row[0];
                 row[0] = "";
             }
             
-            /* return (
-                <tr key={idx} className={`bordered-row ${(allempty)? "row-spacer": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.special)? "special-row": ""}`.replace(/\s+/g,' ').trim()}>
-                    <td className="cell-enum">{row[0]}</td>
-                    <td className="cell-add">{row[1]}</td>
-                    <td className="cell-title">{row[2]}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[3])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[4])}</td>
-                    <td className="cell-spacer"><div className="spacer-content"></div></td>
-                    <td className="cell-val">{getNumber(row[6])}</td>
-                </tr>
-            ); */
             if(!allempty){
                 return (
                     <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
                         <div className="tablecellwide">
-                            <div className="possiblecontent-enum">{row[0]}</div>
-                            <div className="possiblecontent-count">{row[1]}</div>
+                            {(!rowobj.styling.enumfree)? <div className="possiblecontent-enum">{row[0]}</div> : <></>}
+                            {(!rowobj.styling.countfree)? <div className="possiblecontent-count">{row[1]}</div> : <></>}
                             <div className="possiblecontent-title">{row[2]}</div>
                         </div>
                         <div className="tablecellspacer"></div>

@@ -67,7 +67,7 @@ export const fileobjs = [{
             icon: "table"
         },
         {
-            urlobj: `/display?year=${currentyear}&table=anlagengitter/I`,
+            urlobj: `/display?year=${currentyear}&table=anlagengitter/II`,
             name: "Anlagengitter Tabelle II",
             icon: "table"
         }    

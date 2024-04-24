@@ -17,7 +17,8 @@ type StylingProps = {
     bold: boolean,
     colored: boolean,
     underlined: boolean,
-    special: boolean
+    special: boolean,
+    noUnderline: boolean
 }
 
 type RowObject = {
@@ -52,17 +53,20 @@ async function parseFile(path: string){
                 underlined: false,
                 highlighted: false,
                 special: false,
+                noUnderline: false
             }
         }
 
-        cols.forEach((col) => {
-            let val = workbook.Sheets['GuV Deckblatt'][col.concat(r.toString())];
-            if(val){
-                rowobj.columns.push(val.v);
-            }else{
-                rowobj.columns.push(null);
-            }
-        });
+        if(r != 15){
+            cols.forEach((col) => {
+                let val = workbook.Sheets['GuV Deckblatt'][col.concat(r.toString())];
+                if(val){
+                    rowobj.columns.push(val.v);
+                }else{
+                    rowobj.columns.push(null);
+                }
+            });
+        }
 
         rows.push(rowobj);
     }
@@ -71,7 +75,8 @@ async function parseFile(path: string){
     const colorsrows = [58, 63];
     const underlinedrows = [50, 52, 54, 56];
     const specialrows = [13, 27, 31, 35];
-    const highlightedrow = [57, 62];
+    const highlightedrow: Array<number> = [];
+    const noUnderlineRows = [57, 62];
 
     boldrows.forEach((row) => {
         rows[row-lowerLimit].styling.bold = true;
@@ -91,6 +96,10 @@ async function parseFile(path: string){
 
     highlightedrow.forEach((row) => {
         rows[row-lowerLimit].styling.highlighted = true;
+    })
+
+    noUnderlineRows.forEach((row) => {
+        rows[row-lowerLimit].styling.noUnderline = true;
     })
 
     return rows;
@@ -159,13 +168,13 @@ export default function Guv(props: InitialProps){
 
             let row = rowobj.columns;
 
-            let allempty = row.every((v: any) => v === null ) || (row[2] == 0 && row[5] == 0);
+            let allempty = row.every((v: any) => v === null ) || (row[2] == 0 && row[5] == 0) || (row[1].includes("0,00 €") && !row[2] && !row[5]);
 
             if(rowobj.styling.special){
                 if(!allempty){
                     return (
                         <>
-                            <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
+                            <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.noUnderline)? "nounderline": ""}`}>
                                 <div className="tablecellwide">
                                     <div className="possiblecontent-enum">{row[0]}</div>
                                     <div className="possiblecontent-count">{}</div>
@@ -197,7 +206,7 @@ export default function Guv(props: InitialProps){
             }else{
                 if(!allempty){
                     return(
-                        <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""}`}>
+                        <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.noUnderline)? "nounderline": ""}`}>
                             <div className="tablecellwide">
                                 <div className="possiblecontent-enum">{row[0]}</div>
                                 <div className="possiblecontent-count">{}</div>

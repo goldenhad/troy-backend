@@ -36,7 +36,7 @@ async function parseFile(path: string){
 
     const cols: Array<String> = alphabet.slice(0, 7).split("");
     const lowerLimit = 3;
-    const higherLimit = 10;
+    const higherLimit = 12;
 
     let rows: Array<RowObject> = [];
 
@@ -64,8 +64,8 @@ async function parseFile(path: string){
         rows.push(rowobj);
     }
 
-    const underlinedrows = [9,10];
-    const boldrows = [10]
+    const underlinedrows = [11,12];
+    const boldrows = [12]
 
     boldrows.forEach((row) => {
         rows[row-lowerLimit].styling.bold = true;
@@ -228,7 +228,7 @@ export default function Rueckstellungen(props: InitialProps){
                 <div className="tableheadlinerow">
                     <div className="tablecellwide">Rückstellungsspiegel</div>
                     <div className="tablecell tablecellspacer"></div>
-                    <div className="tablecell">Stand am<br/>01.01.{currentYear}</div>
+                    <div className="tablecell">Stand am<br/>01.01.{currentYear-1}</div>
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">Zuführung</div>
                     <div className="tablecell tablecellspacer"></div>
@@ -236,7 +236,7 @@ export default function Rueckstellungen(props: InitialProps){
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">Auflösung</div>
                     <div className="tablecell tablecellspacer"></div>
-                    <div className="tablecell">Stand am<br/>31.12.{currentYear}</div>
+                    <div className="tablecell">Stand am<br/>31.12.{currentYear-1}</div>
                 </div>
 
                 <div className="tableeurorow">

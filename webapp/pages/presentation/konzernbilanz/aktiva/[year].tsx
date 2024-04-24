@@ -14,6 +14,7 @@ type StylingProps = {
     underlined: boolean,
     special: boolean,
     none: boolean,
+    enumfree: boolean
 }
 
 type RowObject = {
@@ -51,6 +52,7 @@ async function parseFile(path: string){
                     highlighted: false,
                     special: false,
                     none: false,
+                    enumfree: false
                 }
             }
 
@@ -72,6 +74,7 @@ async function parseFile(path: string){
         const colorsrows = [56];
         const specialrow = [32];
         const nonerow = [58];
+        const enumfree = [56, 58]
 
         specialrow.forEach((row) => {
             rows[row-lowerLimit].styling.special = true;
@@ -95,6 +98,10 @@ async function parseFile(path: string){
 
         nonerow.forEach((row) => {
             rows[row-lowerLimit].styling.none = true;
+        })
+
+        enumfree.forEach((row) => {
+            rows[row-lowerLimit].styling.enumfree = true;
         })
 
         return rows;
@@ -195,7 +202,7 @@ export default function KonzernbilanzI(props: InitialProps){
                 return (
                     <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
                         <div className="tablecellwide">
-                            <div className="possiblecontent-enum">{row[0]}</div>
+                            {(!rowobj.styling.enumfree)? <div className="possiblecontent-enum">{row[0]}</div> : <></>}
                             <div className="possiblecontent-count">{row[1]}</div>
                             <div className="possiblecontent-title">{row[2]}</div>
                         </div>
