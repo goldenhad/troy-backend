@@ -39,12 +39,12 @@ const saveFile = async (file: any, filename: string) => {
     
     
         try{
-            const encrypted = await openpgp.encrypt({
+            /* const encrypted = await openpgp.encrypt({
                 message: await openpgp.createMessage({binary: data}),
                 encryptionKeys: (await openpgp.readKey({armoredKey: pubkey})),
-            });
+            }); */
         
-            fs.writeFileSync(`./public/data/${year}/${filename}.xlsx`, encrypted);
+            fs.writeFileSync(`./public/data/${year}/${filename}.xlsx`, data);
             await fs.unlinkSync(file.filepath);
         }catch(e){
             console.log(e);

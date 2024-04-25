@@ -64,12 +64,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 if(filename){
                     console.log(filename)
                     const imageBuffer = readFileSync(`./public/data/${year}/${filename}.xlsx`);
-                    const decryptedbuffer = await decrypt(imageBuffer);
+                    //const decryptedbuffer = await decrypt(imageBuffer);
                     
                     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                     res.setHeader(`content-disposition`, `attachment; filename=${filename}.xlsx`);
 
-                    res.send(toBuffer(decryptedbuffer));
+                    //res.send(toBuffer(decryptedbuffer));
+                    res.send(imageBuffer)
                 }else{
                     return res.status(400).send({ errorcode: 4, message: "File not found" });
                 }
