@@ -57,7 +57,7 @@ async function parseFile(path: string){
             }
         }
 
-        if(r != 15){
+        if(r != -1){
             cols.forEach((col) => {
                 let val = workbook.Sheets['GuV Deckblatt'][col.concat(r.toString())];
                 if(val){

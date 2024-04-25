@@ -135,7 +135,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export default function Rueckstellungen(props: InitialProps){
-    const currentYear = new Date().getFullYear();
+    const currentYear = new Date().getFullYear()-1;
 
     const getTableContent = () => {
 

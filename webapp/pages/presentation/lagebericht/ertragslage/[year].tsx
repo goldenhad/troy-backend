@@ -163,6 +163,7 @@ export default function Rueckstellungen(props: InitialProps){
                 </tr>
             ); */
             if(!allempty){
+                console.log(row);
                 return (
                     <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
                         <div className="tablecellwide">
@@ -221,8 +222,8 @@ export default function Rueckstellungen(props: InitialProps){
             <div className="tablestructure">
                 <div className="tableheadlinerow">
                     <div className="tablecellwide">Geschäftsbereich</div>
-                    <div className="tablecell">{currentYear}</div>
                     <div className="tablecell">{currentYear-1}</div>
+                    <div className="tablecell">{currentYear-2}</div>
                     <div className="tablecell">+/-</div>
                 </div>
 

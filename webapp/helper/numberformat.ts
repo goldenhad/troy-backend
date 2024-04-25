@@ -2,6 +2,7 @@
 export default function getNumber(num: Number, specialHandling: boolean = false){    
     if(num != null){
         return num.toLocaleString("de-DE", {
+            maximumFractionDigits: 2,
             minimumFractionDigits: 2
         });
     }else{
