@@ -71,12 +71,12 @@ async function parseFile(path: string){
         rows.push(rowobj);
     }
 
-    const boldrows = [52, 56];
-    const colorsrows = [58, 63];
-    const underlinedrows = [50, 52, 54, 56];
+    const boldrows = [51, 55];
+    const colorsrows = [57, 62];
+    const underlinedrows = [49, 53, 52, 54];
     const specialrows = [13, 27, 31, 35];
     const highlightedrow: Array<number> = [];
-    const noUnderlineRows = [57, 62];
+    const noUnderlineRows = [57, 56, 61];
 
     boldrows.forEach((row) => {
         rows[row-lowerLimit].styling.bold = true;
