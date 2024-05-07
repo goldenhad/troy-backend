@@ -14,7 +14,9 @@ type StylingProps = {
     underlined: boolean,
     special: boolean,
     enumfree: boolean,
-    countfree: boolean
+    countfree: boolean,
+    sumrow: boolean,
+    nounderline: boolean,
 }
 
 type RowObject = {
@@ -29,6 +31,8 @@ interface InitialProps {
 }
 
 const FILEREF = 'konzernbilanz';
+const lowerLimit = 9;
+const higherLimit = 55;
 
 async function parseFile(path: string){
     const buffer = fs.readFileSync(path);
@@ -38,8 +42,6 @@ async function parseFile(path: string){
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
         const cols: Array<String> = alphabet.slice(0, 7).split("");
-        const lowerLimit = 9;
-        const higherLimit = 55;
 
         let rows: Array<RowObject> = [];
 
@@ -53,7 +55,9 @@ async function parseFile(path: string){
                     highlighted: false,
                     special: false,
                     enumfree: false,
-                    countfree: false
+                    countfree: false,
+                    sumrow: false,
+                    nounderline: false
                 }
             }
 
@@ -75,7 +79,9 @@ async function parseFile(path: string){
         const colorsrows = [53];
         const specialrow: Array<any> = [55];
         const enumfree = [ 53, 55];
-        const countfree = [ 26, 53, 55 ]
+        const countfree = [ 26, 53, 55 ];
+        const sumrow = [26];
+        const noUnderline = [24];
 
 
         specialrow.forEach((row) => {
@@ -104,6 +110,14 @@ async function parseFile(path: string){
 
         countfree.forEach((row) => {
             rows[row-lowerLimit].styling.countfree = true;
+        })
+
+        sumrow.forEach((row) => {
+            rows[row-lowerLimit].styling.sumrow = true;
+        })
+
+        noUnderline.forEach((row) => {
+            rows[row-lowerLimit].styling.nounderline = true;
         })
 
         return rows;
@@ -172,16 +186,20 @@ export default function KonzernbilanzII(props: InitialProps){
 
         return props.data.map((rowobj, idx) => {
             let row = rowobj.columns;
-            let allempty = row.every((v: any) => v === null ) || (row[3] == 0 && row[6] == 0) || (row[2] && !row[3] && !row[6]);
+            let allempty = row.every((v: any) => v === null ) || (row[3] == 0 && row[6] == 0 && idx != 22-lowerLimit) || (row[2] && !row[3] && !row[6] && idx != 22-lowerLimit);
 
             if(row[0] == "Eigenkapital insgesamt" || row[0] == "Bilanzsumme" || row[0] == "Treuhandverbindlichkeiten"  ){
                 row[2] = row[0];
                 row[0] = "";
             }
+
+            if(idx == 22-lowerLimit){
+                console.log(row);
+            }
             
             if(!allempty){
                 return (
-                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
+                    <div key={idx} data-id={idx+lowerLimit} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}  ${(rowobj.styling.sumrow)? "sum-row": ""} ${(rowobj.styling.nounderline)? "no-underline-row": ""}`}>
                         <div className="tablecellwide">
                             {(!rowobj.styling.enumfree)? <div className="possiblecontent-enum">{row[0]}</div> : <></>}
                             {(!rowobj.styling.countfree)? <div className="possiblecontent-count">{row[1]}</div> : <></>}

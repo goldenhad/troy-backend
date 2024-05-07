@@ -169,13 +169,13 @@ export default function Rueckstellungen(props: InitialProps){
                             <div className="possiblecontent-title">{row[0]}</div>
                         </div>
                         <div className="tablecell tablecellspacer"></div>
-                        <div className="tablecellnumber">{getNumber(row[1], false)}</div>
-                        <div className="tablecellnumber">{getNumber(row[2], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[1], false, 1)}</div>
+                        <div className="tablecellnumber">{getNumber(row[2], false, 1)}</div>
                         <div className="tablecell tablecellspacer"></div>
-                        <div className="tablecellnumber">{getNumber(row[3], false)}</div>
-                        <div className="tablecellnumber">{getNumber(row[4], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[3], false, 1)}</div>
+                        <div className="tablecellnumber">{getNumber(row[4], false, 1)}</div>
                         <div className="tablecell tablecellspacer"></div>
-                        <div className="tablecellnumber">{getNumber(row[5], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[5], false, 1)}</div>
                     </div>
                 );
             }else{

@@ -12,7 +12,8 @@ type StylingProps = {
     bold: boolean,
     colored: boolean,
     underlined: boolean,
-    special: boolean
+    special: boolean,
+    nounderline: boolean,
 }
 
 type RowObject = {
@@ -27,6 +28,9 @@ interface InitialProps {
 
 const FILEREF = 'anhang';
 
+const lowerLimit = 4;
+const higherLimit = 27;
+
 async function parseFile(path: string){
     const buffer = fs.readFileSync(path);
     const decryptedbuffer = await decrypt(buffer);
@@ -35,8 +39,6 @@ async function parseFile(path: string){
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     const cols: Array<String> = alphabet.slice(0, 17).split("");
-    const lowerLimit = 4;
-    const higherLimit = 27;
 
     let rows: Array<RowObject> = [];
 
@@ -49,6 +51,7 @@ async function parseFile(path: string){
                 underlined: false,
                 highlighted: false,
                 special: false,
+                nounderline: false
             }
         }
 
@@ -66,8 +69,8 @@ async function parseFile(path: string){
 
     const boldrows = [4, 8, 20];
     const colorsrows = [6, 18, 25, 27];
-    const highlightedrow = [5, 17, 24];
     const specialrow: Array<any> = [];
+    const nounderline = [5, 17, 24];
 
     specialrow.forEach((row) => {
         rows[row-lowerLimit].styling.special = true;
@@ -81,8 +84,8 @@ async function parseFile(path: string){
         rows[row-lowerLimit].styling.colored = true;
     })
 
-    highlightedrow.forEach((row) => {
-        rows[row-lowerLimit].styling.highlighted = true;
+    nounderline.forEach((row) => {
+        rows[row-lowerLimit].styling.nounderline = true;
     })
     
     return rows;
@@ -184,16 +187,16 @@ export default function Anlagengitter(props: InitialProps){
                     </tr>
                 ); */
                 return (
-                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
+                    <div key={idx} data-id={idx+lowerLimit} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.nounderline)? "nounderline": ""}`}>
                         <div className="tablecellwide">
                             {row[0]}
                         </div>
                         <div className="tablecellspacer"></div>
                         <div className="tablecellnumber">{getNumber(row[7], false)}</div>
                         <div className="tablecellspacer"></div>
-                        <div className="tablecellnumber">{getNumber(row[9], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[8], false)}</div>
                         <div className="tablecellspacer"></div>
-                        <div className="tablecellnumber">{getNumber(row[11], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[10], false)}</div>
                         <div className="tablecellspacer"></div>
                         <div className="tablecellnumber">{getNumber(row[12], false)}</div>
                         <div className="tablecellspacer"></div>

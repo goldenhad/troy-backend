@@ -169,9 +169,9 @@ export default function Rueckstellungen(props: InitialProps){
                         <div className="tablecellwide">
                             <div className="possiblecontent-title">{row[2]}</div>
                         </div>
-                        <div className="tablecellnumber">{getNumber(row[3], false)}</div>
                         <div className="tablecellnumber">{getNumber(row[4], false)}</div>
                         <div className="tablecellnumber">{getNumber(row[5], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[6], false)}</div>
                     </div>
                 );
             }

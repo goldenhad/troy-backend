@@ -163,11 +163,11 @@ export default function Kapitalfluss(props: InitialProps){
                             <div className="possiblecontent-title">{row[0]}</div>
                         </div>
                         <div className="tablecellspacer"></div>
-                        <div className="tablecellnumber">{getNumber(row[1], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[1], false, 1)}</div>
                         <div className="tablecellspacer"></div>
-                        <div className="tablecellnumber">{getNumber(row[2], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[2], false, 1)}</div>
                         <div className="tablecellspacer"></div>
-                        <div className="tablecellnumber">{getNumber(row[3], false)}</div>
+                        <div className="tablecellnumber">{getNumber(row[3], false, 1)}</div>
                     </div>
                 );
             }

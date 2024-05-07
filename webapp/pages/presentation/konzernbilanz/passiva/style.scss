@@ -268,7 +268,6 @@ table td, table th {
 
     .bold-row {
         font-weight: 700;
-        margin-bottom: 25px;
         
         .tablecellwide{
             .possiblecontent-title{
@@ -340,6 +339,11 @@ table td, table th {
 
     .underlined-row {
         font-weight: 700;
+        margin-top: 25px;
+
+        :last-child{
+            font-weight: normal !important;
+        }
         
 
         .tablecellwide {
@@ -363,6 +367,20 @@ table td, table th {
         .tablecellnumber {
             border-bottom: 2px solid #b9ca48 !important;
             width: 100px;
+        }
+    }
+
+    .sum-row{
+        border-top: 2px solid #b9ca48;
+    }
+
+    .no-underline-row{
+        >*{
+            border-bottom: none !important;
+        }
+
+        .possiblecontent-title{
+            border-bottom: none !important;
         }
     }
 
@@ -409,6 +427,8 @@ table td, table th {
             border-bottom: 1px solid #b0aa9b;
 
             padding-right: 5px;
+            padding-bottom: 5px;
+
 
             display: flex;
             flex-direction: column;

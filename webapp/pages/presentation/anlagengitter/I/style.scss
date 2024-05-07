@@ -220,6 +220,12 @@ table td, table th {
         }
     }
 
+    .nounderline{
+        >*{
+            border-bottom: none !important;
+        }
+    }
+
     .tablecontentrow{
         display: flex;
         flex-direction: row;

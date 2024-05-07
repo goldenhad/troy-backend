@@ -27,6 +27,9 @@ interface InitialProps {
     data: Array<any>;
 }
 
+const lowerLimit = 7;
+const higherLimit = 58;
+
 const FILEREF = 'konzernbilanz';
 
 async function parseFile(path: string){
@@ -37,8 +40,7 @@ async function parseFile(path: string){
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
         const cols: Array<String> = alphabet.slice(0, 7).split("");
-        const lowerLimit = 7;
-        const higherLimit = 58;
+        
 
         let rows: Array<RowObject> = [];
 
@@ -74,7 +76,7 @@ async function parseFile(path: string){
         const colorsrows = [56];
         const specialrow = [32];
         const nonerow = [58];
-        const enumfree = [56, 58]
+        const enumfree = [56, 58];
 
         specialrow.forEach((row) => {
             rows[row-lowerLimit].styling.special = true;
@@ -200,7 +202,7 @@ export default function KonzernbilanzI(props: InitialProps){
 
             if(!allempty){
                 return (
-                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
+                    <div key={idx} data-id={idx+lowerLimit} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${idx==51-lowerLimit? "cash":""}`}>
                         <div className="tablecellwide">
                             {(!rowobj.styling.enumfree)? <div className="possiblecontent-enum">{row[0]}</div> : <></>}
                             <div className="possiblecontent-count">{row[1]}</div>

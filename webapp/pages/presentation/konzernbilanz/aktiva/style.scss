@@ -320,7 +320,7 @@ tr{
     .colored-row {
         background-color: #b9ca48;
         color: white;
-        font-weight: 700;
+        font-weight: bold;
         margin-top: 30px;
 
         .tablecellwide{
@@ -356,6 +356,18 @@ tr{
             border-bottom: 2px solid #b9ca48 !important;
             width: 100px;
         }
+
+        :last-child{
+            font-weight: normal;
+        }
+    }
+
+    .cash {
+        :nth-child(5){
+            font-weight: 800;
+        }
+
+        margin-bottom: 20px;
     }
 
     .tablecontentrow{

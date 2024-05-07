@@ -12,7 +12,8 @@ type StylingProps = {
     bold: boolean,
     colored: boolean,
     underlined: boolean,
-    special: boolean
+    special: boolean,
+    nounderline: boolean
 }
 
 type RowObject = {
@@ -49,6 +50,7 @@ async function parseFile(path: string){
                 underlined: false,
                 highlighted: false,
                 special: false,
+                nounderline: false
             }
         }
 
@@ -66,7 +68,8 @@ async function parseFile(path: string){
 
     const boldrows = [4, 8, 20];
     const colorsrows = [6, 18, 25, 27];
-    const highlightedrow = [5];
+    const highlightedrow: number[] = [];
+    const nounderline: number[] = [5]
     const specialrow: Array<any> = [];
 
     specialrow.forEach((row) => {
@@ -83,6 +86,10 @@ async function parseFile(path: string){
 
     highlightedrow.forEach((row) => {
         rows[row-lowerLimit].styling.highlighted = true;
+    })
+
+    nounderline.forEach((row) => {
+        rows[row-lowerLimit].styling.nounderline = true;
     })
     
     return rows;
@@ -157,7 +164,7 @@ export default function Anlagengitter(props: InitialProps){
 
             if(!allempty){
                 return (
-                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""}`}>
+                    <div key={idx} className={`tablecontentrow ${(rowobj.styling.underlined)? "underlined-row": ""} ${(rowobj.styling.bold)? "bold-row": ""} ${(rowobj.styling.special)? "special-row": ""} ${(rowobj.styling.highlighted)? "highlighted-row": ""} ${(rowobj.styling.colored)? "colored-row": ""} ${(rowobj.styling.none)? "none-row": ""} ${(rowobj.styling.nounderline)? "nounderline": ""}`}>
                         <div className="tablecellwide">
                             {row[0]}
                         </div>
