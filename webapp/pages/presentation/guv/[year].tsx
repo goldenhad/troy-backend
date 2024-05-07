@@ -168,7 +168,7 @@ export default function Guv(props: InitialProps){
 
             let row = rowobj.columns;
 
-            let allempty = row.every((v: any) => v === null ) || (row[2] == 0 && row[5] == 0) || (row[1].includes("0,00 €") && !row[2] && !row[5]);
+            let allempty = row.every((v: any) => v === null ) || (row[2] == 0 && row[5] == 0) || (row[1]?.includes("0,00 €") && !row[2] && !row[5]);
 
             if(rowobj.styling.special){
                 if(!allempty){
