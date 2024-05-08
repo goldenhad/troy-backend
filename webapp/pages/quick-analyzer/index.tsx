@@ -101,7 +101,8 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
     const [ selectedCompanies, setSelectedCompanies ] = useState<Array<Company>>([ Company.WOHNBAU ]);
     const [ mode, setMode ] = useState("bar");
     const [ stepSize, setStepSize ] = useState(1000);
-    const [ max, setMax ] = useState(100000)
+    const [ max, setMax ] = useState(100000);
+    const [ unit, setUnit ] = useState("€");
 
     const [ data, setData ] = useState<Array<{ key: Company, items: Array<{ year: number, value: number }> }>>([]);
 
@@ -154,7 +155,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
     return(
         <>
             <div className="container">
-                <SalesChart data={data} step={stepSize} max={max} selectedYears={selectedYears} selectedCompanies={selectedCompanies} title={getTitle()} mode={mode} />
+                <SalesChart unit={unit} data={data} step={stepSize} max={max} selectedYears={selectedYears} selectedCompanies={selectedCompanies} title={getTitle()} mode={mode} />
             </div>
             <div className="inputcontainer">
                 <Select
@@ -165,43 +166,51 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                         switch(selected){
                             case "SALES":
                                 setStepSize(1000);
-                                setMax(20000);
+                                setMax(50000);
                                 setSource(SourceReference.SALES);
+                                setUnit("€");
                                 break;
                             case "OVERSHOOT":
                                 setStepSize(100);
                                 setMax(10000);
                                 setSource(SourceReference.OVERSHOOT);
+                                setUnit("€");
                                 break;
                             case "PROCEEDS":
                                 setStepSize(10000);
                                 setMax(500000);
                                 setSource(SourceReference.PROCEEDS);
+                                setUnit("€");
                                 break;
                             case "CAPITAL":
                                 setStepSize(10);
                                 setMax(500);
                                 setSource(SourceReference.CAPITAL);
+                                setUnit("%");
                                 break;
                             case "NEWBUILDINGS":
                                 setStepSize(100);
                                 setMax(50000);
                                 setSource(SourceReference.NEWBUILDINGS);
+                                setUnit("");
                                 break;
                             case "MODERNIZINGS":
                                 setStepSize(100);
                                 setMax(10000);
                                 setSource(SourceReference.MODERNIZINGS);
+                                setUnit("");
                                 break;
                             case "FLATS":
                                 setStepSize(100);
                                 setMax(10000);
                                 setSource(SourceReference.FLATS);
+                                setUnit("");
                                 break;
                             case "BUSINESSES":
                                 setStepSize(10);
                                 setMax(50);
                                 setSource(SourceReference.BUSINESSES);
+                                setUnit("");
                                 break;
                         }
                     }}
