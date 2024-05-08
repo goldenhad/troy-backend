@@ -131,17 +131,17 @@ export const fileobjs = [{
         representations: [
             {
                 urlobj: `/display?year=${currentyear}&table=anhang/umsatzerloes/hausbewirtschaftung`,
-                name: "Umsatzerlös Hausbewirtschaftung",
+                name: "Umsatzerlöse Hausbewirtschaftung",
                 icon: "table"
             },
             {
                 urlobj: `/display?year=${currentyear}&table=anhang/umsatzerloes/betreuungstaetigkeit`,
-                name: "Umsatzerlös Betreuungstätigkeit",
+                name: "Umsatzerlöse Betreuungstätigkeit",
                 icon: "table"
             },
             {
                 urlobj: `/display?year=${currentyear}&table=anhang/umsatzerloes/lieferungenundleistungen`,
-                name: "Umsatzerlös Lieferungen und Leistungen",
+                name: "Umsatzerlöse Lieferungen und Leistungen",
                 icon: "table"
             },
             {

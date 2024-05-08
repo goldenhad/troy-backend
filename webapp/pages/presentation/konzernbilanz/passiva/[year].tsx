@@ -81,7 +81,7 @@ async function parseFile(path: string){
         const enumfree = [ 53, 55];
         const countfree = [ 26, 53, 55 ];
         const sumrow = [26];
-        const noUnderline = [24];
+        const noUnderline = [25];
 
 
         specialrow.forEach((row) => {
@@ -186,7 +186,9 @@ export default function KonzernbilanzII(props: InitialProps){
 
         return props.data.map((rowobj, idx) => {
             let row = rowobj.columns;
-            let allempty = row.every((v: any) => v === null ) || (row[3] == 0 && row[6] == 0 && idx != 22-lowerLimit) || (row[2] && !row[3] && !row[6] && idx != 22-lowerLimit);
+            let allempty = row.every((v: any) => v === null ) || ( row[1] == null && row[2] == null && row[4] == null && row[3] == 0 && row[6] == 0 && idx != 22-lowerLimit) || (row[1] == null && row[2] == null && !row[3] && row[4] == null && !row[6] && idx != 22-lowerLimit);
+
+            console.log(row);
 
             if(row[0] == "Eigenkapital insgesamt" || row[0] == "Bilanzsumme" || row[0] == "Treuhandverbindlichkeiten"  ){
                 row[2] = row[0];

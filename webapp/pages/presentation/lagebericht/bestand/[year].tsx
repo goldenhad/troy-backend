@@ -176,9 +176,9 @@ export default function Rueckstellungen(props: InitialProps){
                         <div className="tablecellwide">
                             <div className="possiblecontent-title">{row[2]}</div>
                         </div>
-                        <div className="tablecellnumber">{row[3]}</div>
-                        <div className="tablecellnumber">{row[4]}</div>
-                        <div className="tablecellnumber">{row[5]}</div>
+                        <div className="tablecellnumber">{row[3].toLocaleString("de-DE")}</div>
+                        <div className="tablecellnumber">{row[4].toLocaleString("de-DE")}</div>
+                        <div className="tablecellnumber">{row[5].toLocaleString("de-DE")}</div>
                     </div>
                 );
             }

@@ -201,7 +201,7 @@ export default function Verbindlichkeiten(props: InitialProps){
         <div className="presentation-page">
             <div className="tablestructure">
                 <div className="tableheadlinerow">
-                    <div className="tablecellwide">Umsatzerlös aus der Hausbewirtschaftung</div>
+                    <div className="tablecellwide">Sonstige betriebliche Aufwendungen</div>
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">{currentYear}</div>
                     <div className="tablecell tablecellspacer"></div>

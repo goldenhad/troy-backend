@@ -203,7 +203,7 @@ export default function Verbindlichkeiten(props: InitialProps){
         <div className="presentation-page">
             <div className="tablestructure">
                 <div className="tableheadlinerow">
-                    <div className="tablecellwide">Umsatzerlös aus der Betreuungstätigkeit</div>
+                    <div className="tablecellwide">Umsatzerlöse aus der Betreuungstätigkeit</div>
                     <div className="tablecell tablecellspacer"></div>
                     <div className="tablecell">{currentYear}</div>
                     <div className="tablecell tablecellspacer"></div>
