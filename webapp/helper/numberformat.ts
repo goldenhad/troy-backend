@@ -2,8 +2,8 @@
 export default function getNumber(num: Number, specialHandling: boolean = false, afterComma = 2){    
     if(num != null){
         return num.toLocaleString("de-DE", {
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2
+            maximumFractionDigits: afterComma,
+            minimumFractionDigits: afterComma
         });
     }else{
         if(specialHandling){
