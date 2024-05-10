@@ -141,7 +141,7 @@ export default function Verbindlichkeiten(props: InitialProps){
             let percentval = value*100;
             return percentval.toLocaleString("de-DE") + " %";
         }else{
-            return getNumber(value) + " T€"
+            return getNumber(value, false, 1) + " T€"
         }
     }
 

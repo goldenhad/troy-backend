@@ -164,9 +164,9 @@ export default function Verbindlichkeiten(props: InitialProps){
                         <div className="possiblecontent-title">{row[1]}</div>
                     </div>
                     <div className="tablecellspacer"></div>
-                    <div className="tablecellnumber">{getNumber(row[3], false)}</div>
+                    <div className="tablecellnumber">{getNumber(row[3], false, 1)}</div>
                     <div className="tablecellspacer"></div>
-                    <div className="tablecellnumber">{getNumber(row[4], false)}</div>
+                    <div className="tablecellnumber">{getNumber(row[4], false, 1)}</div>
                 </div>
             );
         });

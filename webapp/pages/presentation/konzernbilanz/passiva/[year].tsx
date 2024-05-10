@@ -186,7 +186,7 @@ export default function KonzernbilanzII(props: InitialProps){
 
         return props.data.map((rowobj, idx) => {
             let row = rowobj.columns;
-            let allempty = row.every((v: any) => v === null ) || ( row[1] == null && row[2] == null && row[4] == null && row[3] == 0 && row[6] == 0 && idx != 22-lowerLimit) || (row[1] == null && row[2] == null && !row[3] && row[4] == null && !row[6] && idx != 22-lowerLimit);
+            let allempty = row.every((v: any) => v === null ) || ( row[1] == null && row[2] == null && row[4] == null && row[3] == 0 && row[6] == 0 && idx != 22-lowerLimit) || (row[1] == null && row[2] == null && !row[3] && row[4] == null && !row[6] && idx != 22-lowerLimit) || (row[2] != null && row[1] == null && row[3] == null && row[4] == null && row[5] == null);
 
             console.log(row);
 
