@@ -75,7 +75,7 @@ async function parseFile(path: string){
     const boldrows = [52, 56];
     const colorsrows = [58, 63];
     const underlinedrows = [50, 52, 54, 55, 56];
-    const specialrows = [13, 26, 31];
+    const specialrows = [13, 26, 30];
     const highlightedrow: Array<number> = [];
     const noUnderlineRows = [48, 57, 62];
 
