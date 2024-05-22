@@ -89,7 +89,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         if(userobj.role.capabilities.canUnfreeze || userobj.role.capabilities.canUploadFiles){
             let currentData = null
-            const year = new Date().getFullYear();
+            const year = new Date().getFullYear()-1;
             let files: Array<Files> | null = await prisma.files.findMany({include: {responsible: true}});
             if(!files){
                 files = null;
@@ -177,7 +177,7 @@ export default function UploadPage(props: InitialProps){
         "kennzahlen": undefined
     });
     const router = useRouter();
-    const year = new Date().getFullYear();
+    const year = new Date().getFullYear()-1;
 
     const [isFreezeOpen, setIsFreezeOpen] = useState(false);
     const [isRevisionOpen, setIsRevisionOpen] = useState(false);
@@ -353,7 +353,7 @@ export default function UploadPage(props: InitialProps){
                 })
 
                 console.log(props.currentData);
-                const year = new Date().getFullYear();
+                const year = new Date().getFullYear()-1;
                 const fileres = await axios.post(`/api/files`, {year: year, status: "erstellt"})
                 const mailret = await axios.post(`/api/message`, { type: "erstellt", reponsiblemail: props.currentData.responsible.email, reponsiblename: props.currentData.responsible.username })
 

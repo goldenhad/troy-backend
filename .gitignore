@@ -33,7 +33,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.env
+webapp/.env
 
 webapp/public/data/*
 webapp/docker/development/db/

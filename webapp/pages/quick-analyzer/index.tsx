@@ -143,7 +143,16 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
 
     const constructOptions = () => {
         const options: Array<{label: string, value: string}> = [];
-        availableYears.forEach((year) => {
+        const years = availableYears.sort((a, b) => {
+            const yearA = parseInt(a);
+            const yearB = parseInt(b);
+
+            if(yearA > yearB) return 1;
+            if(yearA < yearB) return -1;
+            return 0;
+        });
+
+        years.forEach((year) => {
             options.push({
                 label: year,
                 value: year
