@@ -225,7 +225,7 @@ export default function KonzernbilanzI(props: InitialProps){
     }
 
     return(
-        <div className="presentation-page" style={{zoom: (props.scale)? 0.6: 1, ['MozTransform' as any]: (props.scale)? "scale(0.6)": "scale(1)"}}>
+        <div className="presentation-page" style={{zoom: (props.scale)? 0.6: 1, ['MozTransform' as any]: (props.scale)? "scale(0.6)": "scale(1)", transformOrigin: `0 0`, height: (!props.scale)? 800: 450}}>
             <div className="tablestructure">
                 <div className="tableheadlinerow">
                     <div className="tablecell">Geschäftsjahr</div>
