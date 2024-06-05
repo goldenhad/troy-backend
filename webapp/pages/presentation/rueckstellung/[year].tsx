@@ -23,6 +23,7 @@ type RowObject = {
 interface InitialProps {
     InitialState: User;
     data: Array<any>;
+    scale: boolean;
 }
 
 const FILEREF = 'rueckstellung';
@@ -117,6 +118,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
                 props: {
                     InitialState: {},
                     data: guvdata,
+                    scale: (ctx.query.scaled)? ctx.query.scaled=="1": false
                 },
             };
         }else{
@@ -223,7 +225,7 @@ export default function Rueckstellungen(props: InitialProps){
         </div>
     ); */
     return(
-        <div className="presentation-page">
+        <div className="presentation-page" style={{zoom: (props.scale)? 0.6: 1, ['MozTransform' as any]: (props.scale)? "scale(0.45)": "scale(1)", transformOrigin: `0 0`, height: (props.scale)? 700: ""}}>
             <div className="tablestructure">
                 <div className="tableheadlinerow">
                     <div className="tablecellwide">Rückstellungsspiegel</div>
