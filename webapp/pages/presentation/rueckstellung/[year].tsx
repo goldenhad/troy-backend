@@ -225,7 +225,7 @@ export default function Rueckstellungen(props: InitialProps){
         </div>
     ); */
     return(
-        <div className="presentation-page" style={{zoom: (props.scale)? 0.6: 1, ['MozTransform' as any]: (props.scale)? "scale(0.45)": "scale(1)", transformOrigin: `0 0`, height: (props.scale)? 700: ""}}>
+        <div className="presentation-page" style={{zoom: (props.scale)? 0.6: 1, ['MozTransform' as any]: (props.scale)? "scale(0.45)": "scale(1)", transformOrigin: `0 0`, height: (props.scale)? 300: ""}}>
             <div className="tablestructure">
                 <div className="tableheadlinerow">
                     <div className="tablecellwide">Rückstellungsspiegel</div>
