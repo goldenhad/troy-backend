@@ -192,6 +192,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                         })
 
                         //compdata.push(Company.WOHNBAU);
+                        console.log(compdata);
 
                         setSelectedCompanies(compdata);
                     }}
