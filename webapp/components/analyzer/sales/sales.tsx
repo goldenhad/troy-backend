@@ -63,7 +63,6 @@ const CompanyToString = (sel: Company) => {
             return "Kommunale Siedlungs- und Wohnungsbaugesellschaft mbH";
         case(Company.KREISBAU):
             return "Kreisbauverein GmbH";
-            break;
         case(Company.STEINFURT):
             return "Wohnungsbaugesellschaft Kreis Steinfurt mbH";
         case(Company.UNDEFINED):
