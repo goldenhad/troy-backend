@@ -172,11 +172,11 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                 <h5>Bitte auswählen:</h5>
                 <Select
                     className="chartselect"
-                    allowClear
                     placeholder="Einzelunternehmen der WohnBau Gruppe"
-                    onChange={(selected: Array<string>) => {
+                    onChange={(selected: string) => {
                         let compdata: Array<Company> = [];
-                        selected.forEach((sel: string) => {
+                        //selected.forEach((sel: string) => {
+                            const sel = selected;
                             console.log(sel);
                             switch(sel){
                                 case("WOHNBAU"):
@@ -192,7 +192,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                     compdata.push(Company.STEINFURT);
                                     break;
                             }
-                        })
+                        //})
 
                         //compdata.push(Company.WOHNBAU);
 
