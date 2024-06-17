@@ -64,7 +64,8 @@ export enum Company {
     WOHNBAU,
     SIEDLUNG,
     KREISBAU,
-    STEINFURT
+    STEINFURT,
+    UNDEFINED
 }
 
 export type CompRef = {
@@ -96,9 +97,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function QuickAnalyzer({ availableYears }: InitialProps){
     const [ source, setSource ] = useState<SourceReference>(SourceReference.SALES);
-    const [ company, setCompany ] = useState<Company>(Company.WOHNBAU);
+    const [ company, setCompany ] = useState<Company>(Company.UNDEFINED);
     const [ selectedYears, setSelectedYears ] = useState<Array<string>>([availableYears[availableYears.length - 1]]);
-    const [ selectedCompanies, setSelectedCompanies ] = useState<Array<Company>>([ Company.WOHNBAU ]);
+    const [ selectedCompanies, setSelectedCompanies ] = useState<Array<Company>>([]);
     const [ mode, setMode ] = useState("bar");
     const [ stepSize, setStepSize ] = useState(1000);
     const [ max, setMax ] = useState(100000);
