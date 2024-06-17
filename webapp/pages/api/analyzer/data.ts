@@ -65,7 +65,7 @@ const companyOffsetMapping = (company: Company) => {
         case Company.STEINFURT:
           return 60;
         default:
-          return 400; // oder einen anderen Standardwert, falls kein Fall zutrifft
+          return 999; // oder einen anderen Standardwert, falls kein Fall zutrifft
       }
 }
 
@@ -79,6 +79,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         const compData: Array<{ key: Company, items: Array<{ year: number, value: number }> }> = [];
 
         for(let j=0; j < postreq.companies.length; j++){
+          console.log(postreq.companies);
           const comp = postreq.companies[j];
           const yearsPublished: Array<number> = await getAllYearsPublished();
           const years: Array<string> = [];
