@@ -167,9 +167,43 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                 <SalesChart unit={unit} data={data} step={stepSize} max={max} selectedYears={selectedYears} selectedCompanies={selectedCompanies} title={getTitle()} mode={mode} />
             </div>
             <div className="inputcontainer">
+            <Select
+                    className="chartselect"
+                    mode="multiple"
+                    allowClear
+                    placeholder="Einzelunternehmen der WohnBau Gruppe"
+                    onChange={(selected: Array<string>) => {
+                        let compdata: Array<Company> = [];
+                        selected.forEach((sel: string) => {
+                            switch(sel){
+                                case("WOHNBAU"):
+                                    compdata.push(Company.WOHNBAU);
+                                case("SIEDLUNG"):
+                                    compdata.push(Company.SIEDLUNG);
+                                    break;
+                                case("KREISBAU"):
+                                    compdata.push(Company.KREISBAU);
+                                    break;
+                                case("STEINFURT"):
+                                    compdata.push(Company.STEINFURT);
+                                    break;
+                            }
+                        })
+
+                        compdata.push(Company.WOHNBAU);
+
+                        setSelectedCompanies(compdata);
+                    }}
+                    options={[
+                        {label: "WohnBau Westmünsterland eG", value: "WOHNBAU"},
+                        {label: "Kommunale Siedlungs- und Wohnungsbaugesellschaft mbH", value: "SIEDLUNG"},
+                        {label: "Kreisbauverein GmbH", value: "KREISBAU"},
+                        {label: "Wohnungsbaugesellschaft Kreis Steinfurt mbH", value: "STEINFURT"},
+                    ]}
+                />
                 <Select
                     className="chartselect"
-                    placeholder="Please select"
+                    placeholder="Bitte auswählen"
                     defaultValue={"SALES"}
                     onChange={(selected: string) => {
                         switch(selected){
@@ -238,50 +272,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                     className="chartselect"
                     mode="multiple"
                     allowClear
-                    placeholder="Teilgesellschaften auswählen"
-                    onChange={(selected: Array<string>) => {
-                        let compdata: Array<Company> = [];
-                        selected.forEach((sel: string) => {
-                            switch(sel){
-                                case("SIEDLUNG"):
-                                    compdata.push(Company.SIEDLUNG);
-                                    break;
-                                case("KREISBAU"):
-                                    compdata.push(Company.KREISBAU);
-                                    break;
-                                case("STEINFURT"):
-                                    compdata.push(Company.STEINFURT);
-                                    break;
-                            }
-                        })
-
-                        compdata.push(Company.WOHNBAU);
-
-                        setSelectedCompanies(compdata);
-                    }}
-                    options={[
-                        {label: "Kommunale Siedlungs- und Wohnungsbaugesellschaft mbH", value: "SIEDLUNG"},
-                        {label: "Kreisbauverein GmbH", value: "KREISBAU"},
-                        {label: "Wohnungsbaugesellschaft Kreis Steinfurt mbH", value: "STEINFURT"},
-                    ]}
-                />
-                <Select
-                    className="chartselect"
-                    placeholder="Please select"
-                    defaultValue={"bar"}
-                    onChange={(selected: string) => {
-                        setMode(selected);
-                    }}
-                    options={[
-                        {label: "Balkendiagramm", value: "bar"},
-                        {label: "Liniendiagramm", value: "line"}
-                    ]}
-                />
-                <Select
-                    className="chartselect"
-                    mode="multiple"
-                    allowClear
-                    placeholder="Please select"
+                    placeholder="Bitte auswählen"
                     defaultValue={[availableYears[availableYears.length - 1]]}
                     onChange={(selected: Array<string>) => {
                         const sortedYears = selected.sort((a, b) => {
@@ -297,6 +288,18 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                         setSelectedYears(sortedYears);
                     }}
                     options={constructOptions()}
+                />
+                <Select
+                    className="chartselect"
+                    placeholder="Bitte auswählen"
+                    defaultValue={"bar"}
+                    onChange={(selected: string) => {
+                        setMode(selected);
+                    }}
+                    options={[
+                        {label: "Balkendiagramm", value: "bar"},
+                        {label: "Liniendiagramm", value: "line"}
+                    ]}
                 />
             </div>
         </>
