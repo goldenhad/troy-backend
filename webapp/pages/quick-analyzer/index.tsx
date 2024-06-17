@@ -110,6 +110,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
     useEffect(() => {
         const getData = async () => {
             try{
+                console.log("selected:", selectedCompanies)
                 const locData = await axios.post("/api/analyzer/data", { years: availableYears, datasource: refName(source), companies: selectedCompanies });
                 setData(locData.data.message);
             }catch(e){
