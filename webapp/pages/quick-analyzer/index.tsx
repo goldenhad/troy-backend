@@ -169,9 +169,9 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                 <SalesChart unit={unit} data={data} step={stepSize} max={max} selectedYears={selectedYears} selectedCompanies={selectedCompanies} title={getTitle()} mode={mode} />
             </div>
             <div className="inputcontainer">
-            <Select
+                <h5>Bitte auswählen:</h5>
+                <Select
                     className="chartselect"
-                    mode="multiple"
                     allowClear
                     placeholder="Einzelunternehmen der WohnBau Gruppe"
                     onChange={(selected: Array<string>) => {
