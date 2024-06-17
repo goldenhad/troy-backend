@@ -176,6 +176,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                     onChange={(selected: Array<string>) => {
                         let compdata: Array<Company> = [];
                         selected.forEach((sel: string) => {
+                            console.log(sel);
                             switch(sel){
                                 case("WOHNBAU"):
                                     compdata.push(Company.WOHNBAU);
@@ -192,7 +193,6 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                         })
 
                         //compdata.push(Company.WOHNBAU);
-                        console.log(compdata);
 
                         setSelectedCompanies(compdata);
                     }}
