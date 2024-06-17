@@ -169,7 +169,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                 <SalesChart unit={unit} data={data} step={stepSize} max={max} selectedYears={selectedYears} selectedCompanies={selectedCompanies} title={getTitle()} mode={mode} />
             </div>
             <div className="inputcontainer">
-                <h5 className="inputheadline">Bitte auswählen:</h5>
+                <h5 style={{ marginBottom: 13 }}>Bitte auswählen:</h5>
                 <Select
                     className="chartselect"
                     placeholder="Einzelunternehmen der WohnBau Gruppe"
