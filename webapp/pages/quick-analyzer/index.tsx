@@ -181,6 +181,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                             switch(sel){
                                 case("WOHNBAU"):
                                     compdata.push(Company.WOHNBAU);
+                                    break;
                                 case("SIEDLUNG"):
                                     compdata.push(Company.SIEDLUNG);
                                     break;
