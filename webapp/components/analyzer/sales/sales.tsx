@@ -66,6 +66,8 @@ const CompanyToString = (sel: Company) => {
             break;
         case(Company.STEINFURT):
             return "Wohnungsbaugesellschaft Kreis Steinfurt mbH";
+        case(Company.UNDEFINED):
+            return "";
     }
 }
 
