@@ -93,8 +93,8 @@ export default function SalesChart({ data, title, mode, selectedYears, step, max
                 stacked: true,
                 beginAtZero: true,
                 steps: 10,
-                stepValue: step,
-                max: max,
+                stepValue: (max*step)/10,
+                max: max*step,
                 ticks : {
                     callback: (val: any) => {
                         return val + " " + unit
@@ -114,7 +114,7 @@ export default function SalesChart({ data, title, mode, selectedYears, step, max
             if(mode){
                 compEntry.items.forEach((entry: SalesData) => {
                     if (selectedYears?.includes(entry.year.toString())){
-                        datapoints.push(entry.value);
+                        datapoints.push(entry.value * step);
                     }
                 });
 

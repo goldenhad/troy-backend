@@ -219,37 +219,37 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 setUnit("€");
                                 break;
                             case "OVERSHOOT":
-                                setStepSize(100);
+                                setStepSize(1000);
                                 setMax(5000);
                                 setSource(SourceReference.OVERSHOOT);
                                 setUnit("€");
                                 break;
                             case "PROCEEDS":
-                                setStepSize(10000);
+                                setStepSize(1000);
                                 setMax(150000);
                                 setSource(SourceReference.PROCEEDS);
                                 setUnit("€");
                                 break;
                             case "CAPITAL":
-                                setStepSize(10);
+                                setStepSize(1);
                                 setMax(100);
                                 setSource(SourceReference.CAPITAL);
                                 setUnit("%");
                                 break;
                             case "NEWBUILDINGS":
-                                setStepSize(100);
+                                setStepSize(1);
                                 setMax(10000);
                                 setSource(SourceReference.NEWBUILDINGS);
                                 setUnit("");
                                 break;
                             case "MODERNIZINGS":
-                                setStepSize(100);
+                                setStepSize(1);
                                 setMax(5000);
                                 setSource(SourceReference.MODERNIZINGS);
                                 setUnit("");
                                 break;
                             case "FLATS":
-                                setStepSize(100);
+                                setStepSize(1);
                                 setMax(2500);
                                 setSource(SourceReference.FLATS);
                                 setUnit("");
