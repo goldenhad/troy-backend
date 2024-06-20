@@ -26,5 +26,11 @@ export async function getAllYearsPublished(){
         }
     });
 
-    return valid;
+    const sortedValid = valid.toSorted((yearA: number, yearB: number) => {
+        if(yearA > yearB) return 1;
+            if(yearA < yearB) return -1;
+            return 0;
+    });
+
+    return sortedValid;
 }

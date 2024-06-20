@@ -102,7 +102,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
     const [ selectedCompanies, setSelectedCompanies ] = useState<Array<Company>>([]);
     const [ mode, setMode ] = useState("bar");
     const [ stepSize, setStepSize ] = useState(1000);
-    const [ max, setMax ] = useState(100000);
+    const [ max, setMax ] = useState(15000);
     const [ unit, setUnit ] = useState("€");
 
     const [ data, setData ] = useState<Array<{ key: Company, items: Array<{ year: number, value: number }> }>>([]);
@@ -220,7 +220,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 break;
                             case "OVERSHOOT":
                                 setStepSize(100);
-                                setMax(30000);
+                                setMax(5000);
                                 setSource(SourceReference.OVERSHOOT);
                                 setUnit("€");
                                 break;
@@ -238,13 +238,13 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 break;
                             case "NEWBUILDINGS":
                                 setStepSize(100);
-                                setMax(30000);
+                                setMax(10000);
                                 setSource(SourceReference.NEWBUILDINGS);
                                 setUnit("");
                                 break;
                             case "MODERNIZINGS":
                                 setStepSize(100);
-                                setMax(2500);
+                                setMax(5000);
                                 setSource(SourceReference.MODERNIZINGS);
                                 setUnit("");
                                 break;
@@ -255,8 +255,8 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 setUnit("");
                                 break;
                             case "BUSINESSES":
-                                setStepSize(10);
-                                setMax(50);
+                                setStepSize(1);
+                                setMax(10);
                                 setSource(SourceReference.BUSINESSES);
                                 setUnit("");
                                 break;
