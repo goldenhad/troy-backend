@@ -112,6 +112,7 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
             try{
                 console.log("selected:", selectedCompanies)
                 const locData = await axios.post("/api/analyzer/data", { years: availableYears, datasource: refName(source), companies: selectedCompanies });
+                console.log(locData);
                 setData(locData.data.message);
             }catch(e){
                 setData([]);
@@ -213,43 +214,43 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                         switch(selected){
                             case "SALES":
                                 setStepSize(1000);
-                                setMax(50000);
+                                setMax(15000);
                                 setSource(SourceReference.SALES);
                                 setUnit("€");
                                 break;
                             case "OVERSHOOT":
                                 setStepSize(100);
-                                setMax(10000);
+                                setMax(30000);
                                 setSource(SourceReference.OVERSHOOT);
                                 setUnit("€");
                                 break;
                             case "PROCEEDS":
                                 setStepSize(10000);
-                                setMax(500000);
+                                setMax(150000);
                                 setSource(SourceReference.PROCEEDS);
                                 setUnit("€");
                                 break;
                             case "CAPITAL":
                                 setStepSize(10);
-                                setMax(500);
+                                setMax(100);
                                 setSource(SourceReference.CAPITAL);
                                 setUnit("%");
                                 break;
                             case "NEWBUILDINGS":
                                 setStepSize(100);
-                                setMax(50000);
+                                setMax(30000);
                                 setSource(SourceReference.NEWBUILDINGS);
                                 setUnit("");
                                 break;
                             case "MODERNIZINGS":
                                 setStepSize(100);
-                                setMax(10000);
+                                setMax(2500);
                                 setSource(SourceReference.MODERNIZINGS);
                                 setUnit("");
                                 break;
                             case "FLATS":
                                 setStepSize(100);
-                                setMax(10000);
+                                setMax(2500);
                                 setSource(SourceReference.FLATS);
                                 setUnit("");
                                 break;
