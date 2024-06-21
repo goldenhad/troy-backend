@@ -1,4 +1,5 @@
 import { getColor } from '@/helper/charts';
+import getNumber from '@/helper/numberformat';
 import { Company } from '@/pages/quick-analyzer';
 import { Select } from 'antd';
 import {
@@ -97,7 +98,7 @@ export default function SalesChart({ data, title, mode, selectedYears, step, max
                 max: max*step,
                 ticks : {
                     callback: (val: any) => {
-                        return val + " " + unit
+                        return getNumber(val) + " " + unit
                     }
                 }
               }

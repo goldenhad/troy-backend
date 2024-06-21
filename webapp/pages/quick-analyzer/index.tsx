@@ -134,9 +134,9 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
             case SourceReference.CAPITAL:
                 return "Eigenkapitalquote"
             case SourceReference.NEWBUILDINGS:
-                return "Neubau"
+                return "Bauleistungen Neubau"
             case SourceReference.MODERNIZINGS:
-                return "Instandhaltung/Modernisierung"
+                return "Bauleistungen Instandhaltung/Modernisierung"
             case SourceReference.FLATS:
                 return "Wohneinheiten"
             case SourceReference.BUSINESSES:
@@ -237,13 +237,13 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 setUnit("%");
                                 break;
                             case "NEWBUILDINGS":
-                                setStepSize(1);
+                                setStepSize(1000);
                                 setMax(10000);
                                 setSource(SourceReference.NEWBUILDINGS);
                                 setUnit("");
                                 break;
                             case "MODERNIZINGS":
-                                setStepSize(1);
+                                setStepSize(1000);
                                 setMax(5000);
                                 setSource(SourceReference.MODERNIZINGS);
                                 setUnit("");
