@@ -267,8 +267,8 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                         {label: "Jahresüberschuss", value: "OVERSHOOT"},
                         {label: "Bilanzsumme", value: "PROCEEDS"},
                         {label: "Eigenkapitalquote", value: "CAPITAL"},
-                        {label: "Neubau", value: "NEWBUILDINGS"},
-                        {label: "Instandhaltung/Modernisierung", value: "MODERNIZINGS"},
+                        {label: "Bauleistungen Neubau", value: "NEWBUILDINGS"},
+                        {label: "Bauleistungen Instandhaltung/Modernisierung", value: "MODERNIZINGS"},
                         {label: "Wohneinheiten", value: "FLATS"},
                         {label: "Gewerbeeinheiten", value: "BUSINESSES"},
                     ]}
