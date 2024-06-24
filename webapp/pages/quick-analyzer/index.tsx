@@ -213,22 +213,22 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                     onChange={(selected: string) => {
                         switch(selected){
                             case "SALES":
-                                setStepSize(1000);
+                                setStepSize(1);
                                 setMax(15000);
                                 setSource(SourceReference.SALES);
-                                setUnit("€");
+                                setUnit("T€");
                                 break;
                             case "OVERSHOOT":
-                                setStepSize(1000);
+                                setStepSize(1);
                                 setMax(5000);
                                 setSource(SourceReference.OVERSHOOT);
-                                setUnit("€");
+                                setUnit("T€");
                                 break;
                             case "PROCEEDS":
-                                setStepSize(1000);
+                                setStepSize(1);
                                 setMax(150000);
                                 setSource(SourceReference.PROCEEDS);
-                                setUnit("€");
+                                setUnit("T€");
                                 break;
                             case "CAPITAL":
                                 setStepSize(1);
@@ -237,16 +237,16 @@ export default function QuickAnalyzer({ availableYears }: InitialProps){
                                 setUnit("%");
                                 break;
                             case "NEWBUILDINGS":
-                                setStepSize(1000);
+                                setStepSize(1);
                                 setMax(10000);
                                 setSource(SourceReference.NEWBUILDINGS);
-                                setUnit("");
+                                setUnit("T€");
                                 break;
                             case "MODERNIZINGS":
-                                setStepSize(1000);
+                                setStepSize(1);
                                 setMax(5000);
                                 setSource(SourceReference.MODERNIZINGS);
-                                setUnit("");
+                                setUnit("T€");
                                 break;
                             case "FLATS":
                                 setStepSize(1);
